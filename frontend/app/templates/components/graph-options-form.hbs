@@ -12,7 +12,7 @@
   <div class="inline fields">
     <label>Edge Type</label>
     <div class="field">
-      {{#ui-dropdown class="selection" selected="both" onChange=(action (mut edgeType))}}
+      {{#ui-dropdown class="selection" selected=(get optionsObject 'edgeType') onChange=(action (mut (get optionsObject "edgeType")))}}
         <div class="default text">Edge Type</div>
         <i class="dropdown icon"></i>
         <div class="menu">
@@ -25,7 +25,7 @@
       {{/ui-dropdown}}
     </div>
     <div class="field">
-      {{ui-checkbox label="Seed"}}
+      {{ui-checkbox label="Seed" checked=(get optionsObject "seed") onChange=(action (mut (get optionsObject "seed"))) }}
     </div>
   {{#if showHelp}}
   <div class="ui compact message">
@@ -41,7 +41,7 @@
 
     <div class="field">
       <label>Maximum Edit Distance</label>
-      {{range-input}}
+      {{range-input onChange=(action (mut (get optionsObject "maxEditDistance")))}}
     </div>
 
   {{#if showHelp}}
@@ -72,8 +72,24 @@
 
   <div class="field">
     <label>Maximum tree distance</label>
-    {{range-input}}
+    {{range-input onChange=(action (mut (get optionsObject "maxTreeDistance")))}}
   </div>
 
 </form>
+
+<div class="ui basic segment">
+  <p>
+  <a {{action "toggleCommandPreview"}}>Preview Command</a>
+  </p>
+</div>
+
+{{#if showCommandPreview}}
+<div class="ui secondary segment">
+      <code>
+        {{optionsObject.commandLinePreview}}
+      </code>
+</div>
+{{/if}}
+
+
 {{yield}}

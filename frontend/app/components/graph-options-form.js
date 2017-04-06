@@ -2,6 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   showHelp: false,
-  edgeTypes: ['edit', 'tree', 'both']
+  showCommandPreview: true,
+  edgeTypes: ['edit', 'tree', 'both'],
 
+  actions: {
+    toggleCommandPreview() {
+      this.set('showCommandPreview', !this.get('showCommandPreview'));
+    }
+  }
 });

@@ -1,6 +1,6 @@
 <div class="ui pagination menu">
   {{#each nums as |num|}}
-  <a class="item">
+    <a class="item {{if (eq num currentValue) "active"}}" {{action "selectValue" num}}>
     {{num}}
   </a>
   {{/each}}
