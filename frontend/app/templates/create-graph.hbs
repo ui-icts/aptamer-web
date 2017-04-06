@@ -4,12 +4,18 @@
   <div class="ui basic segment">
     <p>
       Upload your structure file to generate a
-      graph file
+      graph file. You can <a>generate</a> one if you don't have one
     </p>
   </div>
   <div class="ui two column middle aligned very relaxed stackable grid">
 
     <div class="column">
+      {{drop-zone 
+      error=(route-action "errorFile")
+      success=(route-action "successFile")
+      complete=(route-action "completeFile")
+      addedfile=(route-action "addedFile")
+      url='/upload'}}
     </div>
 
 

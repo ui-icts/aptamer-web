@@ -1,6 +1,7 @@
 {
   "name": "aptamer",
   "dependencies": {
-    "semantic-ui": "^2.2.10"
+    "semantic-ui": "^2.2.10",
+    "dropzone": "^4.2.0"
   }
 }
