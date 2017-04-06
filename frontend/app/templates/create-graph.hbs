@@ -10,12 +10,7 @@
   <div class="ui two column middle aligned very relaxed stackable grid">
 
     <div class="column">
-      {{drop-zone 
-      error=(route-action "errorFile")
-      success=(route-action "successFile")
-      complete=(route-action "completeFile")
-      addedfile=(route-action "addedFile")
-      url='/upload'}}
+      {{upload-with-progress}}
     </div>
 
 
