@@ -1,0 +1,79 @@
+<form class="ui big form">
+  {{#if showHelp}}
+  <div class="ui compact message">
+    <div class="header">
+      Edge Type
+    </div>
+        Whether to create edges in output graph according to 
+        edit distance or tree distance. <code>-t or --edge_type</code>
+  </div>
+  {{/if}}
+
+  <div class="inline fields">
+    <label>Edge Type</label>
+    <div class="field">
+      {{#ui-dropdown class="selection" selected="both" onChange=(action (mut edgeType))}}
+        <div class="default text">Edge Type</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          {{#each edgeTypes as |edgeType|}}
+            <div class="item" data-value="{{edgeType}}">
+              {{edgeType}}
+            </div>
+          {{/each}}
+        </div>
+      {{/ui-dropdown}}
+    </div>
+    <div class="field">
+      {{ui-checkbox label="Seed"}}
+    </div>
+  {{#if showHelp}}
+  <div class="ui compact message">
+    <div class="header">
+      Seed
+    </div>
+    Use seed sequence algorithm to find graph edges.
+  </div>
+{{/if}}
+  </div>
+
+  <div class="inline fields">
+
+    <div class="field">
+      <label>Maximum Edit Distance</label>
+      {{range-input}}
+    </div>
+
+  {{#if showHelp}}
+  <div class="ui compact message">
+    <div class="header">
+      Maximum edit distance
+    </div>
+    Maximum edit distance allowed for an edge to be created 
+    in output graph. 
+    Assumes <code>--edge_type</code> is "edit" or "both". (Default: 3)
+  </div>
+{{/if}}
+
+  </div>
+
+  {{#if showHelp}}
+  <div class="ui compact message">
+    <div class="header">
+      Maximum tree distance
+    </div>
+
+    Maximum tree distance allowed for an edge to be created 
+    in output graph. 
+    Assumes <code>--edge_type</code> is "tree" or "both". (Default: 3)
+
+  </div>
+  {{/if}}
+
+  <div class="field">
+    <label>Maximum tree distance</label>
+    {{range-input}}
+  </div>
+
+</form>
+{{yield}}
