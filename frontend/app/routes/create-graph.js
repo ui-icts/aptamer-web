@@ -15,6 +15,10 @@ export default Ember.Route.extend({
     fileUploaded(file, uploadResponse, evt) {
       this.get('store').pushPayload(uploadResponse);
       this.refresh();
+    },
+
+    toggleSidebar: function(id) {
+      $(`#${id}`).sidebar('toggle');
     }
   }
 
