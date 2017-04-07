@@ -9,6 +9,13 @@ export default Ember.Route.extend({
         structureFiles: files
       });
     });
+  },
+
+  actions: {
+    fileUploaded(file, uploadResponse, evt) {
+      this.get('store').pushPayload(uploadResponse);
+      this.refresh();
+    }
   }
 
 });

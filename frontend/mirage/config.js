@@ -24,36 +24,14 @@ export default function() {
     http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
   */
 
-  this.post('/upload', () => {
-    return {data: {type: 'struct-file', id: '111-XXX', attributes: {}}}
-  }, { timing: 8000 });
+  this.post('/upload', (schema,request) => {
+    let sf = schema.structureFiles.create({ 
+      fileName: "Uploaded File",
+      uploadedOn: new Date()
+    });
 
-  this.get('/structure-files', () => {
+    return sf;
+  }, { timing: 4000 });
 
-    return {
-      data: [{
-        type: 'structure-files',
-        id: 'final_rd12_struct.fa - 1',
-        attributes: {
-          'file-name': 'Final_Rd12_struct.fa',
-          'uploaded-on': '2017-03-25T08:15:30-05:00'
-        }
-      }, {
-        type: 'structure-files',
-        id: 'final_rd12_struct.fa - 2',
-        attributes: {
-          'file-name': 'Final_Rd12_struct.fa',
-          'uploaded-on': '2017-04-01T08:15:30-05:00'
-        }
-      },{
-        type: 'structure-files',
-        id: 'final_rd12_struct.fa - 3',
-        attributes: {
-          'file-name': 'Final_Rd12_struct.fa',
-          'uploaded-on': '2017-04-03T08:15:30-05:00'
-        }
-      }]
-    };
-
-  });
+  this.get('/structure-files');
 }

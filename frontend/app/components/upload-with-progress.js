@@ -12,7 +12,6 @@ export default Ember.Component.extend({
 
   actions: {
     addedFile(file) {
-      console.log("Added file", arguments);
       let fileObj = UploadJob.create({
         id: fileId(file),
         fileName: file.name,
@@ -22,8 +21,8 @@ export default Ember.Component.extend({
       this.get('uploadJobs').pushObject(fileObj);
     },
 
-    successFile(x) {
-      console.log("Success File", arguments);
+    successFile(file,responseObject,evt) {
+      this.get('onUpload')(responseObject);
     },
 
     completeFile(file) {
@@ -37,7 +36,6 @@ export default Ember.Component.extend({
     },
 
     errorFile(x) {
-      console.log("Error File", arguments);
     },
 
     progressFile(file, percent) {
