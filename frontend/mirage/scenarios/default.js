@@ -9,4 +9,6 @@ export default function(server) {
 
   // server.createList('post', 10);
   server.createList('structure-file',5);
+
+  server.create('result', { structureFile: server.create('structure-file') });
 }

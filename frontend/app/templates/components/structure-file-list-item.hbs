@@ -13,6 +13,12 @@
 <div class="content">
   <a class="header">{{sf.fileName}}</a>
   <div class="description">Uploaded {{moment-from-now sf.uploadedOn}}</div>
+  <div class="extra">
+    {{log "RESULTS" sf.results}}
+    {{#each sf.results as |resultFile|}}
+      <p> HAHAH {{resultFile.generatedAt}}</p>
+    {{/each}}
+  </div>
 </div>
 
 {{#if showMore}}

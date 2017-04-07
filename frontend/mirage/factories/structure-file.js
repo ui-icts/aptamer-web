@@ -7,5 +7,6 @@ export default Factory.extend({
 
   uploadedOn() {
     return new Date();
-  }
+  },
+
 });

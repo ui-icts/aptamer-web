@@ -34,4 +34,8 @@ export default function() {
   }, { timing: 4000 });
 
   this.get('/structure-files');
+  this.get('/structure-files/:id', ['structure-file','results'])
+
+  this.get('/results');
+  this.get('/results/:id');
 }
