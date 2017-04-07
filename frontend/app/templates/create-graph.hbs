@@ -1,52 +1,28 @@
 
-
-<div class="ui pushable segment component context">
-  {{#ui-sidebar class="inverted menu right inline vertical" context=".component.context" id="sub-sidebar"}}
-    <a class="item">Item 1</a>
-    <a class="item">Item 2</a>
-    <a class="item">Item 3</a>
-  {{/ui-sidebar}}
   <div class="ui large top fixed menu">
     <div class="header item">
       <i class="lab icon"></i>
       Aptamer
     </div>
-    <div class="right menu">
-      <div class="item">
-        <button class="ui basic button" {{action (route-action 'toggleSidebar' 'sub-sidebar')}}>
-          Help
-        </button>
-      </div>
-    </div>
   </div>
-  
-  <div class="pusher">
-<div class="ui container">
+
+<div class="ui container" style="padding-top:55px">
 
 
   <div class="ui basic segment">
+
     <p>
       Upload your structure file to generate a
       graph file. You can <a>generate</a> one if you don't have one
     </p>
-  </div>
-  <div class="ui two column middle aligned very relaxed stackable grid">
-
-    <div class="column">
+    <p>
       {{upload-with-progress onUpload=(route-action "fileUploaded")}}
-    </div>
-
-
-    <div class="column">
-    </div>
-  </div>
-
-  <br>
 
     {{#structure-file-list files=model.structureFiles as |sf|}}
       {{structure-file-list-item sf=sf}}
     {{/structure-file-list}}
-
-</div>
+    </p>
   </div>
+
+
 </div>

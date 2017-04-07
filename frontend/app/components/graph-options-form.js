@@ -7,7 +7,11 @@ export default Ember.Component.extend({
 
   actions: {
     toggleCommandPreview() {
-      this.set('showCommandPreview', !this.get('showCommandPreview'));
+      this.toggleProperty('showCommandPreview');
+    },
+
+    toggleHelp() {
+      this.toggleProperty('showHelp');
     }
   }
 });
