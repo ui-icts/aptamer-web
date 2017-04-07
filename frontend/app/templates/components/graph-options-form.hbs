@@ -1,4 +1,4 @@
-<form class="ui big form">
+<form class="ui small form">
   {{#if showHelp}}
   <div class="ui compact message">
     <div class="header">
@@ -10,6 +10,7 @@
   {{/if}}
 
   <div class="inline fields">
+
     <label>Edge Type</label>
     <div class="field">
       {{#ui-dropdown class="selection" selected=(get optionsObject 'edgeType') onChange=(action (mut (get optionsObject "edgeType")))}}
@@ -24,69 +25,64 @@
         </div>
       {{/ui-dropdown}}
     </div>
+
     <div class="field">
       {{ui-checkbox label="Seed" checked=(get optionsObject "seed") onChange=(action (mut (get optionsObject "seed"))) }}
     </div>
-  {{#if showHelp}}
-  <div class="ui compact message">
-    <div class="header">
-      Seed
-    </div>
-    Use seed sequence algorithm to find graph edges.
-  </div>
-{{/if}}
-  </div>
 
-  <div class="inline fields">
+    {{#if showHelp}}
+      <div class="ui compact message">
+      <div class="header">
+        Seed
+      </div>
+      Use seed sequence algorithm to find graph edges.
+    </div>
+    {{/if}}
 
     <div class="field">
-      <label>Maximum Edit Distance</label>
-      {{range-input onChange=(action (mut (get optionsObject "maxEditDistance")))}}
+      <label>Max Edit Distance {{optionsObject.maxEditDistance}}</label>
+      {{input type="range" value=optionsObject.maxEditDistance min=0 max=10}}
     </div>
 
-  {{#if showHelp}}
-  <div class="ui compact message">
-    <div class="header">
-      Maximum edit distance
-    </div>
-    Maximum edit distance allowed for an edge to be created 
-    in output graph. 
-    Assumes <code>--edge_type</code> is "edit" or "both". (Default: 3)
-  </div>
-{{/if}}
+    {{#if showHelp}}
+      <div class="ui compact message">
+        <div class="header">
+          Maximum edit distance
+        </div>
+        Maximum edit distance allowed for an edge to be created 
+        in output graph. 
+        Assumes <code>--edge_type</code> is "edit" or "both". (Default: 3)
+      </div>
+    {{/if}}
 
-  </div>
 
-  {{#if showHelp}}
-  <div class="ui compact message">
-    <div class="header">
-      Maximum tree distance
+    <div class="field">
+      <label>Max tree distance {{optionsObject.maxTreeDistance}}</label>
+      {{input type="range" value=optionsObject.maxTreeDistance min=0 max=10}}
     </div>
 
-    Maximum tree distance allowed for an edge to be created 
-    in output graph. 
-    Assumes <code>--edge_type</code> is "tree" or "both". (Default: 3)
+    {{#if showHelp}}
+      <div class="ui compact message">
+        <div class="header">
+          Maximum tree distance
+        </div>
 
-  </div>
-  {{/if}}
+        Maximum tree distance allowed for an edge to be created 
+        in output graph. 
+        Assumes <code>--edge_type</code> is "tree" or "both". (Default: 3)
 
-  <div class="field">
-    <label>Maximum tree distance</label>
-    {{range-input onChange=(action (mut (get optionsObject "maxTreeDistance")))}}
+      </div>
+    {{/if}}
+
+
   </div>
 
 </form>
 
-<div class="ui basic segment">
-  <p>
-  <a {{action "toggleCommandPreview"}}>Preview Command</a>
-  </p>
-</div>
-
 {{#if showCommandPreview}}
 <div class="ui secondary segment">
       <code>
-        {{optionsObject.commandLinePreview}}
+        python create_graph.py {{fileName}} {{optionsObject.commandLinePreview}}
       </code>
 </div>
 {{/if}}

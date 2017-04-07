@@ -1,0 +1,18 @@
+<div class="ui right floated content">
+  <button class="small ui button">Create Graph</button>
+  <a href="#" {{action "toggleShowMore"}}>More</a>
+</div>
+
+<i class="large middle aligned file text icon"></i>
+
+<div class="content">
+  <a class="header">{{sf.fileName}}</a>
+  <div class="description">Uploaded {{sf.uploadedOn}}</div>
+</div>
+
+{{#if showMore}}
+  <div class="extra">
+
+    {{graph-options-form fileName=sf.fileName optionsObject=optionsObject}}
+  </div>
+{{/if}}

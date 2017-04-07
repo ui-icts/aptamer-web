@@ -15,24 +15,13 @@
 
 
     <div class="column">
-      {{graph-options-form optionsObject=model.options}}
     </div>
   </div>
 
   <br>
 
     {{#structure-file-list files=model.structureFiles as |sf|}}
-      <div class="item">
-        <div class="ui right floated content">
-          <button class="small ui button">Create Graph</button>
-          <a>More</a>
-        </div>
-        <i class="large middle aligned file text icon"></i>
-        <div class="content">
-          <a class="header">{{sf.fileName}}</a>
-          <div class="description">Uploaded {{sf.uploadedOn}}</div>
-        </div>
-      </div>
+      {{structure-file-list-item sf=sf}}
     {{/structure-file-list}}
 
 </div>
