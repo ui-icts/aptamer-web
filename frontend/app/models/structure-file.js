@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  fileName: DS.attr(),
-  uploadedOn: DS.attr()
+  fileName: DS.attr('string'),
+  uploadedOn: DS.attr('date')
 });
