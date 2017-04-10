@@ -8,6 +8,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('create-graph');
+  this.route('predict-structures');
 });
 
 export default Router;
