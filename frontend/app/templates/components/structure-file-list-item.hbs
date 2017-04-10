@@ -15,7 +15,8 @@
   <div class="description">Uploaded {{moment-from-now sf.uploadedOn}}</div>
   <div class="extra">
     {{#each sf.results as |resultFile|}}
-      <p> Results {{resultFile.generatedAt}}</p>
+      {{log "RESULT" resultFile}}
+      <p> Result #{{resultFile.resultNumber}}</p>
     {{/each}}
   </div>
 </div>

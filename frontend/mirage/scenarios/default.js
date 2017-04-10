@@ -8,7 +8,7 @@ export default function(server) {
   */
 
   // server.createList('post', 10);
-  server.createList('file',5);
+  server.createList('file',2);
 
   server.create('result', { file: server.create('file') });
 }
