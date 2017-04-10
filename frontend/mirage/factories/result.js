@@ -9,5 +9,5 @@ export default Factory.extend({
     return new Date();
   },
 
-  structureFile: association()
+  file: association()
 });

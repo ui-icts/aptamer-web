@@ -25,7 +25,7 @@ export default function() {
   */
 
   this.post('/upload', (schema,request) => {
-    let sf = schema.structureFiles.create({ 
+    let sf = schema.files.create({ 
       fileName: "Uploaded File",
       uploadedOn: new Date()
     });
@@ -33,8 +33,8 @@ export default function() {
     return sf;
   }, { timing: 4000 });
 
-  this.get('/structure-files');
-  this.get('/structure-files/:id', ['structure-file','results'])
+  this.get('/files');
+  this.get('/files/:id', ['file','results'])
 
   this.get('/results');
   this.get('/results/:id');
