@@ -1,11 +1,12 @@
 <div class="ui basic segment">
 
-  <p>You can use vienna rnaFold to generate structures</p>
+  <p>You can use vienna rnaFold to generate structures. After your file has been processed
+     you can {{link-to "create a graph of your structures" "create-graph"}} </p>
   <p>
   {{upload-with-progress onUpload=(route-action "fileUploaded")}}
 
-  {{#structure-file-list files=model.structureFiles as |sf|}}
+  {{#file-list files=model.structureFiles as |sf|}}
     {{structure-file-list-item sf=sf}}
-  {{/structure-file-list}}
+  {{/file-list}}
   </p>
 </div>

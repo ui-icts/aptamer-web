@@ -7,8 +7,8 @@
   <p>
   {{upload-with-progress onUpload=(route-action "fileUploaded")}}
 
-  {{#structure-file-list files=model.structureFiles as |sf|}}
+  {{#file-list files=model.structureFiles as |sf|}}
     {{structure-file-list-item sf=sf}}
-  {{/structure-file-list}}
+  {{/file-list}}
   </p>
 </div>
