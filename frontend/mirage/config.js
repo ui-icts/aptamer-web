@@ -24,16 +24,45 @@ export default function() {
     http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
   */
 
-  this.post('/upload', (schema,request) => {
+  function buildFilterQuery(queryParams) {
+    let query = {};
+    Object.keys(queryParams).forEach(key => {
+      let filterRegex = key.match(/filter\[([^&]*)\]/);
+      if (filterRegex) {
+        query[filterRegex[1]] = queryParams[key];
+      }
+    });
+    return query;
+  }
+
+  this.post('/upload/create-graph', (schema,request) => {
     let sf = schema.files.create({ 
       fileName: "Uploaded File",
+      filePurpose: 'create-graph-input',
       uploadedOn: new Date()
     });
 
     return sf;
   }, { timing: 4000 });
 
-  this.get('/files');
+  this.post('/upload/predict-structures', (schema,request) => {
+    let sf = schema.files.create({ 
+      fileName: "Uploaded File",
+      filePurpose: 'predict-structures-input',
+      uploadedOn: new Date()
+    });
+
+    return sf;
+  }, { timing: 4000 });
+
+  this.get('/files', (schema, request) => {
+    if (request.queryParams) {
+      return schema.files.where(buildFilterQuery(request.queryParams));
+    } else {
+      return schema.files.all();
+    }
+  });
+
   this.get('/files/:id', ['file','results'])
 
   this.get('/results');
