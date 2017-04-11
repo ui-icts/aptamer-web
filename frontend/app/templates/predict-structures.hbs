@@ -6,7 +6,7 @@
   {{upload-with-progress url='/upload/predict-structures' onUpload=(route-action "fileUploaded")}}
 
   {{#file-list files=model as |sf|}}
-    {{structure-file-list-item sf=sf}}
+    {{predict-structures-input-item sf=sf}}
   {{/file-list}}
   </p>
 </div>
