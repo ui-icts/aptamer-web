@@ -1,5 +1,5 @@
 <div class="ui right floated content">
-  <button class="small ui button">
+  <button class="small ui button" {{action (perform processTask sf)}}>
     <i class="play icon"></i>
     Create Graph
   </button>
@@ -15,8 +15,7 @@
   <div class="description">Uploaded {{moment-from-now sf.uploadedOn}}</div>
   <div class="extra">
     {{#each sf.results as |resultFile|}}
-      {{log "RESULT" resultFile}}
-      <p> Result #{{resultFile.resultNumber}}</p>
+      <p> Result #{{resultFile.resultNumber}} {{resultFile.status}}</p>
     {{/each}}
   </div>
 </div>

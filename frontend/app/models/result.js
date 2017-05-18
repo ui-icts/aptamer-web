@@ -5,5 +5,7 @@ export default DS.Model.extend({
   resultNumber: DS.attr('number'),
   commandLine: DS.attr('string'),
   programVersion: DS.attr('string'),
-  file: DS.belongsTo()
+  status: DS.attr('string'),
+  file: DS.belongsTo(),
+  generatedFiles: DS.hasMany('file', { inverse: 'generatedBy' } )
 });

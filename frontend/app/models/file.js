@@ -8,5 +8,8 @@ export default DS.Model.extend({
   //is a structure file or whatever
   filePurpose: DS.attr('string'),
 
-  results: DS.hasMany()
+  results: DS.hasMany(),
+
+  generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
+
 });
