@@ -7,8 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('create-graph');
+  this.route('create-graph', {path: '/'});
   this.route('predict-structures');
+  this.route('login');
 });
 
 export default Router;

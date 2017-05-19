@@ -1,0 +1,19 @@
+<form class="ui form" >
+  <div class="ui stacked segment">
+    <div class="field">
+      <label class="sr-only">Email</label>
+      {{input type="email" class="email" value=username placeholder="Email"}}
+    </div>
+    <div class="field">
+      <label class="sr-only">Password</label>
+      {{input type="password" value=password placeholder="Password"}}
+    </div>
+    <button class="ui fluid large submit button" type="submit" {{action "submitForm"}}>
+      Log In
+    </button>
+    <div class="login-error">
+      {{errorMessage}}
+    </div>
+  </div>
+</form>
+

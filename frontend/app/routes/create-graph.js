@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import CreateGraphOptions from '../models/create-graph-options';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
     return this.get('store').query('file', {
       filter: {

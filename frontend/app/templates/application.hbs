@@ -4,6 +4,17 @@
       <i class="lab icon"></i>
       Aptamer
     </div>
+    <div class="right menu">
+      {{log "APP" session}}
+      {{#if session.isAuthenticated}}
+        <a class="ui item" {{action 'invalidateSession'}}>
+          Logout
+        </a>
+
+      {{else}}
+        {{link-to "Login" 'login' class="ui item"}}
+      {{/if}}
+    </div>
   </div>
 
 <div class="ui container" style="padding-top:55px">

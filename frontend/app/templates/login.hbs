@@ -1,0 +1,24 @@
+<div class="ui grid">
+  <div class="one wide column">
+  </div>
+  <div class="five wide column">
+
+    {{log "ROUTE" session}}
+{{login-form
+  session=session
+  onSubmit=(route-action "doLogin")
+}}
+  </div>
+  <div class="four wide column">
+    <div class="ui center aligned basic segment">
+      <h1>or</h1>
+    </div>
+  </div>
+  <div class="five wide column">
+    {{signup-form createAccount=(route-action "createAccount")}}
+  </div>
+  <div class="one wide column">
+  </div>
+</div>
+<hr>
+{{outlet}}
