@@ -63,8 +63,13 @@ export default function() {
     }
   });
 
-  this.get('/files/:id', ['file','results'])
+  this.get('/files/:id', ['file','results']);
+  this.post('/files');
+  this.patch('/files/:id');
 
   this.get('/results');
   this.get('/results/:id');
+  this.post('/results');
+  this.patch('/results/:id');
+  
 }

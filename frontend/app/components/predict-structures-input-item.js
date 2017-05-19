@@ -13,15 +13,20 @@ export default Ember.Component.extend({
 
     file.get('results').pushObject(result);
 
-    yield timeout(4*1000);
+    result = yield result.save();
 
     let childFile = this.get('store').createRecord('file', {
       generatedBy: result,
       fileName: file.get('fileName') + '.struct',
+      filePurpose: 'create-graph-input'
     });
+
+    childFile = yield childFile.save();
 
     result.get('generatedFiles').pushObject(childFile);
     result.set('status', 'Complete');
+
+    yield result.save();
   }),
 
 });
