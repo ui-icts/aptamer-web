@@ -59,7 +59,7 @@ exports.config = {
     sass: {
       options: {
         includePaths: [
-          'node_modules/foundation-sites/scss',
+          'node_modules/bootstrap-sass/assets/stylesheets',
         ]
       }
     }
