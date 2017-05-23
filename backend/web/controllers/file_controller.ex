@@ -1,7 +1,7 @@
 defmodule Aptamer.FileController do
   use Aptamer.Web, :controller
 
-  alias Aptamer.File
+  alias Aptamer.{File,Repo}
   import Ecto.Query, only: [from: 2]
   
   def index(conn, %{"kind" => "structure"}) do
@@ -11,6 +11,25 @@ defmodule Aptamer.FileController do
             |> Repo.all
 
     render(conn, "index.json", files: files)
+  end
+
+  def create(conn, params) do
+    
+    {:ok, file_data} = Elixir.File.read(params["file"].path)
+
+    file_params = %{
+      "file_name" => params["file"].filename,
+      "uploaded_on"=> DateTime.utc_now(),
+      "file_purpose" => "create-graph-input",
+      "data" => file_data
+    }
+
+    {:ok, file} =
+      %File{}
+      |> File.changeset(file_params)
+      |> Repo.insert
+
+    render(conn, "file.json", file: file)
   end
 
   # def create(conn, %{"file" => file_params}) do

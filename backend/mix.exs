@@ -55,7 +55,8 @@ defmodule Aptamer.Mixfile do
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
      {:jsonapi, git: "https://github.com/jeregrine/jsonapi"},
-     {:ex_machina, "~> 2.0", only: :test}
+     {:ex_machina, "~> 2.0", only: :test},
+     {:proper_case, "~> 1.0.0", git: "https://github.com/johnnyji/proper_case"}
     ]
   end
 

@@ -14,7 +14,7 @@ defmodule Aptamer.File do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:file_name, :uploaded_on, :file_purpose])
+    |> cast(params, [:file_name, :uploaded_on, :file_purpose, :data])
     |> validate_required([:file_name, :uploaded_on, :file_purpose])
   end
 end
