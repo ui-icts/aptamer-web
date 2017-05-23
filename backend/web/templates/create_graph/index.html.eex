@@ -1,0 +1,24 @@
+<h2>Listing create graph</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for create_graph <- @create_graph do %>
+    <tr>
+
+      <td class="text-right">
+        <%= link "Show", to: create_graph_path(@conn, :show, create_graph), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: create_graph_path(@conn, :edit, create_graph), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: create_graph_path(@conn, :delete, create_graph), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New create graph", to: create_graph_path(@conn, :new) %>

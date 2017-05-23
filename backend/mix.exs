@@ -27,7 +27,9 @@ defmodule Aptamer.Mixfile do
        :gettext,
        :phoenix_ecto,
        :postgrex,
-       :coherence
+       :coherence,
+       :timex,
+       :timex_ecto
      ]
     ]
   end
@@ -48,7 +50,13 @@ defmodule Aptamer.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:coherence, "~> 0.3"}]
+     {:coherence, git: "git://github.com/smpallen99/coherence.git"},
+     {:ecto_enum, "~> 1.0"},
+     {:timex, "~> 3.0"},
+     {:timex_ecto, "~> 3.0"},
+     {:jsonapi, git: "https://github.com/jeregrine/jsonapi"},
+     {:ex_machina, "~> 2.0", only: :test}
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

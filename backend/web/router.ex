@@ -22,6 +22,7 @@ defmodule Aptamer.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    resources "/files/:kind", Aptamer.FileController, only: [:index, :create]
   end
 
   scope "/" do
@@ -44,6 +45,7 @@ defmodule Aptamer.Router do
   scope "/", Aptamer do
     pipe_through :protected
     #protected routes here
+    get "/create-graph", CreateGraphController, :index
   end
   # Other scopes may use custom stacks.
   # scope "/api", Aptamer do
