@@ -9,9 +9,7 @@ export default Factory.extend({
     return new Date();
   },
 
-  fileType(i) {
-    return "UNKNOWN";
-  },
+  fileType: "UNKNOWN",
 
   fasta: trait({
     fileName(i) {

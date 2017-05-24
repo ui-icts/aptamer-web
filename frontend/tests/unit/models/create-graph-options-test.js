@@ -1,6 +1,6 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 
-moduleForModel('create-graph-options', 'Unit | Model | create graph options', {
+moduleFor('model:create-graph-options', 'Unit | Model | create graph options', {
   // Specify the other units that are required for this test.
   needs: []
 });

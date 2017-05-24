@@ -10,16 +10,9 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{upload-with-progress}}`);
+  this.set('noop', function() {});
+  this.render(hbs`{{upload-with-progress url='/test' onUpload=(action noop)}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$().text().trim(), 'Drop files here to upload');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#upload-with-progress}}
-      template block text
-    {{/upload-with-progress}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

@@ -12,14 +12,6 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{graph-options-form}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.notEqual(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#graph-options-form}}
-      template block text
-    {{/graph-options-form}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

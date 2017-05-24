@@ -6,7 +6,6 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   session: Ember.inject.service('session'),
 
   setupController(controller) {
-    console.log("setupController", controller);
     controller.set('session', this.get('session') );
   }
 });

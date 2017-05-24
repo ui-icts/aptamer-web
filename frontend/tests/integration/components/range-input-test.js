@@ -12,14 +12,6 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{range-input}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.notEqual(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#range-input}}
-      template block text
-    {{/range-input}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

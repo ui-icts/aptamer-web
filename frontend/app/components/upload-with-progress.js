@@ -21,7 +21,7 @@ export default Ember.Component.extend({
       this.get('uploadJobs').pushObject(fileObj);
     },
 
-    successFile(file,responseObject,evt) {
+    successFile(file,responseObject,_evt) {
       this.get('onUpload')(responseObject);
     },
 
@@ -35,7 +35,7 @@ export default Ember.Component.extend({
 
     },
 
-    errorFile(x) {
+    errorFile(_x) {
     },
 
     progressFile(file, percent) {

@@ -9,7 +9,6 @@ export default Ember.Component.extend({
     selectValue(num) {
       this.set('currentValue', num);
       this.get('onChange')(num);
-      console.log("Clicked on value", num);
     }
   }
 

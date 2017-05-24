@@ -1,4 +1,6 @@
+import Ember from 'ember';
 import Base from 'ember-simple-auth/authenticators/base';
+
 const { RSVP } = Ember;
 
 export default Base.extend({
@@ -6,7 +8,7 @@ export default Base.extend({
     return RSVP.resolve();
   },
 
-  restore(data) {
+  restore(_data) {
     return RSVP.resolve();
   },
 

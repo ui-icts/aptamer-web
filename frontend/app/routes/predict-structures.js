@@ -11,7 +11,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    fileUploaded(file, uploadResponse, evt) {
+    fileUploaded(_file, uploadResponse, _evt) {
       this.get('store').pushPayload(uploadResponse);
       this.refresh();
     }
