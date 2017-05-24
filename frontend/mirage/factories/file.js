@@ -2,22 +2,28 @@ import { Factory, trait } from 'ember-cli-mirage';
 
 export default Factory.extend({
   fileName(i) {
-    return `Final_${i}_struct.fa`;
+    return `somefile_${i}.txt`;
   },
 
   uploadedOn() {
     return new Date();
   },
 
-  filePurpose(i) {
+  fileType(i) {
     return "UNKNOWN";
   },
 
-  createGraphInput: trait({
-    filePurpose: "create-graph-input"
+  fasta: trait({
+    fileName(i) {
+      return `Final_${i}.fa`;
+    },
+    fileType: "fasta"
   }),
 
-  predictStructuresInput: trait({
-    filePurpose: "predict-structures-input"
+  structure: trait({
+    fileName(i) {
+      return `Final_${i}_struct.fa`;
+    },
+    fileType: "structure"
   })
 });

@@ -22,6 +22,8 @@ export default function() {
     return schema.files.where({filePurpose: 'create-structure-input'});
   });
 
+  this.get('/files');
+
   this.post('/files/structure', (schema, request) => {
 
     let sf = schema.files.create({ 

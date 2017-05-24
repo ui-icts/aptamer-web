@@ -8,11 +8,8 @@ let state = Ember.Object.create({
 });
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
-  async model() {
-    let response = await fetch('/files/structure').then( response => response.json() );
-    console.log("Response",response);
-    state.set('structureFiles', response.files);
-    return state;
+  model() {
+    return this.get('store').findAll('file');
   },
 
   actions: {

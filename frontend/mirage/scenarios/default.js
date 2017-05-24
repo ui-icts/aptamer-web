@@ -9,6 +9,7 @@ export default function(server) {
 
   // server.createList('post', 10);
   server.createList('file',2);
+  server.createList('file',3,'fasta');
+  server.createList('file',1,'structure');
 
-  server.create('result', { file: server.create('file', 'createGraphInput') });
 }

@@ -6,7 +6,7 @@ export default DS.Model.extend({
 
   //Use this to keep track of if it
   //is a structure file or whatever
-  filePurpose: DS.attr('string'),
+  fileType: DS.attr('string'),
 
   results: DS.hasMany(),
 

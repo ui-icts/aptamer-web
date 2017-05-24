@@ -1,4 +1,3 @@
-{{log "Sorted?" filesByUploadDate}}
 {{#if hasBlock}}
   <div class="ui relaxed divided list">
   {{#each filesByUploadDate as |file|}}
@@ -6,8 +5,9 @@
   {{/each}}
   </div>
 {{else}}
+  <p>Current Filter: {{filter}}</p>
   {{#each filesByUploadDate as |file|}}
-    <p>{{file.fileName}}</p>
+    <p>{{file.fileName}} - <em>{{file.fileType}}</em></p>
   {{/each}}
 {{/if}}
 
