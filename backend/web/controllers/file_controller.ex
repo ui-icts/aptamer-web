@@ -29,7 +29,7 @@ defmodule Aptamer.FileController do
       |> File.changeset(file_params)
       |> Repo.insert
 
-    render(conn, "file.json", file: file)
+    render(conn, "show.json", file: file)
   end
 
   # def create(conn, %{"file" => file_params}) do

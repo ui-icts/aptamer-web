@@ -12,7 +12,7 @@ defmodule Aptamer.FileControllerTest do
     structure_file = insert(:file)
 
     conn = get conn, file_path(conn, :index, "structure")
-    assert json_response(conn, 200)["data"] == [
+    assert json_response(conn, 200)["files"] == [
       %{"id" => structure_file.id,
       "fileName" => structure_file.file_name,
       "filePurpose" => structure_file.file_purpose,
@@ -33,7 +33,7 @@ defmodule Aptamer.FileControllerTest do
       "fileName" => "Final_Rd12.fa",
       "filePurpose" => "create-graph-input",
       "uploadedOn" => _
-    } = response
+    } = response["file"]
 
     db_file = Repo.get(File, id)
 
