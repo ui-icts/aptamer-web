@@ -12,30 +12,18 @@ export default function() {
   // this.namespace = '';    // make this `/api`, for example, if your API is namespaced
   // this.timing = 400;      // delay for each request, automatically set to 0 during testing
 
-  /*
-    Shorthand cheatsheet:
+  this.get('/files/structure', (schema, request) => {
+    return schema.files.where({ filePurpose: 'create-graph-input' });
+  });
 
-    this.get('/posts');
-    this.post('/posts');
-    this.get('/posts/:id');
-    this.put('/posts/:id'); // or this.patch
-    this.del('/posts/:id');
+//  this.passthrough("/files/structure");
 
-    http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
-  */
+  this.get('/files/fas', (schema, request) => {
+    return schema.files.where({filePurpose: 'create-structure-input'});
+  });
 
-  function buildFilterQuery(queryParams) {
-    let query = {};
-    Object.keys(queryParams).forEach(key => {
-      let filterRegex = key.match(/filter\[([^&]*)\]/);
-      if (filterRegex) {
-        query[filterRegex[1]] = queryParams[key];
-      }
-    });
-    return query;
-  }
+  this.post('/files/structure', (schema, request) => {
 
-  this.post('/upload/create-graph', (schema,request) => {
     let sf = schema.files.create({ 
       fileName: "Uploaded File",
       filePurpose: 'create-graph-input',
@@ -43,9 +31,9 @@ export default function() {
     });
 
     return sf;
-  }, { timing: 4000 });
+  });
 
-  this.post('/upload/predict-structures', (schema,request) => {
+  this.post('/files/fas', (schema,request) => {
     let sf = schema.files.create({ 
       fileName: "Uploaded File",
       filePurpose: 'predict-structures-input',
@@ -55,21 +43,4 @@ export default function() {
     return sf;
   }, { timing: 4000 });
 
-  this.get('/files', (schema, request) => {
-    if (request.queryParams) {
-      return schema.files.where(buildFilterQuery(request.queryParams));
-    } else {
-      return schema.files.all();
-    }
-  });
-
-  this.get('/files/:id', ['file','results']);
-  this.post('/files');
-  this.patch('/files/:id');
-
-  this.get('/results');
-  this.get('/results/:id');
-  this.post('/results');
-  this.patch('/results/:id');
-  
 }

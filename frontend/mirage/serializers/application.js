@@ -1,4 +1,4 @@
-import { JSONAPISerializer } from 'ember-cli-mirage';
+import { JSONAPISerializer, ActiveModelSerializer,Serializer } from 'ember-cli-mirage';
 
-export default JSONAPISerializer.extend({
+export default Serializer.extend({
 });

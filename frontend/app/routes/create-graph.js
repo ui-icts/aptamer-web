@@ -1,29 +1,24 @@
 import Ember from 'ember';
 import CreateGraphOptions from '../models/create-graph-options';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import fetch from 'fetch';
+
+let state = Ember.Object.create({
+  structureFiles: [],
+});
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
-  model() {
-    return this.get('store').query('file', {
-      filter: {
-        filePurpose: 'create-graph-input'
-      }
-    }).then((files) => {
-      return Ember.Object.create({
-        structureFiles: files
-      });
-    });
+  async model() {
+    let response = await fetch('/files/structure').then( response => response.json() );
+    console.log("Response",response);
+    state.set('structureFiles', response.files);
+    return state;
   },
 
   actions: {
     fileUploaded(file, uploadResponse, evt) {
-      this.get('store').pushPayload(uploadResponse);
-      this.refresh();
+      state.get('structureFiles').pushObject(uploadResponse.file);
     },
-
-    toggleSidebar: function(id) {
-      $(`#${id}`).sidebar('toggle');
-    }
   }
 
 });
