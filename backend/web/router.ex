@@ -26,7 +26,7 @@ defmodule Aptamer.Router do
     plug JaSerializer.ContentTypeNegotiation
     plug JaSerializer.Deserializer
 
-    resources "/files", Aptamer.FileController, only: [:index, :create]
+    resources "/files", Aptamer.FileController
   end
 
   scope "/" do

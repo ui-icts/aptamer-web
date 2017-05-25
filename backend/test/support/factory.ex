@@ -8,4 +8,12 @@ defmodule Aptamer.Factory do
       file_type: "UNKNOWN"
     }
   end
+
+  def as_structure(file) do
+    %{file | file_type: "structure"}
+  end
+
+  def as_fasta(file) do
+    %{file | file_type: "fasta"}
+  end
 end

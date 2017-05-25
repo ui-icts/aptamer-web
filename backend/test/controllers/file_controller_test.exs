@@ -5,14 +5,15 @@ defmodule Aptamer.FileControllerTest do
 
   setup %{conn: conn} do
 
-    {:ok, conn: conn}
-  end
-
-  test "gets all the structure files", %{conn: conn} do
     conn =
       conn
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
+
+    {:ok, conn: conn}
+  end
+
+  test "gets all the structure files", %{conn: conn} do
 
     fasta_file = insert(:file, %{file_type: "fasta"})
     structure_file = insert(:file, file_type: "structure")
@@ -60,6 +61,49 @@ defmodule Aptamer.FileControllerTest do
     cs2 = checksum(%{path: "test/fixtures/Final_Rd12.fa"})
     cs1 = checksum(db_file)
     assert cs1 == cs2
+  end
+
+  test "shows chosen resource", %{conn: conn} do
+    file = insert(:file, file_type: "structure")
+    conn = get conn, file_path(conn, :show, file)
+    data = json_response(conn, 200)["data"]
+    assert data["id"] == "#{file.id}"
+    assert data["type"] == "files"
+    assert data["attributes"]["file-name"] == file.file_name
+    assert data["attributes"]["file-type"] == file.file_type
+    assert data["attributes"]["uploaded-on"] == NaiveDateTime.to_iso8601(file.uploaded_on)
+  end
+
+  test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
+    assert_error_sent 404, fn ->
+      get conn, file_path(conn, :show, "11111111-1111-1111-1111-111111111111")
+    end
+  end
+
+  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+    
+    attrs = params_for(:file, file_type: "structure")
+    file = insert(:file, attrs)
+    change_attrs = %{attrs | file_type: "fasta"}
+
+    conn = put conn, file_path(conn, :update, file), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "files",
+        "id" => file.id,
+        "attributes" => string_params_for(:file, change_attrs),
+      }
+    }
+
+    assert json_response(conn, 200)["data"]["id"]
+    assert Repo.get_by(File, change_attrs)
+  end
+
+  test "deletes chosen resource", %{conn: conn} do
+    file = Repo.insert! %File{}
+    conn = delete conn, file_path(conn, :delete, file)
+    assert response(conn, 204)
+    refute Repo.get(File, file.id)
   end
 
   def checksum(data) when is_nil(data), do: 0
