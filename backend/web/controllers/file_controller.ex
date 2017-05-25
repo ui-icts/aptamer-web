@@ -8,7 +8,7 @@ defmodule Aptamer.FileController do
      
     files = Repo.all(File)
 
-    render(conn, "index.json", %{data: files, conn: conn, params: params})
+    render(conn, "index.json-api", %{data: files, conn: conn, params: params})
   end
 
   def create(conn, params) do
