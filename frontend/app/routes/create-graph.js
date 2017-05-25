@@ -9,7 +9,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     fileUploaded(_file, uploadResponse, _evt) {
-      console.log("YYYY", uploadResponse);
       this.get('store').pushPayload(uploadResponse);
       this.refresh();
     },

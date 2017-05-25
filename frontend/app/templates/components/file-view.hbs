@@ -11,7 +11,9 @@
 <i class="large middle aligned file text icon"></i>
 
 <div class="content">
-  <a class="header">{{fileName}}</a>
+  {{#link-to 'files.view' file class="header"}}
+    {{fileName}}
+  {{/link-to}}
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
   </div>

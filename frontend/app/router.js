@@ -7,7 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('files', { path: '/'});
+  this.route('files', { path: '/'}, function() {
+    this.route('view', { path: '/files/:file_id'});
+  });
   this.route('login');
 });
 
