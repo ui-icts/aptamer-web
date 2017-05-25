@@ -11,7 +11,7 @@
 <i class="large middle aligned file text icon"></i>
 
 <div class="content">
-  {{#link-to 'files.view' file class="header"}}
+  {{#link-to 'files.view' routeObject class="header"}}
     {{fileName}}
   {{/link-to}}
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
@@ -21,6 +21,25 @@
 
 {{#if showMore}}
   <div class="extra">
+    <form class="ui small form">
+      <div class="inline fields">
+        <label>File Type</label>
+        <div class="field">
+
+          {{#ui-dropdown class="selection" selected=fileType onChange=(action onFileTypeChange)}}
+            <div class="default text">Please select...</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              {{#each fileTypeOptions as |fileType|}}
+                <div class="item" data-value="{{fileType.key}}">
+                  {{fileType.title}}
+                </div>
+              {{/each}}
+            </div>
+          {{/ui-dropdown}}
+        </div>
+      </div>
+    </form>
     {{yield}}
   </div>
 {{/if}}

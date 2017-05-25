@@ -7,10 +7,14 @@
   {{#file-list files=model filter=currentFilter as |f|}}
 
     {{#file-view 
-      file=f
-      fileName=f.fileName
-      uploadedOn=f.uploadedOn
-      processButtonText="Run" }}
+        routeObject=f
+        fileName=f.fileName
+        fileType=f.fileType
+        uploadedOn=f.uploadedOn
+        processButtonText="Run"
+        onFileTypeChange=(route-action "changeFileType" f)
+      }}
+
       {{graph-options-form}}
 
     {{/file-view}}

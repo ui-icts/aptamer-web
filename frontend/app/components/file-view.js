@@ -22,10 +22,17 @@ export default Ember.Component.extend({
     };
   }),
 
+  fileTypeOptions: Ember.computed(function() {
+    return this.get('fileTypes').list()
+  }),
+
   actions: {
     toggleShowMore() {
       this.toggleProperty('showMore');
     },
 
+    changeFileType(key) {
+      console.log("New file type key", key);
+    }
   }
 });
