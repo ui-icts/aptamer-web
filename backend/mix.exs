@@ -59,6 +59,7 @@ defmodule Aptamer.Mixfile do
      {:proper_case, "~> 1.0.0", git: "https://github.com/johnnyji/proper_case"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:fs, "~> 0.9", override: true},
+     {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}
     ]
   end
 

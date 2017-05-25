@@ -22,7 +22,11 @@ defmodule Aptamer.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    resources "/files/:kind", Aptamer.FileController, only: [:index, :create]
+    plug :accepts, ["json-api"]
+    plug JaSerializer.ContentTypeNegotiation
+    plug JaSerializer.Deserializer
+
+    resources "/files", Aptamer.FileController, only: [:index, :create]
   end
 
   scope "/" do

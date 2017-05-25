@@ -5,7 +5,7 @@ defmodule Aptamer.Factory do
     %Aptamer.File{
       file_name: "test.txt",
       uploaded_on: "2016-12-05T10:00:00.000000Z",
-      file_purpose: "create-graph-input"
+      file_type: "UNKNOWN"
     }
   end
 end

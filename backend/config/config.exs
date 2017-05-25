@@ -13,7 +13,7 @@ config :aptamer,
 config :aptamer, Aptamer.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "IccgQqMtrQrDjvRIlwgs/3ni1qizFseXblYBn2sMEePo0SR7WQadi0+xYWZS7isa",
-  render_errors: [view: Aptamer.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: Aptamer.ErrorView, accepts: ~w(html json json-api)],
   pubsub: [name: Aptamer.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -25,10 +25,6 @@ config :logger, :console,
 # Configure phoenix generators
 config :phoenix, :generators,
   binary_id: true
-
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
 
 # %% Coherence Configuration %%   Don't remove this line
 config :coherence,
@@ -44,3 +40,18 @@ config :coherence, Aptamer.Coherence.Mailer,
   adapter: Swoosh.Adapters.Sendgrid,
   api_key: "your api key here"
 # %% End Coherence Configuration %%
+#
+config :phoenix, :format_encoders,
+  "json-api": Poison
+
+config :mime, :types, %{
+    "application/vnd.api+json" => ["json-api"]
+}
+
+config :ja_serializer,
+  pluralize_types: true
+
+# Import environment specific config. This must remain at the bottom
+# of this file so it overrides the configuration defined above.
+import_config "#{Mix.env}.exs"
+

@@ -4,13 +4,11 @@ defmodule Aptamer.FileController do
   alias Aptamer.{File,Repo}
   import Ecto.Query, only: [from: 2]
   
-  def index(conn, %{"kind" => "structure"}) do
+  def index(conn, params) do
      
-    files = from(f in File,
-              where: f.file_purpose == "create-graph-input")
-            |> Repo.all
+    files = Repo.all(File)
 
-    render(conn, "index.json", files: files)
+    render(conn, "index.json", %{data: files, conn: conn, params: params})
   end
 
   def create(conn, params) do
@@ -20,7 +18,7 @@ defmodule Aptamer.FileController do
     file_params = %{
       "file_name" => params["file"].filename,
       "uploaded_on"=> DateTime.utc_now(),
-      "file_purpose" => "create-graph-input",
+      "file_type" => "structure",
       "data" => file_data
     }
 
@@ -29,7 +27,7 @@ defmodule Aptamer.FileController do
       |> File.changeset(file_params)
       |> Repo.insert
 
-    render(conn, "show.json", file: file)
+    render(conn, "show.json-api", data: file)
   end
 
   # def create(conn, %{"file" => file_params}) do

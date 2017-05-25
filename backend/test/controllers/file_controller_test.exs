@@ -4,19 +4,36 @@ defmodule Aptamer.FileControllerTest do
   alias Aptamer.File
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+
+    {:ok, conn: conn}
   end
 
   test "gets all the structure files", %{conn: conn} do
-    insert(:file, %{file_purpose: "create-structure-input"})
-    structure_file = insert(:file)
+    conn =
+      conn
+      |> put_req_header("accept", "application/vnd.api+json")
+      |> put_req_header("content-type", "application/vnd.api+json")
 
-    conn = get conn, file_path(conn, :index, "structure")
-    assert json_response(conn, 200)["files"] == [
+    fasta_file = insert(:file, %{file_type: "fasta"})
+    structure_file = insert(:file, file_type: "structure")
+
+    conn = get conn, file_path(conn, :index)
+    assert json_response(conn, 200)["data"] == [
+      %{"id" => fasta_file.id,
+        "type" => "files",
+        "attributes" => %{
+          "file-name" => fasta_file.file_name,
+          "file-type" => fasta_file.file_type,
+          "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on)
+        }
+      },
       %{"id" => structure_file.id,
-      "fileName" => structure_file.file_name,
-      "filePurpose" => structure_file.file_purpose,
-      "uploadedOn" => NaiveDateTime.to_iso8601(structure_file.uploaded_on)
+        "type" => "files",
+        "attributes" => %{
+          "file-name" => structure_file.file_name,
+          "file-type" => structure_file.file_type,
+          "uploaded-on" => NaiveDateTime.to_iso8601(structure_file.uploaded_on)
+        }
       }
     ]
   end
@@ -25,15 +42,18 @@ defmodule Aptamer.FileControllerTest do
     upload = %Plug.Upload{path: "test/fixtures/Final_Rd12.fa", filename: "Final_Rd12.fa"}
     response =
       conn
-      |> post( file_path(conn,:create,"structure"), %{ :file => upload} )
+      |> post( file_path(conn,:create), %{ :file => upload} )
       |> json_response(200)
 
     assert %{
       "id" => id,
-      "fileName" => "Final_Rd12.fa",
-      "filePurpose" => "create-graph-input",
-      "uploadedOn" => _
-    } = response["file"]
+      "type" => "files",
+      "attributes" => %{
+        "file-name" => "Final_Rd12.fa",
+        "file-type" => "structure",
+        "uploaded-on" => _
+      }
+    } = response["data"]
 
     db_file = Repo.get(File, id)
 

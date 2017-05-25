@@ -3,7 +3,7 @@ defmodule Aptamer.FileTest do
 
   alias Aptamer.File
 
-  @valid_attrs %{file_name: "some content", file_purpose: "some content", uploaded_on: ~N[2000-01-01 23:00:07]}
+  @valid_attrs %{file_name: "some content", file_type: "some content", uploaded_on: ~N[2000-01-01 23:00:07]}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

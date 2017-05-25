@@ -14,6 +14,8 @@
   "gettext": {:hex, :gettext, "0.13.1", "5e0daf4e7636d771c4c71ad5f3f53ba09a9ae5c250e1ab9c42ba9edccc476263", [:mix], []},
   "hackney": {:hex, :hackney, "1.8.3", "9148b2311f7d68aff2dc78f2be4da8f05b1a15421b9ef4199ba4935a1d39b3c1", [:rebar3], [{:certifi, "1.2.1", [hex: :certifi, optional: false]}, {:idna, "5.0.1", [hex: :idna, optional: false]}, {:metrics, "1.0.1", [hex: :metrics, optional: false]}, {:mimerl, "1.0.2", [hex: :mimerl, optional: false]}, {:ssl_verify_fun, "1.1.1", [hex: :ssl_verify_fun, optional: false]}]},
   "idna": {:hex, :idna, "5.0.1", "5aa8fdce3f876f49d90daa13f071155a7c3259d02f7847dadd164da4a877da2a", [:rebar3], [{:unicode_util_compat, "0.1.0", [hex: :unicode_util_compat, optional: false]}]},
+  "inflex": {:hex, :inflex, "1.8.1", "9fa9684ff1a872eab7415c0be500cc1b7782f28da6ed75423081e75f92831b1c", [:mix], []},
+  "ja_serializer": {:git, "https://github.com/vt-elixir/ja_serializer", "b5d9f1da736c3a9c6b42da34d35dafb7ce93879e", []},
   "jsonapi": {:git, "https://github.com/jeregrine/jsonapi", "73861964e4ed5b8f17d1cfc069e5f2af6365c4bc", []},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
   "mime": {:hex, :mime, "1.1.0", "01c1d6f4083d8aa5c7b8c246ade95139620ef8effb009edde934e0ec3b28090a", [:mix], []},
