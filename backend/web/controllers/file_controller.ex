@@ -41,7 +41,6 @@ defmodule Aptamer.FileController do
   def update(conn, %{"id" => id, "data" => data = %{"type" => "files", "attributes" => _file_params}}) do
     file = Repo.get!(File, id)
     changeset = File.changeset(file, Params.to_attributes(data))
-    IO.inspect Params.to_attributes(data)
 
     case Repo.update(changeset) do
       {:ok, file} ->

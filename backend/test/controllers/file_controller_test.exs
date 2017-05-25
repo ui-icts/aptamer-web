@@ -82,21 +82,23 @@ defmodule Aptamer.FileControllerTest do
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     
-    attrs = params_for(:file, file_type: "structure")
-    file = insert(:file, attrs)
-    change_attrs = %{attrs | file_type: "fasta"}
+    file = insert(:file, file_type: "structure")
+    change_attrs = %{file | file_type: "fasta"}
 
-    conn = put conn, file_path(conn, :update, file), %{
-      "meta" => %{},
-      "data" => %{
-        "type" => "files",
-        "id" => file.id,
-        "attributes" => string_params_for(:file, change_attrs),
-      }
-    }
+    # If I don't do this loopdi loop then the data gets
+    # passed to the controller as multipart and I'm not
+    # testing my JSONA-API stuff....evidenced because
+    # for a while my test was passing but my code was
+    # not working from Ember
+    post_params =
+      Aptamer.FileView
+      |> JaSerializer.format(change_attrs, conn)
+      |> Poison.encode!
+
+    conn = put conn, file_path(conn, :update, file), post_params
 
     assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(File, change_attrs)
+    assert Repo.get(File, file.id).file_type == "fasta"
   end
 
   test "deletes chosen resource", %{conn: conn} do
