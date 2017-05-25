@@ -2,7 +2,7 @@ defmodule Aptamer.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Aptamer.RoomChannel
+  channel "jobs:*", Aptamer.JobsChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
