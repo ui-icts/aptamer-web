@@ -37,6 +37,7 @@
     "ember-load-initializers": "^0.6.0",
     "ember-lodash-shim": "^2.0.4",
     "ember-moment": "^7.3.0",
+    "ember-phoenix": "^0.1.6",
     "ember-redux": "^2.6.0",
     "ember-redux-shim": "^1.1.2",
     "ember-redux-thunk-shim": "^1.1.2",
