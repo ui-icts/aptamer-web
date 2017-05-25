@@ -7,8 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('create-graph', {path: '/'});
-  this.route('predict-structures');
+  this.route('files', { path: '/'});
   this.route('login');
 });
 

@@ -1,13 +1,17 @@
 {{#if hasBlock}}
+
   <div class="ui relaxed divided list">
   {{#each filesByUploadDate as |file|}}
-      {{yield file}}
+    {{yield file}}
   {{/each}}
   </div>
+
 {{else}}
+
   <p>Current Filter: {{filter}}</p>
   {{#each filesByUploadDate as |file|}}
     <p>{{file.fileName}} - <em>{{file.fileType}}</em></p>
   {{/each}}
+
 {{/if}}
 

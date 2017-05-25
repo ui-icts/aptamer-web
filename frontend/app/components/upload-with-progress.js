@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import $ from 'jquery';
 
 const UploadJob = Ember.Object.extend({ });
 
@@ -21,8 +22,17 @@ export default Ember.Component.extend({
       this.get('uploadJobs').pushObject(fileObj);
     },
 
-    successFile(file,responseObject,_evt) {
-      this.get('onUpload')(responseObject);
+    successFile(_file,responseText,_evt) {
+
+      // With mirage I get back a json object
+      // but otherwise I have to parse the string
+
+      if ( typeof responseText === 'string' ) {
+        let json = $.parseJSON(responseText);
+        this.get('onUpload')(json);
+      } else {
+        this.get('onUpload')(responseText);
+      }
     },
 
     completeFile(file) {

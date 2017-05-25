@@ -12,19 +12,11 @@ export default function() {
   // this.namespace = '';    // make this `/api`, for example, if your API is namespaced
   // this.timing = 400;      // delay for each _request, automatically set to 0 during testing
 
-  this.get('/files/structure', (schema, _request) => {
-    return schema.files.where({ filePurpose: 'create-graph-input' });
-  });
-
-//  this.passthrough("/files/structure");
-
-  this.get('/files/fas', (schema, _request) => {
-    return schema.files.where({filePurpose: 'create-structure-input'});
-  });
+  // this.passthrough("/files");
 
   this.get('/files');
 
-  this.post('/files/structure', (schema, _request) => {
+  this.post('/files', (schema, _request) => {
 
     let sf = schema.files.create({ 
       fileName: "Uploaded File",
