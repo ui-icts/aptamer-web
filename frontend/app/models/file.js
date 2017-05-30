@@ -12,4 +12,5 @@ export default DS.Model.extend({
 
   generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
 
+  jobs: DS.hasMany({async: false})
 });

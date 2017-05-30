@@ -11,5 +11,6 @@ export default function(server) {
   server.createList('file',2);
   server.createList('file',3,'fasta');
   server.createList('file',1,'structure');
+  server.create('job');
 
 }

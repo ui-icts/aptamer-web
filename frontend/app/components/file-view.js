@@ -9,22 +9,14 @@ export default Ember.Component.extend({
   fileName: 'Test File',
   shortDescription: 'Sample text here',
 
-  
-  enrichedFile: Ember.computed('file', function() {
-    let fileTypes = this.get('fileTypes'),
-        file      = this.get('file'),
-        fileType  = fileTypes.find( file.get('fileType') );
-
-    return {
-      fileName: file.get('fileName'),
-      shortDescription: `Uploaded ${moment( file.get('uploadedOn') ).fromNow()}`,
-      operationText: fileType.get('operationText')
-    };
+  runningJobs: Ember.computed('jobs[]', function() {
+    return this.get('jobs');
   }),
 
   fileTypeOptions: Ember.computed(function() {
     return this.get('fileTypes').list()
   }),
+
 
   actions: {
     toggleShowMore() {

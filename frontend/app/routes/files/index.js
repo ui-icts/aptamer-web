@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 
   model() {
-    return this.get('store').findAll('file');
+    return this.get('store').findAll('file', {include: 'jobs'});
   },
 
   actions: {
@@ -15,6 +15,16 @@ export default Ember.Route.extend({
     changeFileType(file,newType) {
       file.set('fileType', newType);
       return file.save();
+    },
+
+    async startProcessFile(file) {
+      let job = await Ember.$.ajax('/jobs', {
+        type: "POST", 
+        data: {fileId: file.get('id')}
+      });
+
+      this.get('store').pushPayload(job);
+
     },
   }
 });

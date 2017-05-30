@@ -1,5 +1,6 @@
 import { Model, hasMany } from 'ember-cli-mirage';
 
 export default Model.extend({
-  results: hasMany()
+  results: hasMany(),
+  job: hasMany()
 });

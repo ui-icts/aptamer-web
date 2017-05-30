@@ -14,7 +14,10 @@ export default function() {
 
   // this.passthrough("/files");
 
-  this.get('/files');
+  this.get('/files', ({ files }) => {
+    console.log("A log from / files");
+    return files.all();
+  });
 
   this.post('/files', (schema, _request) => {
 
@@ -27,14 +30,11 @@ export default function() {
     return sf;
   });
 
-  this.post('/files/fas', (schema,_request) => {
-    let sf = schema.files.create({ 
-      fileName: "Uploaded File",
-      filePurpose: 'predict-structures-input',
-      uploadedOn: new Date()
-    });
-
-    return sf;
-  }, { timing: 4000 });
+  this.post('/jobs', function(schema,request) {
+    let attrs = this.normalizedRequestAttrs();
+    let file = schema.files.find(attrs.fileId);
+    let job = schema.jobs.create({status: 'running', fileId: file.id})
+    return job;
+  });
 
 }

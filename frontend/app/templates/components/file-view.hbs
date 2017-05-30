@@ -1,5 +1,5 @@
 <div class="ui right floated content">
-  <button class="small ui button">
+  <button class="small ui button" {{action fileRunCommand}}>
     <i class="play icon"></i>
     {{processButtonText}}
   </button>
@@ -16,6 +16,9 @@
   {{/link-to}}
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
+    {{#each runningJobs as |job|}}
+      <p>Job {{job.id}} Running</p>
+    {{/each}}
   </div>
 </div>
 

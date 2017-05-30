@@ -6,13 +6,16 @@
 {{#filter-panel as |currentFilter|}}
   {{#file-list files=model filter=currentFilter as |f|}}
 
+    {{log "File jobs" f.fileName f.jobs}}
     {{#file-view 
         routeObject=f
         fileName=f.fileName
         fileType=f.fileType
         uploadedOn=f.uploadedOn
+        jobs=f.jobs
         processButtonText="Run"
         onFileTypeChange=(route-action "changeFileType" f)
+        fileRunCommand=(route-action "startProcessFile" f)
       }}
 
       {{graph-options-form}}
