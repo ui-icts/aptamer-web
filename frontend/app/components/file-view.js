@@ -9,9 +9,7 @@ export default Ember.Component.extend({
   fileName: 'Test File',
   shortDescription: 'Sample text here',
 
-  runningJobs: Ember.computed('jobs[]', function() {
-    return this.get('jobs');
-  }),
+  runningJobs: Ember.computed.filterBy('jobs', 'status', 'running'),
 
   fileTypeOptions: Ember.computed(function() {
     return this.get('fileTypes').list()

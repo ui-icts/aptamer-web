@@ -11,6 +11,10 @@ Router.map(function() {
     this.route('view', { path: '/files/:file_id'});
   });
   this.route('login');
+
+  this.route('jobs', function() {
+    this.route('show',{path: '/:job_id'});
+  });
 });
 
 export default Router;

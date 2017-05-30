@@ -17,7 +17,12 @@
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
     {{#each runningJobs as |job|}}
-      <p>Job {{job.id}} Running</p>
+      <p>
+        {{#link-to 'jobs.show' job }}
+        Job {{job.id}} Running
+        {{/link-to}}
+      </p>
+      
     {{/each}}
   </div>
 </div>
