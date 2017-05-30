@@ -27,7 +27,6 @@ defmodule Aptamer.Endpoint do
     pass: ["*/*"],
     json_decoder: Poison
 
-  plug JaSerializer.ContentTypeNegotiation
   plug JaSerializer.Deserializer
   plug Plug.MethodOverride
   plug Plug.Head

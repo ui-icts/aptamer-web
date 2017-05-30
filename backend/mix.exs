@@ -29,7 +29,8 @@ defmodule Aptamer.Mixfile do
        :postgrex,
        :coherence,
        :timex,
-       :timex_ecto
+       :timex_ecto,
+       :porcelain
      ]
     ]
   end

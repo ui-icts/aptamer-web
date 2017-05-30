@@ -25,7 +25,11 @@ defmodule Aptamer.FileControllerTest do
         "attributes" => %{
           "file-name" => fasta_file.file_name,
           "file-type" => fasta_file.file_type,
-          "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on)
+          "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on),
+          "job" => %{
+            "status" => "running",
+            "job_id" => "AAA-BBB"
+          }
         }
       },
       %{"id" => structure_file.id,

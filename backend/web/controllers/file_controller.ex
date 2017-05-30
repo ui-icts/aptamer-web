@@ -5,6 +5,7 @@ defmodule Aptamer.FileController do
   alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
   
+  plug JaSerializer.ContentTypeNegotiation when action in [:update]
   plug :scrub_params, "data" when action in [:update]
 
   def index(conn, params) do

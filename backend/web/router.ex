@@ -21,6 +21,7 @@ defmodule Aptamer.Router do
   end
 
   pipeline :api do
+    plug :accepts, ["html"]
     plug :accepts, ["json"]
     plug :accepts, ["json-api"]
 
