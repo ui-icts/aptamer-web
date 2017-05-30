@@ -5,7 +5,6 @@
       Aptamer
     </div>
     <div class="right menu">
-      {{log "APP" session}}
       {{#if session.isAuthenticated}}
         <a class="ui item" {{action 'invalidateSession'}}>
           Logout

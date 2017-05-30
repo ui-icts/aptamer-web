@@ -14,14 +14,11 @@ export default function() {
 
   // this.passthrough("/files");
 
-  this.get('/files', ({ files }) => {
-    console.log("A log from / files");
-    return files.all();
-  });
+  this.get('/files');
 
-  this.post('/files', (schema, _request) => {
+  this.post('/files', ({ files }) => {
 
-    let sf = schema.files.create({ 
+    let sf = files.create({
       fileName: "Uploaded File",
       filePurpose: 'create-graph-input',
       uploadedOn: new Date()
@@ -30,10 +27,10 @@ export default function() {
     return sf;
   });
 
-  this.post('/jobs', function(schema,request) {
+  this.post('/jobs', function({ files, jobs}) {
     let attrs = this.normalizedRequestAttrs();
-    let file = schema.files.find(attrs.fileId);
-    let job = schema.jobs.create({status: 'running', fileId: file.id})
+    let file = files.find(attrs.fileId);
+    let job = jobs.create({status: 'running', fileId: file.id})
     return job;
   });
 

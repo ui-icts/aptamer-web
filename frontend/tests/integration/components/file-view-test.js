@@ -10,7 +10,8 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{file-view}}`); 
+  this.set('noop', function() {});
+  this.render(hbs`{{file-view fileRunCommand=(action noop)}}`);
   assert.notEqual(this.$().text().trim(), '');
 
 });
