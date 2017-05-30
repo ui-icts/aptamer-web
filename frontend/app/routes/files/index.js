@@ -13,7 +13,6 @@ export default Ember.Route.extend({
     },
 
     changeFileType(file,newType) {
-      console.log("Change file type", newType);
       file.set('fileType', newType);
       return file.save();
     },

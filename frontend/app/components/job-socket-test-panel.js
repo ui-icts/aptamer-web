@@ -1,9 +1,12 @@
 import Ember from 'ember';
 import { Socket } from 'phoenix';
+import $ from 'jquery';
 
 export default Ember.Component.extend({
 
+  jobText: 'Test1',
   messages: ["Let's rock and roll!"],
+  show: false,
 
   log(msg) {
 
@@ -12,6 +15,10 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    showHide() {
+      this.toggleProperty('show');
+    },
+
     start() {
       const log = this.log.bind(this);
 
@@ -19,11 +26,13 @@ export default Ember.Component.extend({
 
       let socket = new Socket('ws://localhost:4000/socket', {
           logger: ((kind, msg, data) => {
+                /* eslint-disable */
                 console.log(`${kind}: ${msg}`, data);
+                /* eslint-enable */
               })
       });
 
-      socket.onClose( e => log("Closing socket...."));
+      socket.onClose( _e => log("Closing socket...."));
 
       this.set('socket', socket)
       socket.connect();
@@ -33,19 +42,38 @@ export default Ember.Component.extend({
         log(`Received start_job broadcast: ${payload.body}`);
       });
 
-      channel.onError( e => {
+      channel.on("job_output", payload => {
+
+        Ember.run(() => {
+          Ember.run.schedule('actions', () => {
+            log(`JOB: ${payload.line}`);
+          });
+
+          Ember.run.schedule('render', () => {
+            /* eslint-disable */
+            let psconsole = $('#outputPane');
+            if ( psconsole ) {
+              psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
+            }
+            /* eslint-enable */
+
+          });
+        });
+      });
+
+      channel.onError( _e => {
         log("Got error on channel");
-        console.log("Channel Error", e);
+        /* eslint-disable */
+        console.log("Channel Error", _e);
+        /* eslint-enable */
       });
 
       channel.join()
-        .receive("ok", resp => {
+        .receive("ok", _resp => {
           log("Connected to jobs:status channel");
-          console.log("OK Resp", resp);
         })
-        .receive("error", resp => {
+        .receive("error", _resp => {
           log("Error connecting to jobs:status");
-          console.log("ER Resp", resp);
         });
       this.set('channel', channel);
     },
@@ -55,14 +83,20 @@ export default Ember.Component.extend({
       if ( channel ) {
         channel.leave();
       }
+
+      this.get('messages').clear();
     },
 
     startJob() {
       let channel = this.get('channel');
+      let log = this.log.bind(this);
+
       if ( channel ) {
         this.log("Sending start_job");
-        channel.push("start_job", {body: "Test job"}).receive("ok", (reply) => {
-          this.log(`Received job_started reply: ${reply.body}`);
+        channel.push("start_job", {body: this.get('jobText')}).receive("ok", (reply) => {
+
+          log(`Received job_started reply: ${reply.body}`);
+
         });
       }
     },

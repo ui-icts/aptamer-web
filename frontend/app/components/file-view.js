@@ -30,9 +30,5 @@ export default Ember.Component.extend({
     toggleShowMore() {
       this.toggleProperty('showMore');
     },
-
-    changeFileType(key) {
-      console.log("New file type key", key);
-    }
   }
 });

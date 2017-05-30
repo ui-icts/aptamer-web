@@ -1,6 +1,6 @@
-<h3>Job Test Panel</h3>
-
-<textarea rows=20 cols=120>
+<h3>Job Test Panel <small><a {{action "showHide"}}>Show/Hide</a></small></h3>
+{{#if show}}
+<textarea id="outputPane" rows=20 cols=120>
   {{#each messages as |line|}}
     {{line}}
   {{/each}}
@@ -8,5 +8,9 @@
 <p>
 <button {{action "start"}}>Start</button>
 <button {{action "reset"}}>Reset</button>
-<button {{action "startJob"}}>Start Job</button>
 </p>
+<p>
+  {{input value=jobText placeholder="Job Text"}}
+  <button {{action "startJob"}}>Start Job</button>
+</p>
+{{/if}}
