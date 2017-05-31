@@ -17,13 +17,13 @@ export default Ember.Route.extend({
       return file.save();
     },
 
-    async startProcessFile(file) {
-      let job = await Ember.$.ajax('/jobs', {
-        type: "POST", 
-        data: {fileId: file.get('id')}
+    startProcessFile(file) {
+      let job = this.get('store').createRecord('job', {
+        file: file,
+        status: 'running'
       });
 
-      this.get('store').pushPayload(job);
+      return job.save();
 
     },
   }

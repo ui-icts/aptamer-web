@@ -27,11 +27,6 @@ export default function() {
     return sf;
   });
 
-  this.post('/jobs', function({ files, jobs}) {
-    let attrs = this.normalizedRequestAttrs();
-    let file = files.find(attrs.fileId);
-    let job = jobs.create({status: 'running', fileId: file.id})
-    return job;
-  });
+  this.post('/jobs');
 
 }
