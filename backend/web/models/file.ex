@@ -6,6 +6,8 @@ defmodule Aptamer.File do
     field :uploaded_on, :naive_datetime
     field :file_type, :string
     field :data, :binary
+    has_many :jobs, Aptamer.Job
+
     timestamps()
   end
 

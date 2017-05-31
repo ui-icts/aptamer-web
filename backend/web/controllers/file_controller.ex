@@ -9,8 +9,9 @@ defmodule Aptamer.FileController do
   plug :scrub_params, "data" when action in [:update]
 
   def index(conn, params) do
-     
-    files = Repo.all(File)
+    files = Aptamer.File
+            |>Repo.all
+            |> Repo.preload :jobs
 
     render(conn, "index.json-api", %{data: files, conn: conn, params: params})
   end
@@ -31,11 +32,12 @@ defmodule Aptamer.FileController do
       |> File.changeset(file_params)
       |> Repo.insert
 
+    file = Repo.preload(file, :jobs)
     render(conn, "show.json-api", data: file)
   end
 
   def show(conn, %{"id" => id}) do
-    file = Repo.get!(File, id)
+    file = Repo.get!(File, id) |> Repo.preload :jobs
     render(conn, "show.json-api", data: file)
   end
 
@@ -45,6 +47,7 @@ defmodule Aptamer.FileController do
 
     case Repo.update(changeset) do
       {:ok, file} ->
+        file = Repo.preload(file, :jobs)
         render(conn, "show.json-api", data: file)
       {:error, changeset} ->
         conn

@@ -26,6 +26,8 @@ defmodule Aptamer.Router do
     plug :accepts, ["json-api"]
 
     resources "/files", Aptamer.FileController
+    resources "/jobs", Aptamer.JobController
+
   end
 
   scope "/" do

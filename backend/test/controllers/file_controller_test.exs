@@ -15,32 +15,43 @@ defmodule Aptamer.FileControllerTest do
 
   test "gets all the structure files", %{conn: conn} do
 
-    fasta_file = insert(:file, %{file_type: "fasta"})
+    fasta_file = insert(:file, file_type: "fasta")
     structure_file = insert(:file, file_type: "structure")
+    fasta_job = insert(:job, file: fasta_file)
 
-    conn = get conn, file_path(conn, :index)
-    assert json_response(conn, 200)["data"] == [
-      %{"id" => fasta_file.id,
-        "type" => "files",
-        "attributes" => %{
-          "file-name" => fasta_file.file_name,
-          "file-type" => fasta_file.file_type,
-          "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on),
-          "job" => %{
-            "status" => "running",
-            "job_id" => "AAA-BBB"
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> get file_path(conn, :index)
+
+    assert json_response(conn, 200) == %{
+      "jsonapi" => %{"version" => "1.0"},
+      "data" =>[
+        %{"id" => fasta_file.id,
+          "type" => "files",
+          "attributes" => %{
+            "file-name" => fasta_file.file_name,
+            "file-type" => fasta_file.file_type,
+            "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on),
+          }, 
+          "relationships" => %{
+            "jobs" => %{
+              "data" => [%{ "type" => "jobs", "id" => fasta_job.id }]
+            }
+          }
+        },
+        %{"id" => structure_file.id,
+          "type" => "files",
+          "attributes" => %{
+            "file-name" => structure_file.file_name,
+            "file-type" => structure_file.file_type,
+            "uploaded-on" => NaiveDateTime.to_iso8601(structure_file.uploaded_on)
+          },
+          "relationships" => %{
+            "jobs" => %{"data" => []}
           }
         }
-      },
-      %{"id" => structure_file.id,
-        "type" => "files",
-        "attributes" => %{
-          "file-name" => structure_file.file_name,
-          "file-type" => structure_file.file_type,
-          "uploaded-on" => NaiveDateTime.to_iso8601(structure_file.uploaded_on)
-        }
-      }
-    ]
+      ]}
   end
 
   test "can upload new structure file", %{conn: conn} do
@@ -94,11 +105,19 @@ defmodule Aptamer.FileControllerTest do
     # testing my JSONA-API stuff....evidenced because
     # for a while my test was passing but my code was
     # not working from Ember
-    post_params =
-      Aptamer.FileView
-      |> JaSerializer.format(change_attrs, conn)
-      |> Poison.encode!
+    post_params = %{
+      "data" => %{
+        "type" => "files",
+        "id" => file.id,
+        "attributes" => %{
+          "file-type" => "fasta"
+        },
+      }} |> Poison.encode!
+      # Aptamer.FileView
+      # |> JaSerializer.format(change_attrs, conn)
+      # |> Poison.encode!
 
+    IO.puts post_params
     conn = put conn, file_path(conn, :update, file), post_params
 
     assert json_response(conn, 200)["data"]["id"]

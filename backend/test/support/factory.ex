@@ -16,4 +16,15 @@ defmodule Aptamer.Factory do
   def as_fasta(file) do
     %{file | file_type: "fasta"}
   end
+
+  def with_running_job(file) do
+    %{file | jobs: build(:job)}
+  end
+
+  def job_factory do
+    %Aptamer.Job{
+      status: "not-started",
+      file: build(:file)
+    }
+  end
 end
