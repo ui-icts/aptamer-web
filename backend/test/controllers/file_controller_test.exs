@@ -21,8 +21,7 @@ defmodule Aptamer.FileControllerTest do
 
     conn =
       conn
-      |> put_req_header("accept", "application/json")
-      |> get file_path(conn, :index)
+      |> get file_path(conn, :index, include: "jobs")
 
     assert json_response(conn, 200) == %{
       "jsonapi" => %{"version" => "1.0"},
@@ -51,6 +50,22 @@ defmodule Aptamer.FileControllerTest do
             "jobs" => %{"data" => []}
           }
         }
+      ],
+      "included" => [
+        %{"id" => fasta_job.id,
+          "type" => "jobs",
+          "attributes" => %{
+            "status" => "not-started"
+          },
+          "relationships" => %{
+            "file" => %{
+                "data" => %{
+                  "id" => fasta_job.file.id,
+                  "type" => "files"
+                }
+            }
+          }
+        }
       ]}
   end
 
@@ -58,6 +73,7 @@ defmodule Aptamer.FileControllerTest do
     upload = %Plug.Upload{path: "test/fixtures/Final_Rd12.fa", filename: "Final_Rd12.fa"}
     response =
       conn
+      |> put_req_header("accept", "application/json")
       |> post( file_path(conn,:create), %{ :file => upload} )
       |> json_response(200)
 
@@ -117,7 +133,6 @@ defmodule Aptamer.FileControllerTest do
       # |> JaSerializer.format(change_attrs, conn)
       # |> Poison.encode!
 
-    IO.puts post_params
     conn = put conn, file_path(conn, :update, file), post_params
 
     assert json_response(conn, 200)["data"]["id"]

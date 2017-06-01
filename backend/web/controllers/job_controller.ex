@@ -36,8 +36,10 @@ defmodule Aptamer.JobController do
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "jobs", "attributes" => _job_params}}) do
     job = Repo.get!(Job, id)
-    changeset = Job.changeset(job, Params.to_attributes(data))
+    changeset_params = Params.to_attributes(data)
+    changeset = Job.changeset(job, changeset_params)
 
+    
     case Repo.update(changeset) do
       {:ok, job} ->
         render(conn, "show.json-api", data: job)

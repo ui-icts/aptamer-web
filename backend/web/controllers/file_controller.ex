@@ -9,11 +9,13 @@ defmodule Aptamer.FileController do
   plug :scrub_params, "data" when action in [:update]
 
   def index(conn, params) do
-    files = Aptamer.File
-            |>Repo.all
-            |> Repo.preload :jobs
+    files = Repo.all(from f in Aptamer.File, preload: [jobs: :file])
 
-    render(conn, "index.json-api", %{data: files, conn: conn, params: params})
+    render(conn, "index.json-api", %{
+      data: files,
+      conn: conn,
+      opts: [include: "jobs"]
+    })
   end
 
   def create(conn, params) do

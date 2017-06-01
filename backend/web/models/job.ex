@@ -13,7 +13,7 @@ defmodule Aptamer.Job do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:status])
-    |> validate_required([:status])
+    |> cast(params, [:status, :file_id])
+    |> validate_required([:status, :file_id])
   end
 end

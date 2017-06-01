@@ -1,11 +1,13 @@
 defmodule Aptamer.JobControllerTest do
   use Aptamer.ConnCase
 
+  import Aptamer.Factory
+
   alias Aptamer.Job
   alias Aptamer.Repo
 
   @valid_attrs %{status: "some content"}
-  @invalid_attrs %{}
+  @invalid_attrs %{status: ""}
 
   setup do
     conn = build_conn()
@@ -15,8 +17,7 @@ defmodule Aptamer.JobControllerTest do
     {:ok, conn: conn}
   end
   
-  defp relationships do 
-    file = Repo.insert!(%Aptamer.File{})
+  defp relationships(file) do 
 
     %{
       "file" => %{
@@ -34,13 +35,14 @@ defmodule Aptamer.JobControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    job = Repo.insert! %Job{}
+    job =  insert(:job)
+
     conn = get conn, job_path(conn, :show, job)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{job.id}"
     assert data["type"] == "jobs"
     assert data["attributes"]["status"] == job.status
-    assert data["attributes"]["file_id"] == job.file_id
+    assert data["relationships"]["file"]["data"] == %{"type" => "files", "id" => job.file.id}
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -50,26 +52,31 @@ defmodule Aptamer.JobControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
+    file = insert(:file)
+
     conn = post conn, job_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships(file)
       }
     }
 
     assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Job, @valid_attrs)
+    query_args = Map.put(@valid_attrs, :file_id, file.id)
+    assert Repo.get_by(Job, query_args)
+
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+    file = insert(:file)
     conn = post conn, job_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships(file)
       }
     }
 
@@ -77,30 +84,35 @@ defmodule Aptamer.JobControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    job = Repo.insert! %Job{}
+    file = insert(:file)
+
+    # Not linking job/file yet...doing that with update call
+    job = insert(:job)
+
     conn = put conn, job_path(conn, :update, job), %{
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
         "id" => job.id,
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships(file)
       }
     }
 
+    query_args = Map.put(@valid_attrs, :file_id, file.id)
     assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Job, @valid_attrs)
+    assert Repo.get_by(Job, query_args)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    job = Repo.insert! %Job{}
+    job = insert(:job)
     conn = put conn, job_path(conn, :update, job), %{
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
         "id" => job.id,
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships(job.file)
       }
     }
 
@@ -108,7 +120,7 @@ defmodule Aptamer.JobControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    job = Repo.insert! %Job{}
+    job = insert(:job)
     conn = delete conn, job_path(conn, :delete, job)
     assert response(conn, 204)
     refute Repo.get(Job, job.id)

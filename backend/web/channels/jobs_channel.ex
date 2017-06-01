@@ -33,8 +33,6 @@ defmodule Aptamer.JobsChannel do
   end
 
   def handle_info({f,:result,%Porcelain.Result{} = x}, socket) do
-    IO.puts " Handle result"
-    IO.inspect x
     broadcast! socket, "job_output", %{line: "Job finish"}
     {:noreply, socket}
   end

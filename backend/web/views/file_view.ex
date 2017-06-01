@@ -3,6 +3,6 @@ defmodule Aptamer.FileView do
   use JaSerializer.PhoenixView
 
   attributes [:file_name, :file_type, :uploaded_on]
-  has_many :jobs, type: "jobs"
+  has_many :jobs, type: "jobs", serializer: Aptamer.JobView
 
 end
