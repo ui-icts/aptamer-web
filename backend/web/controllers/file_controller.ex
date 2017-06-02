@@ -14,6 +14,7 @@ defmodule Aptamer.FileController do
     render(conn, "index.json-api", %{
       data: files,
       conn: conn,
+      params: params,
       opts: [include: "jobs"]
     })
   end

@@ -18,6 +18,9 @@ defmodule Aptamer.JobController do
 
     case Repo.insert(changeset) do
       {:ok, job} ->
+
+        Aptamer.JobControl.start_job(job)
+
         conn
         |> put_status(:created)
         |> put_resp_header("location", job_path(conn, :show, job))
@@ -39,7 +42,6 @@ defmodule Aptamer.JobController do
     changeset_params = Params.to_attributes(data)
     changeset = Job.changeset(job, changeset_params)
 
-    
     case Repo.update(changeset) do
       {:ok, job} ->
         render(conn, "show.json-api", data: job)

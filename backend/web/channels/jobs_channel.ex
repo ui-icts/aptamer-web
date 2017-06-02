@@ -6,8 +6,8 @@ defmodule Aptamer.JobsChannel do
     {:ok,"Welcome to the jobs status channel", socket}
   end
 
-  def join("jobs:" <> job_id, socket) do
-    {:ok,"No receving messages related to #{job_id}", socket}
+  def join("jobs:" <> job_id, _message, socket) do
+    {:ok,"Now receving messages related to #{job_id}", socket}
   end
 
   def handle_in("start_job", %{"body" => body}, socket) do
@@ -22,18 +22,4 @@ defmodule Aptamer.JobsChannel do
     {:reply,{:ok, %{body: body}}, socket}
   end
 
-  def handle_info({f, :data, :out, line}, socket) do
-    broadcast! socket, "job_output", %{line: line}
-    {:noreply, socket}
-  end
-
-  def handle_info({f, :data, :err, line}, socket) do
-    broadcast! socket, "job_output", %{line: "ERROR:" <> line}
-    {:noreply, socket}
-  end
-
-  def handle_info({f,:result,%Porcelain.Result{} = x}, socket) do
-    broadcast! socket, "job_output", %{line: "Job finish"}
-    {:noreply, socket}
-  end
 end
