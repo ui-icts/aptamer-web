@@ -2,7 +2,43 @@ import Ember from 'ember';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
 import $ from 'jquery';
 
+const JobOutput = Ember.Object.extend({
+  channel: null,
+  jobId: null,
+  messages: [],
+
+  init() {
+    this.get('channel').on("job_output", (payload) => this._onJobOutput(payload) );
+  },
+
+  start() {
+    this.get('channel').join();
+  },
+
+  stop() {
+    this.get('channel').leave();
+    this.get('messages').clear();
+  },
+
+  _onJobOutput(payload) {
+    Ember.run(() => {
+      Ember.run.schedule('actions', () => {
+        let messages = this.get('messages');
+        if ( payload.hasOwnProperty('lines') ) {
+          messages.pushObjects(payload.lines);
+        } else if ( payload.hasOwnProperty('line') ) {
+          messages.pushObject(payload.line);
+        } else if ( typeof payload === 'string' ) {
+          messages.pushObject(payload)
+        }
+      });
+    });
+  },
+});
+
 export default PhoenixSocket.extend({
+  store: Ember.inject.service(),
+  currentOutputChannel: null,
   messages: [],
 
   init() {
@@ -27,6 +63,7 @@ export default PhoenixSocket.extend({
     let channel = this.joinChannel("jobs:status", {});
 
     channel.on("job_output", (payload) => this._onJobOutput(payload) );
+    channel.on("status_change", (payload) => this._onStatusChange(payload) );
 
     channel.onError( _e => {
       this.recordMessage("Got error on channel");
@@ -35,55 +72,60 @@ export default PhoenixSocket.extend({
       /* eslint-enable */
     });
 
-    this.set('channel', channel );
+    this.set('statusChannel', channel );
 
   },
 
+  captureOutput(jobId) {
+
+    let currentOutput = this.get('currentOutputChannel');
+    console.log("current channel", currentOutput);
+    if ( currentOutput != null ) {
+      currentOutput.stop();
+    }
+
+    let channel = this.get('socket').channel(`jobs:${jobId}`,{messagePosition: 0});
+
+    let output = JobOutput.create({
+      channel,
+      jobId,
+    });
+
+    output.start();
+
+    this.set('currentOutputChannel', output );
+
+    return output;
+  },
+
   startJob(jobText) {
-    let channel = this.get('channel');
+    let channel = this.get('statusChannel');
 
     if ( channel ) {
-      this.recordMessage("Sending start_job");
+      this._recordMessage("Sending start_job");
       channel.push("start_job", {body: jobText}).receive("ok", (reply) => {
 
-        this.recordMessage(`Received job_started reply: ${reply.body}`);
+        this._recordMessage(`Received job_started reply: ${reply.body}`);
 
       });
     }
 
   },
 
-  recordMessage(msg) {
+  _recordMessage(msg) {
     this.get('messages').pushObject(msg);
   },
 
   _onJobStart(payload) {
-    this.recordMessage(`Received start_job broadcast: ${payload.body}`);
+    this._recordMessage(`Received start_job broadcast: ${payload.body}`);
   },
 
-  _onJobOutput(payload) {
-    console.log("_onJobOutput", arguments);
-    console.log("_onJobOutput", payload);
-
-    Ember.run(() => {
-      Ember.run.schedule('actions', () => {
-        this.recordMessage(`JOB: ${payload.line}`);
-      });
-
-      Ember.run.schedule('render', () => {
-        /* eslint-disable */
-        let psconsole = $('#outputPane');
-        if ( psconsole ) {
-          psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
-        }
-        /* eslint-enable */
-
-      });
-    });
+  _onStatusChange(payload) {
+    this.get('store').pushPayload(payload);
   },
 
   reset() {
-    let channel = this.get('channel');
+    let channel = this.get('statusChannel');
     if ( channel ) {
       channel.leave();
     }

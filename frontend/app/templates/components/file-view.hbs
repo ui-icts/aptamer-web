@@ -16,14 +16,7 @@
   {{/link-to}}
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
-    {{#each runningJobs as |job|}}
-      <p>
-        {{#link-to 'jobs.show' job }}
-        Job {{job.id}} Running
-        {{/link-to}}
-      </p>
-      
-    {{/each}}
+    {{files/job-list jobs=jobs}}
   </div>
 </div>
 

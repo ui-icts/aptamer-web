@@ -20,7 +20,7 @@ export default Ember.Route.extend({
     startProcessFile(file) {
       let job = this.get('store').createRecord('job', {
         file: file,
-        status: 'running'
+        status: 'ready'
       });
 
       return job.save();

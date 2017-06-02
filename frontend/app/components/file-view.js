@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   fileName: 'Test File',
   shortDescription: 'Sample text here',
 
+  readyJobs: Ember.computed.filterBy('jobs', 'status', 'ready'),
   runningJobs: Ember.computed.filterBy('jobs', 'status', 'running'),
 
   fileTypeOptions: Ember.computed(function() {
