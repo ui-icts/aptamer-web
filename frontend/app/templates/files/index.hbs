@@ -17,7 +17,13 @@
         fileRunCommand=(route-action "startProcessFile" f)
       }}
 
-      {{graph-options-form}}
+      {{#if (eq f.fileType "fasta")}}
+        {{predict-structure-options-form}}
+      {{else if (eq f.fileType "structure")}}
+        {{graph-options-form}}
+      {{else}}
+        Please select a command to configure options
+      {{/if}}
 
     {{/file-view}}
 

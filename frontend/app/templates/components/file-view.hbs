@@ -24,18 +24,19 @@
   <div class="extra">
     <form class="ui small form">
       <div class="inline fields">
-        <label>File Type</label>
+        <label>Command</label>
         <div class="field">
 
-          {{#ui-dropdown class="selection" selected=fileType onChange=(action onFileTypeChange)}}
+          {{#ui-dropdown class="selection" selected=selectedCommand onChange=(action "selectCommand")}}
             <div class="default text">Please select...</div>
             <i class="dropdown icon"></i>
             <div class="menu">
-              {{#each fileTypeOptions as |fileType|}}
-                <div class="item" data-value="{{fileType.key}}">
-                  {{fileType.title}}
-                </div>
-              {{/each}}
+              <div class="item" data-value="predict_structures">
+                Predict Structures
+              </div>
+              <div class="item" data-value="create_graph">
+                Create Graph
+              </div>
             </div>
           {{/ui-dropdown}}
         </div>
