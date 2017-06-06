@@ -17,8 +17,19 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
     {:ok, conn: conn}
   end
 
-  defp relationships do
+  defp relationships() do
     %{}
+  end
+
+  defp relationships(%Aptamer.File{} = file) do
+    %{
+      "file" => %{
+        "data" => %{
+          "type" => "files",
+          "id" => file.id
+        }
+      },
+    }
   end
 
   test "lists all entries on index", %{conn: conn} do
@@ -53,14 +64,30 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
 
   test "creates and renders resource when data is valid", %{conn: conn} do
 
-    attrs = build(:create_graph_options)
+    file = insert(:file)
+    attrs = build(:create_graph_options, file: file)
     
-    json = JaSerializer.format(Aptamer.CreateGraphOptionsView, attrs) |> Poison.encode!
-    IO.inspect json
+    json = %{
+      "data" => %{
+        "type" => "create-graph-options",
+        "attributes" => %{
+          "edge-type" => attrs.edge_type,
+          "max_edit_distance" => attrs.max_edit_distance,
+          "max_tree_distance" => attrs.max_tree_distance,
+          "seed" => attrs.seed
+        },
+        "relationships" => relationships(file)
+
+      }
+    } |> Poison.encode!
+    
     conn = post conn, create_graph_options_path(conn, :create), json
 
     assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance})
+    assert created = Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance})
+
+    created = Repo.preload(created, :file)
+    assert created.file == file
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -77,14 +104,15 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    create_graph_options = Repo.insert! %CreateGraphOptions{}
+    create_graph_options = insert(:create_graph_options)
+
     conn = put conn, create_graph_options_path(conn, :update, create_graph_options), %{
       "meta" => %{},
       "data" => %{
         "type" => "create-graph-options",
         "id" => create_graph_options.id,
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 

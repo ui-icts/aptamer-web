@@ -37,4 +37,9 @@ defmodule Aptamer.Factory do
       file: nil
     }
   end
+
+  def for_file(%Aptamer.CreateGraphOptions{} = options, file) do
+
+    %{ options | file: file }
+  end
 end
