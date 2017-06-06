@@ -27,4 +27,14 @@ defmodule Aptamer.Factory do
       file: build(:file)
     }
   end
+
+  def create_graph_options_factory do
+    %Aptamer.CreateGraphOptions {
+      edge_type: "tree",
+      seed: true,
+      max_edit_distance: 3,
+      max_tree_distance: 4,
+      file: nil
+    }
+  end
 end

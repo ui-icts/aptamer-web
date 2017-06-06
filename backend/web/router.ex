@@ -27,7 +27,7 @@ defmodule Aptamer.Router do
 
     resources "/files", Aptamer.FileController
     resources "/jobs", Aptamer.JobController
-
+    resources "/create-graph-options", Aptamer.CreateGraphOptionsController
   end
 
   scope "/" do
@@ -50,7 +50,6 @@ defmodule Aptamer.Router do
   scope "/", Aptamer do
     pipe_through :protected
     #protected routes here
-    get "/create-graph", CreateGraphController, :index
   end
   # Other scopes may use custom stacks.
   # scope "/api", Aptamer do
