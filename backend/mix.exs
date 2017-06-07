@@ -61,7 +61,8 @@ defmodule Aptamer.Mixfile do
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:fs, "~> 0.9", override: true},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
-     {:porcelain, "~> 2.0"}
+     {:porcelain, "~> 2.0"},
+     {:temp, "~> 0.4"},
     ]
   end
 
