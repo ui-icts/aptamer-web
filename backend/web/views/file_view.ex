@@ -4,5 +4,8 @@ defmodule Aptamer.FileView do
 
   attributes [:file_name, :file_type, :uploaded_on]
   has_many :jobs, type: "jobs", serializer: Aptamer.JobView
+  has_one :create_graph_options,
+    type: "create-graph-options",
+    serializer: Aptamer.CreateGraphOptionsView
 
 end

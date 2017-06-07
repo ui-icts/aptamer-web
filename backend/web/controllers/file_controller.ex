@@ -4,23 +4,31 @@ defmodule Aptamer.FileController do
   alias Aptamer.{File,Repo}
   alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
-  
+
   plug JaSerializer.ContentTypeNegotiation when action in [:update]
   plug :scrub_params, "data" when action in [:update]
 
   def index(conn, params) do
-    files = Repo.all(from f in Aptamer.File, preload: [jobs: :file])
+    query = from file in File,
+      left_join: jobs in assoc(file,:jobs),
+      left_join: options in assoc(file, :create_graph_options),
+      order_by: :uploaded_on,
+      preload: [jobs: jobs, create_graph_options: options]
 
+    files = Repo.all(query)
+
+    #TODO: Seems like have to make sure that include option has
+    #no spaces
     render(conn, "index.json-api", %{
       data: files,
       conn: conn,
       params: params,
-      opts: [include: "jobs"]
+      opts: [include: "jobs,create_graph_options"]
     })
   end
 
   def create(conn, params) do
-    
+
     {:ok, file_data} = Elixir.File.read(params["file"].path)
 
     file_params = %{
@@ -35,12 +43,22 @@ defmodule Aptamer.FileController do
       |> File.changeset(file_params)
       |> Repo.insert
 
-    file = Repo.preload(file, :jobs)
+    file =
+      Repo.preload(file, :jobs)
+      |> Repo.preload(:create_graph_options)
+
     render(conn, "show.json-api", data: file)
   end
 
   def show(conn, %{"id" => id}) do
-    file = Repo.get!(File, id) |> Repo.preload :jobs
+    query = from file in File,
+      where: file.id == ^id,
+      left_join: jobs in assoc(file,:jobs),
+      left_join: options in assoc(file, :create_graph_options),
+      preload: [jobs: jobs, create_graph_options: options]
+
+    file = Repo.one!(query)
+
     render(conn, "show.json-api", data: file)
   end
 
@@ -50,7 +68,7 @@ defmodule Aptamer.FileController do
 
     case Repo.update(changeset) do
       {:ok, file} ->
-        file = Repo.preload(file, :jobs)
+        file = Repo.preload(file, :jobs) |> Repo.preload(:create_graph_options)
         render(conn, "show.json-api", data: file)
       {:error, changeset} ->
         conn

@@ -1,1 +1,1 @@
-alias Aptamer.{Repo,File}
+alias Aptamer.{Repo,File,CreateGraphOptions,Job}
