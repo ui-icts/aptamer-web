@@ -10,6 +10,10 @@ export default DS.Model.extend({
   file: DS.belongsTo(),
 
   commandLinePreview: Ember.computed('edgeType','seed','maxEditDistance','maxTreeDistance', function() {
-    return `-t ${this.get('edgeType')} -e ${this.get('maxEditDistance')} -d ${this.get('maxTreeDistance')} --seed ${this.get('seed')}`
+    let seedFlag = "";
+    if ( this.get('seed') ) {
+      seedFlag = "--seed";
+    }
+    return `-t ${this.get('edgeType')} -e ${this.get('maxEditDistance')} -d ${this.get('maxTreeDistance')} ${seedFlag}`
   })
 });
