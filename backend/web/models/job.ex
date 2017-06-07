@@ -4,6 +4,7 @@ defmodule Aptamer.Job do
   schema "jobs" do
     field :status, :string
     belongs_to :file, Aptamer.File
+    belongs_to :create_graph_options, Aptamer.CreateGraphOptions
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule Aptamer.Job do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:status, :file_id])
+    |> cast(params, [:status, :file_id, :create_graph_options_id])
     |> validate_required([:status, :file_id])
   end
 end

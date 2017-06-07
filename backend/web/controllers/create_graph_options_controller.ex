@@ -8,13 +8,24 @@ defmodule Aptamer.CreateGraphOptionsController do
   plug :accepts, ["json-api"]
   plug :scrub_params, "data" when action in [:create, :update]
 
-  def index(conn, _params) do
-    create_graph_options = Repo.all(CreateGraphOptions)
+  def index(conn, params) do
+    create_graph_options = case params do
+
+      %{"filter" => %{"forFile" => file_id}} ->
+        query = from o in CreateGraphOptions,
+                  where: o.file_id == ^file_id,
+                  order_by: [desc: o.inserted_at]
+        Repo.all(query)
+
+      _ -> Repo.all(CreateGraphOptions)
+    end
+
     render(conn, "index.json-api", data: create_graph_options)
   end
 
   def create(conn, %{"data" => data = %{"type" => "create-graph-options", "attributes" => _create_graph_options_params}}) do
     changeset = CreateGraphOptions.changeset(%CreateGraphOptions{}, Params.to_attributes(data))
+    IO.inspect(changeset)
 
     case Repo.insert(changeset) do
       {:ok, create_graph_options} ->
@@ -35,7 +46,7 @@ defmodule Aptamer.CreateGraphOptionsController do
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "create-graph-options", "attributes" => _create_graph_options_params}}) do
-    create_graph_options = Repo.get!(CreateGraphOptions, id)
+    create_graph_options = Repo.get!(CreateGraphOptions, id) |> Repo.preload(:file)
     changeset = CreateGraphOptions.changeset(create_graph_options, Params.to_attributes(data))
 
     case Repo.update(changeset) do

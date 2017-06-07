@@ -16,9 +16,14 @@ defmodule Aptamer.JobControllerTest do
 
     {:ok, conn: conn}
   end
-  
-  defp relationships(file) do 
 
+  defp relationships(several) when is_list(several) do
+    several
+    |> Enum.map( &relationships/1 )
+    |> Enum.reduce( &Map.merge/2 )
+  end
+
+  defp relationships(%Aptamer.File{} = file) do
     %{
       "file" => %{
         "data" => %{
@@ -27,6 +32,18 @@ defmodule Aptamer.JobControllerTest do
         }
       },
     }
+  end
+
+  defp relationships(%Aptamer.CreateGraphOptions{} = options) do
+    %{
+      "create-graph-options" => %{
+        "data" => %{
+          "type" => "create-graph-options",
+          "id" => options.id
+        }
+      },
+    }
+
   end
 
   test "lists all entries on index", %{conn: conn} do
@@ -53,18 +70,23 @@ defmodule Aptamer.JobControllerTest do
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     file = insert(:file)
+    options = insert(:create_graph_options)
 
     conn = post conn, job_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
         "attributes" => @valid_attrs,
-        "relationships" => relationships(file)
+        "relationships" => relationships([file, options])
       }
     }
 
     assert json_response(conn, 201)["data"]["id"]
-    query_args = Map.put(@valid_attrs, :file_id, file.id)
+    query_args = 
+      @valid_attrs
+      |> Map.put(:file_id, file.id)
+      |> Map.put(:create_graph_options_id, options.id)
+
     assert Repo.get_by(Job, query_args)
 
   end

@@ -17,6 +17,7 @@ defmodule Aptamer.CreateGraphOptions do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:edge_type, :seed, :max_edit_distance, :max_tree_distance, :file_id])
+    |> cast_assoc(:file)
     |> validate_required([:edge_type, :seed, :max_edit_distance, :max_tree_distance])
   end
 end

@@ -42,4 +42,5 @@ defmodule Aptamer.Factory do
 
     %{ options | file: file }
   end
+
 end
