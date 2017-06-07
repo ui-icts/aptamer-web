@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 
   model() {
-    return this.get('store').findAll('file', {include: 'jobs'});
+    return this.get('store').findAll('file', {include: 'jobs,createGraphOptions'});
   },
 
   actions: {
@@ -17,7 +17,10 @@ export default Ember.Route.extend({
       return file.save();
     },
 
-    startProcessFile(file) {
+    startProcessFile(file, options) {
+
+      console.log("Processing ", options.get('edgeType') );
+      return;
       let job = this.get('store').createRecord('job', {
         file: file,
         status: 'ready'

@@ -79,11 +79,16 @@
 {{/if}}
 
 {{#if showCommandPreview}}
-<div class="ui secondary segment">
-      <code>
-        python create_graph.py {{fileName}} {{optionsObject.commandLinePreview}}
-      </code>
-</div>
+  <div class="ui secondary segment">
+    <code>
+      python create_graph.py {{fileName}} {{optionsObject.commandLinePreview}}
+    </code>
+    <!-- negative margin otherwise it lays outside the segment box -->
+    <button class="ui right floated primary button" style="margin-top: -10px" {{action fileRunCommand}}>
+      <i class="play icon"></i>
+      Run
+    </button>
+  </div>
 {{/if}}
 
 

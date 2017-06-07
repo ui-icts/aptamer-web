@@ -7,10 +7,23 @@ export default DS.Model.extend({
   //Use this to keep track of if it
   //is a structure file or whatever
   fileType: DS.attr('string'),
+  jobs: DS.hasMany({async: false}),
+
+  createGraphOptions: DS.belongsTo('create-graph-options',{ inverse: 'file', async: false}),
 
   results: DS.hasMany(),
-
   generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
 
-  jobs: DS.hasMany({async: false})
+  ready() {
+    if ( !!this.get('createGraphOptions') ) {
+      return;
+    }
+
+    let options = this.store.createRecord('create-graph-options', {
+      file: this
+    });
+
+
+    this.set('createGraphOptions', options );
+  }
 });
