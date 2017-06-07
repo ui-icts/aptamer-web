@@ -47,7 +47,7 @@ defmodule Aptamer.JobControl do
 
       try do
 
-        job = set_status(job, "preparing")
+        job = set_status(job, "running")
         broadcast_status(job)
 
         {output, exit_status} = System.cmd(
@@ -57,7 +57,7 @@ defmodule Aptamer.JobControl do
           into: %RunningJob{job_id: job.id}
         )
 
-        job = set_status(job, "finished")
+        job = set_status(job, "finished", output)
         broadcast_status(job)
       rescue
 
@@ -71,8 +71,15 @@ defmodule Aptamer.JobControl do
     end)
   end
 
-  defp set_status(job, status) do
-    cs = Aptamer.Job.changeset(job, %{status: status})
+  defp set_status(job, status, output \\ nil) do
+    params = %{status: status}
+
+    output = case output do
+      %RunningJob{output: x} -> Enum.join(x, "\n")
+      nil -> nil
+    end
+    cs = Aptamer.Job.changeset(job, %{status: status, output: output})
+
     {:ok, job} = Repo.update cs
     job
   end

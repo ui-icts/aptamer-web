@@ -2,7 +2,7 @@ defmodule Aptamer.JobView do
   use Aptamer.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes [:status]
+  attributes [:status, :output]
 
   has_one :file,
     field: :file_id,

@@ -15,7 +15,8 @@ defmodule Aptamer.JobController do
 
   def create(conn, %{"data" => data = %{"type" => "jobs", "attributes" => _job_params}}) do
     changeset = Job.changeset(%Job{}, Params.to_attributes(data))
-
+    changeset = Ecto.Changeset.cast(changeset, data, [:id])
+    IO.inspect changeset
     case Repo.insert(changeset) do
       {:ok, job} ->
 
