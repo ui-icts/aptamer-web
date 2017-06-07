@@ -19,7 +19,21 @@ export default Ember.Component.extend({
 
   loadOptions: task( function * () {
     let file = this.get('file');
-    this.set('createGraphOptions', file.get('createGraphOptions') );
+    let store = file.get('store');
+
+    let options = yield store.query('create-graph-options', {
+      filter: {
+        forFile: file.get('id')
+      }
+    });
+
+    if ( Ember.isEmpty(options) ) {
+      options = store.createRecord('create-graph-options');
+    } else {
+      options = options.get('firstObject');
+    }
+
+    this.set('createGraphOptions', options );
 
   }).drop(),
 

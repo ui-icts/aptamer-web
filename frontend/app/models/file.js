@@ -9,8 +9,6 @@ export default DS.Model.extend({
   fileType: DS.attr('string'),
   jobs: DS.hasMany({async: false}),
 
-  createGraphOptions: DS.belongsTo('create-graph-options',{ inverse: 'file', async: false}),
-
   results: DS.hasMany(),
   generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
 

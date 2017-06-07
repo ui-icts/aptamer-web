@@ -17,14 +17,23 @@ export default Ember.Route.extend({
       return file.save();
     },
 
-    startProcessFile(file, options) {
+    async startProcessFile(file, options) {
 
-      console.log("Processing ", options.get('edgeType') );
-      return;
       let job = this.get('store').createRecord('job', {
         file: file,
         status: 'ready'
       });
+
+      if ( options ) {
+        try {
+          options.set('file', file);
+          let savedOptions = await options.save();
+          job.set('createGraphOptions', savedOptions)
+        } catch(e) {
+          job.destroy();
+          return;
+        }
+      }
 
       return job.save();
 
