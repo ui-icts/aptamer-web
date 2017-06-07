@@ -13,7 +13,8 @@ Router.map(function() {
   this.route('login');
 
   this.route('jobs', function() {
-    this.route('show',{path: '/:job_id'});
+    this.route('show',{path: '/active/:job_id'});
+    this.route('finished', {path: '/finished/:job_id'});
   });
 });
 

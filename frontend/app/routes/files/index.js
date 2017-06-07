@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {uuid} from 'ember-cli-uuid';
 
 export default Ember.Route.extend({
 
@@ -20,6 +21,7 @@ export default Ember.Route.extend({
     async startProcessFile(file, options) {
 
       let job = this.get('store').createRecord('job', {
+        id: uuid(),
         file: file,
         status: 'ready'
       });
