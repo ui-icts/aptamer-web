@@ -23,6 +23,7 @@ defmodule Aptamer.Factory do
 
   def job_factory do
     %Aptamer.Job{
+      id: Ecto.UUID.generate(),
       status: "not-started",
       file: build(:file)
     }
@@ -43,4 +44,17 @@ defmodule Aptamer.Factory do
     %{ options | file: file }
   end
 
+  def predict_structure_options_factory do
+    %Aptamer.PredictStructureOptions{
+      run_mfold: false,
+      vienna_version: 2,
+      prefix: "PP",
+      suffix: "SS",
+      pass_options: "-foo -bar"
+    }
+  end
+
+  def for_file(%Aptamer.PredictStructureOptions{} = options, file) do
+    %{ options | file: file }
+  end
 end

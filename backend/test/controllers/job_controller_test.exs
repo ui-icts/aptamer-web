@@ -76,13 +76,14 @@ defmodule Aptamer.JobControllerTest do
       "meta" => %{},
       "data" => %{
         "type" => "jobs",
+        "id" => Ecto.UUID.generate(),
         "attributes" => @valid_attrs,
         "relationships" => relationships([file, options])
       }
     }
 
     assert json_response(conn, 201)["data"]["id"]
-    query_args = 
+    query_args =
       @valid_attrs
       |> Map.put(:file_id, file.id)
       |> Map.put(:create_graph_options_id, options.id)

@@ -28,11 +28,12 @@ defmodule Aptamer.Router do
     resources "/files", Aptamer.FileController
     resources "/jobs", Aptamer.JobController
     resources "/create-graph-options", Aptamer.CreateGraphOptionsController
+    resources "/predict-structure-options", Aptamer.PredictStructureOptionsController
   end
 
   scope "/" do
     pipe_through :browser
-    coherence_routes
+    coherence_routes()
   end
 
   scope "/" do

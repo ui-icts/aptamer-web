@@ -16,11 +16,13 @@ defmodule Aptamer.JobController do
   def create(conn, %{"data" => data = %{"type" => "jobs", "attributes" => _job_params}}) do
     changeset = Job.changeset(%Job{}, Params.to_attributes(data))
     changeset = Ecto.Changeset.cast(changeset, data, [:id])
-    IO.inspect changeset
+
     case Repo.insert(changeset) do
       {:ok, job} ->
 
-        Aptamer.JobControl.start_job(job)
+        if Application.get_env(:aptamer, :start_jobs) == true do
+          Aptamer.JobControl.start_job(job)
+        end
 
         conn
         |> put_status(:created)

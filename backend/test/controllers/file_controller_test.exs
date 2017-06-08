@@ -16,7 +16,7 @@ defmodule Aptamer.FileControllerTest do
   test "gets all the structure files", %{conn: conn} do
 
     fasta_file = insert(:file, file_name: "fasta.txt", file_type: "fasta")
-    structure_file = insert(:file, 
+    structure_file = insert(:file,
                               file_name: "structure.txt",
                               file_type: "structure",
                               uploaded_on: Timex.shift(
@@ -24,22 +24,22 @@ defmodule Aptamer.FileControllerTest do
                                 hours: 2
                               ) |> Timex.to_datetime
     )
-    graph_options = insert(:create_graph_options, file: structure_file)
-    fasta_job = insert(:job, file: fasta_file)
-    
+    insert(:create_graph_options, file: structure_file)
+    insert(:job, file: fasta_file)
+
     conn =
       conn
-      |> get file_path(conn, :index, include: "jobs,create_graph_options")
+      |> get(file_path(conn, :index, include: "jobs,create_graph_options"))
 
     body = json_response(conn, 200)
     # Difficult to test this because the order of the
     # included array is not deterministic?
     assert %{
-        "data" => [ 
+        "data" => [
           %{"attributes" => %{"file-type" => "fasta"}},
           %{"attributes" => %{"file-type" => "structure"}}
         ],
-        "included" => [included1, included2]
+        "included" => [_included1, _included2]
        } = body
 
     # assert json_response(conn, 200) == %{
@@ -51,7 +51,7 @@ defmodule Aptamer.FileControllerTest do
     #         "file-name" => fasta_file.file_name,
     #         "file-type" => fasta_file.file_type,
     #         "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on),
-    #       }, 
+    #       },
     #       "relationships" => %{
     #         "jobs" => %{
     #           "data" => [%{ "type" => "jobs", "id" => fasta_job.id }]
@@ -152,9 +152,8 @@ defmodule Aptamer.FileControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    
+
     file = insert(:file, file_type: "structure")
-    change_attrs = %{file | file_type: "fasta"}
 
     # If I don't do this loopdi loop then the data gets
     # passed to the controller as multipart and I'm not
@@ -194,6 +193,6 @@ defmodule Aptamer.FileControllerTest do
   def checksum(%Aptamer.File{data: data}), do: checksum(data)
 
   def checksum(data) do
-    :crypto.hash(:sha256,data) |> Base.encode16 
+    :crypto.hash(:sha256,data) |> Base.encode16
   end
 end

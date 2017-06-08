@@ -36,7 +36,7 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
     insert_list(3, :create_graph_options)
     conn =
       conn
-      |> get create_graph_options_path(conn, :index)
+      |> get(create_graph_options_path(conn, :index))
 
     data = json_response(conn,200)["data"]
 
@@ -84,8 +84,8 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
     conn = post conn, create_graph_options_path(conn, :create), json
 
     assert json_response(conn, 201)["data"]["id"]
-    assert created = Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance})
-
+    created = Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance})
+    assert created != nil
     created = Repo.preload(created, :file)
     assert created.file == file
   end
@@ -96,7 +96,7 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
       "data" => %{
         "type" => "create-graph-options",
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -128,7 +128,7 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
         "type" => "create-graph-options",
         "id" => create_graph_options.id,
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 

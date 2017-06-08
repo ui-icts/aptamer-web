@@ -4,7 +4,8 @@ use Mix.Config
 # you can enable the server option below.
 config :aptamer, Aptamer.Endpoint,
   http: [port: 4001],
-  server: false
+  server: false,
+  start_jobs: false
 
 # Print only warnings and errors during test
 config :logger, level: :warn
@@ -17,3 +18,5 @@ config :aptamer, Aptamer.Repo,
   database: "aptamer_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+

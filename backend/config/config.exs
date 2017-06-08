@@ -15,7 +15,8 @@ config :aptamer, Aptamer.Endpoint,
   secret_key_base: "IccgQqMtrQrDjvRIlwgs/3ni1qizFseXblYBn2sMEePo0SR7WQadi0+xYWZS7isa",
   render_errors: [view: Aptamer.ErrorView, accepts: ~w(html json json-api)],
   pubsub: [name: Aptamer.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+  start_jobs: true
 
 # Configures Elixir's Logger
 config :logger, :console,

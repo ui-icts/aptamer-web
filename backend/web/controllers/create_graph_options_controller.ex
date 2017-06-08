@@ -25,7 +25,6 @@ defmodule Aptamer.CreateGraphOptionsController do
 
   def create(conn, %{"data" => data = %{"type" => "create-graph-options", "attributes" => _create_graph_options_params}}) do
     changeset = CreateGraphOptions.changeset(%CreateGraphOptions{}, Params.to_attributes(data))
-    IO.inspect(changeset)
 
     case Repo.insert(changeset) do
       {:ok, create_graph_options} ->

@@ -4,7 +4,7 @@ defmodule Aptamer.JobControl do
   alias Aptamer.Repo
 
   defmodule RunningJob do
-    defstruct job_id: "UNSET", owner_id: nil, file_id: nil, program: "date", args: [], output: []
+    defstruct job_id: "UNSET", output: []
   end
 
   defimpl Collectable, for: RunningJob do
@@ -43,8 +43,10 @@ defmodule Aptamer.JobControl do
               "-d", to_string(options.max_tree_distance),
       ]
 
-      if options.seed do
-        args = args ++ ["--seed"]
+      args = if options.seed do
+        args ++ ["--seed"]
+      else
+        args
       end
 
       try do
@@ -52,12 +54,17 @@ defmodule Aptamer.JobControl do
         job = set_status(job, "running")
         broadcast_status(job)
 
-        {output, exit_status} = System.cmd(
+        {output, _exit_status} = System.cmd(
           "/Users/cortman/.virtualenvs/aptamer-runtime/bin/python",
           args,
           cd: temp_path,
           into: %RunningJob{job_id: job.id}
         )
+
+        job = set_status(job, "cleaning up")
+        broadcast_status(job)
+
+        File.rm input_file
 
         job = set_status(job, "finished", output)
         broadcast_status(job)
@@ -65,8 +72,6 @@ defmodule Aptamer.JobControl do
       rescue
 
         e in ArgumentError ->
-          IO.inspect(e)
-
           Aptamer.Endpoint.broadcast("jobs:" <> job.id, "job_output", %{job_id: job.id, lines: [ArgumentError.message(e)]})
           set_status(job, "failed")
           broadcast_status(job)
@@ -75,7 +80,6 @@ defmodule Aptamer.JobControl do
   end
 
   defp set_status(job, status, output \\ nil) do
-    params = %{status: status}
 
     output = case output do
       %RunningJob{output: x} -> Enum.join(x, "\n")

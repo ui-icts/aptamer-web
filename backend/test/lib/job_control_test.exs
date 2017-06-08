@@ -1,7 +1,6 @@
 defmodule Aptamer.JobControlTest do
   use ExUnit.Case, async: false
 
-  alias Aptamer.JobControl
   # alias Aptamer.JobControl.Job, as: :JD
   # setup do
   #   {:ok, jc} = JobControl.start_link()
