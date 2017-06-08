@@ -32,8 +32,11 @@ export default Ember.Component.extend({
     } else {
       options = options.get('firstObject');
     }
-
+    
+    let predictStructure = store.createRecord('predict-structure-options');
+    console.log("CREATED", predictStructure );
     this.set('createGraphOptions', options );
+    this.set('predictStructureOptions', predictStructure  );
 
   }).drop(),
 
