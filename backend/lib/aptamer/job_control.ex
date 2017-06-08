@@ -30,12 +30,14 @@ defmodule Aptamer.JobControl do
       job = Repo.preload(job, :create_graph_options)
       job = Repo.preload(job, :file)
 
-      {:ok, temp_file} = Temp.open "structurefile", &IO.write(&1, job.file.data)
-      IO.puts temp_file
+      {:ok, temp_path} = Temp.mkdir job.id
+      input_file = Path.join(temp_path, "input_struct.fa")
+      File.write input_file, job.file.data
+
       options = job.create_graph_options
 
-      args = ["-u", "create_graph.py",
-              temp_file,
+      args = ["-u", "/Users/cortman/aptamer/python-scripts/create_graph.py",
+              input_file,
               "-t", options.edge_type,
               "-e", to_string(options.max_edit_distance),
               "-d", to_string(options.max_tree_distance),
@@ -53,12 +55,13 @@ defmodule Aptamer.JobControl do
         {output, exit_status} = System.cmd(
           "/Users/cortman/.virtualenvs/aptamer-runtime/bin/python",
           args,
-          cd: "/Users/cortman/icts/aptamer/python-scripts",
+          cd: temp_path,
           into: %RunningJob{job_id: job.id}
         )
 
         job = set_status(job, "finished", output)
         broadcast_status(job)
+
       rescue
 
         e in ArgumentError ->
