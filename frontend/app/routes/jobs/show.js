@@ -17,5 +17,13 @@ export default Ember.Route.extend({
   afterModel(job) {
     let jc = this.get('jobControl');
     jc.captureOutput(job.get('id'));
-  }
+  },
+
+   resetController(controller, isExiting, transition) {
+     let jc = this.get('jobControl');
+     jc.stopCurrentCapture();
+     // if (isExiting) {
+     //     controller.set('page', 1);
+     // }
+   }
 });

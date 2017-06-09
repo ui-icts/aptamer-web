@@ -18,26 +18,34 @@ export default Ember.Component.extend({
   },
 
   loadOptions: task( function * () {
-    let file = this.get('file');
-    let store = file.get('store');
+    let file = this.get('file'),
+        store = file.get('store'),
+        queryParams = {
+          filter: {
+            forFile: file.get('id')
+          }
+        };
 
-    let options = yield store.query('create-graph-options', {
-      filter: {
-        forFile: file.get('id')
-      }
+    let options = yield Ember.RSVP.hash({
+      createGraph: store.query('create-graph-options', queryParams),
+      predictStructure: store.query('predict-structure-options', queryParams)
     });
 
-    if ( Ember.isEmpty(options) ) {
-      options = store.createRecord('create-graph-options');
-    } else {
-      options = options.get('firstObject');
-    }
-    
-    let predictStructure = store.createRecord('predict-structure-options');
-    console.log("CREATED", predictStructure );
-    this.set('createGraphOptions', options );
-    this.set('predictStructureOptions', predictStructure  );
+    this._initializeOptions('createGraphOptions', 'create-graph-options', options.createGraph, store);
+    this._initializeOptions('predictStructureOptions', 'predict-structure-options', options.predictStructure, store);
 
   }).drop(),
 
+  _initializeOptions(property, modelName, currentOptions, store) {
+
+    let options;
+
+    if ( Ember.isEmpty(currentOptions) ) {
+      options = store.createRecord(modelName);
+    } else {
+      options = currentOptions.get('firstObject');
+    }
+
+    this.set(property, options );
+  }
 });

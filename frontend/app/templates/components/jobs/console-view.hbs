@@ -1,5 +1,9 @@
-{{#each messages as |message|}}
-  {{message}}
+{{#if poop}}
+  {{messageView}}
 {{else}}
-    No output received
-{{/each}}
+  {{#each messages as |message|}}
+    {{message}}
+  {{else}}
+      No output received
+  {{/each}}
+{{/if}}

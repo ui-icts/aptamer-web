@@ -2,7 +2,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   fileName: DS.attr('string'),
-  uploadedOn: DS.attr('date'),
+  uploadedOn: DS.attr('ecto-date'),
 
   //Use this to keep track of if it
   //is a structure file or whatever
@@ -13,15 +13,27 @@ export default DS.Model.extend({
   generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
 
   ready() {
-    if ( !!this.get('createGraphOptions') ) {
-      return;
+    let createGraphOptions = this.get('createGraphOptions'),
+        predictStructureOptions = this.get('predictStructureOptions');
+
+    if ( !createGraphOptions ) {
+
+      createGraphOptions = this.store.createRecord('create-graph-options', {
+        file: this
+      });
+
+
+      this.set('createGraphOptions', createGraphOptions );
     }
 
-    let options = this.store.createRecord('create-graph-options', {
-      file: this
-    });
+    if ( !predictStructureOptions ) {
+
+      predictStructureOptions = this.store.createRecord('predict-structure-options', {
+        file: this
+      });
 
 
-    this.set('createGraphOptions', options );
+      this.set('predictStructureOptions', predictStructureOptions );
+    }
   }
 });

@@ -22,15 +22,9 @@ const JobOutput = Ember.Object.extend({
 
   _onJobOutput(payload) {
     Ember.run(() => {
-      Ember.run.schedule('actions', () => {
+      Ember.run.schedule('sync', () => {
         let messages = this.get('messages');
-        if ( payload.hasOwnProperty('lines') ) {
-          messages.pushObjects(payload.lines);
-        } else if ( payload.hasOwnProperty('line') ) {
-          messages.pushObject(payload.line);
-        } else if ( typeof payload === 'string' ) {
-          messages.pushObject(payload)
-        }
+        messages.pushObjects(payload.lines);
       });
     });
   },
@@ -39,7 +33,6 @@ const JobOutput = Ember.Object.extend({
 export default PhoenixSocket.extend({
   store: Ember.inject.service(),
   currentOutputChannel: null,
-  messages: [],
 
   init() {
     this.on('open', () => {
@@ -52,12 +45,17 @@ export default PhoenixSocket.extend({
   },
 
   connect() {
+
+    if ( this.get('isHealthy') === true ) {
+      return;
+    }
+
     this._super('ws://localhost:4000/socket', {
-      logger: ((kind, msg, data) => {
-        /* eslint-disable */
-        console.log(`${kind}: ${msg}`, data);
-        /* eslint-enable */
-      })
+      // logger: ((kind, msg, data) => {
+      //   #<{(| eslint-disable |)}>#
+      //   console.log(`${kind}: ${msg}`, data);
+      //   #<{(| eslint-enable |)}>#
+      // })
     });
 
     let channel = this.joinChannel("jobs:status", {});
@@ -66,7 +64,6 @@ export default PhoenixSocket.extend({
     channel.on("status_change", (payload) => this._onStatusChange(payload) );
 
     channel.onError( _e => {
-      this.recordMessage("Got error on channel");
       /* eslint-disable */
       console.log("Channel Error", _e);
       /* eslint-enable */
@@ -78,11 +75,7 @@ export default PhoenixSocket.extend({
 
   captureOutput(jobId) {
 
-    let currentOutput = this.get('currentOutputChannel');
-    console.log("current channel", currentOutput);
-    if ( currentOutput != null ) {
-      currentOutput.stop();
-    }
+    this.stopCurrentCapture();
 
     let channel = this.get('socket').channel(`jobs:${jobId}`,{messagePosition: 0});
 
@@ -98,26 +91,11 @@ export default PhoenixSocket.extend({
     return output;
   },
 
-  startJob(jobText) {
-    let channel = this.get('statusChannel');
-
-    if ( channel ) {
-      this._recordMessage("Sending start_job");
-      channel.push("start_job", {body: jobText}).receive("ok", (reply) => {
-
-        this._recordMessage(`Received job_started reply: ${reply.body}`);
-
-      });
+  stopCurrentCapture() {
+    let currentOutput = this.get('currentOutputChannel');
+    if ( currentOutput != null ) {
+      currentOutput.stop();
     }
-
-  },
-
-  _recordMessage(msg) {
-    this.get('messages').pushObject(msg);
-  },
-
-  _onJobStart(payload) {
-    this._recordMessage(`Received start_job broadcast: ${payload.body}`);
   },
 
   _onStatusChange(payload) {
@@ -129,7 +107,5 @@ export default PhoenixSocket.extend({
     if ( channel ) {
       channel.leave();
     }
-
-    this.get('messages').clear();
   },
 });

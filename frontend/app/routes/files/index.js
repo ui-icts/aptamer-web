@@ -30,7 +30,13 @@ export default Ember.Route.extend({
         try {
           options.set('file', file);
           let savedOptions = await options.save();
-          job.set('createGraphOptions', savedOptions)
+
+          if ( file.get('fileType') === 'structure' ) {
+            job.set('createGraphOptions', savedOptions)
+          } else {
+            job.set('predictStructureOptions', savedOptions);
+          }
+
         } catch(e) {
           job.destroy();
           return;

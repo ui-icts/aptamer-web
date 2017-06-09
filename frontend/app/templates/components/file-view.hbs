@@ -16,6 +16,7 @@
   {{#link-to 'files.view' routeObject class="header"}}
     {{fileName}}
   {{/link-to}}
+
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
     {{files/job-list jobs=jobs}}

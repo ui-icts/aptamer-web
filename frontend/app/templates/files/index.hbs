@@ -23,7 +23,7 @@
 
         {{predict-structure-options-form 
           optionsObject=options.forPredictStructure 
-          fileRunCommand=(route-action "startProcessFile" f)}}
+          fileRunCommand=(route-action "startProcessFile" f options.forPredictStructure)}}
 
       {{else if (eq f.fileType "structure")}}
 
