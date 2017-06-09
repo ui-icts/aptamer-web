@@ -43,7 +43,7 @@ defmodule Aptamer.Router do
 
   scope "/", Aptamer do
     pipe_through :browser # Use the default browser stack
-    get "/", PageController, :index
+    get "/download/:file_id", PageController, :download_file
 
     #Public routes here
   end
