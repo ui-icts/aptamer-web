@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  showHelp: true,
+  showHelp: false,
   showCommandPreview: true,
   edgeTypes: ['edit', 'tree', 'both'],
 

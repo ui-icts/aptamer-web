@@ -12,7 +12,7 @@ export default function() {
   // this.namespace = '';    // make this `/api`, for example, if your API is namespaced
   // this.timing = 400;      // delay for each _request, automatically set to 0 during testing
 
-  // this.passthrough("/files");
+  this.passthrough("/download/:file_id");
 
   this.get('/files');
 

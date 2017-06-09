@@ -1,13 +1,12 @@
 <div class="ui right floated content">
-  {{#unless showMore}}
-  <button class="small ui button" {{action fileRunCommand}}>
-    <i class="play icon"></i>
-    {{processButtonText}}
-  </button>
-  {{/unless}}
   <button class="small ui icon button" {{action "toggleShowMore"}}>
     <i class="options icon"></i>
+    Configure
   </button>
+  <a class="small ui button" href="/download/{{routeObject.id}}">
+    <i class="download icon"></i>
+    Download
+  </a>
 </div>
 
 <i class="large middle aligned file text icon"></i>
@@ -16,7 +15,6 @@
   {{#link-to 'files.view' routeObject class="header"}}
     {{fileName}}
   {{/link-to}}
-
   <div class="description">Uploaded {{moment-from-now uploadedOn}}</div>
   <div class="extra">
     {{files/job-list jobs=jobs}}
