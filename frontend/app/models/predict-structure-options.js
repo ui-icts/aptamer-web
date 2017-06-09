@@ -6,8 +6,8 @@ const { isBlank } = Ember;
 export default DS.Model.extend({
   runMfold: DS.attr('boolean', { defaultValue: false }),
   viennaVersion: DS.attr('number', { defaultValue: 2 }),
-  prefix: DS.attr('string', { defaultValue: '--NO PREFIX--' }),
-  suffix: DS.attr('string', { defaultValue: '--NO PREFIX--' }),
+  prefix: DS.attr('string', { defaultValue: '--NO PRIMER--' }),
+  suffix: DS.attr('string', { defaultValue: '--NO PRIMER--' }),
   passOptions: DS.attr('string'),
   file: DS.belongsTo(),
 

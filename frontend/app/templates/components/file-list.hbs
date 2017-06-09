@@ -3,6 +3,8 @@
   <div class="ui relaxed divided list">
   {{#each filesByUploadDate as |file|}}
     {{yield file}}
+  {{else}}
+      Upload some files to get started
   {{/each}}
   </div>
 
