@@ -3,6 +3,9 @@ defmodule Aptamer.PredictStructureOptionsTest do
 
   alias Aptamer.PredictStructureOptions
 
+  doctest Aptamer.PredictStructureOptions
+
+
   @valid_attrs %{pass_options: "some content", prefix: "some content", run_mfold: true, suffix: "some content", vienna_version: 42}
   @invalid_attrs %{}
 

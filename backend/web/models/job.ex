@@ -8,6 +8,7 @@ defmodule Aptamer.Job do
     field :output, :string
     belongs_to :file, Aptamer.File
     belongs_to :create_graph_options, Aptamer.CreateGraphOptions
+    belongs_to :predict_structure_options, Aptamer.PredictStructureOptions
 
     timestamps()
   end
@@ -17,7 +18,7 @@ defmodule Aptamer.Job do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:status, :output, :file_id, :create_graph_options_id])
+    |> cast(params, [:status, :output, :file_id, :create_graph_options_id, :predict_structure_options_id])
     |> validate_required([:status, :file_id])
   end
 end

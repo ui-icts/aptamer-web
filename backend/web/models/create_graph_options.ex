@@ -20,4 +20,18 @@ defmodule Aptamer.CreateGraphOptions do
     |> cast_assoc(:file)
     |> validate_required([:edge_type, :seed, :max_edit_distance, :max_tree_distance])
   end
+
+  def args(options) do
+
+    args = [ "-t", options.edge_type,
+            "-e", to_string(options.max_edit_distance),
+            "-d", to_string(options.max_tree_distance),
+    ]
+
+    args = if options.seed do
+      args ++ ["--seed"]
+    else
+      args
+    end
+  end
 end

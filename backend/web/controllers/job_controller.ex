@@ -28,6 +28,7 @@ defmodule Aptamer.JobController do
         |> put_status(:created)
         |> put_resp_header("location", job_path(conn, :show, job))
         |> render("show.json-api", data: job)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

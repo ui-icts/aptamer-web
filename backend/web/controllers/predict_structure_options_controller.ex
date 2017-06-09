@@ -8,8 +8,18 @@ defmodule Aptamer.PredictStructureOptionsController do
   plug :accepts, ["json-api"]
   plug :scrub_params, "data" when action in [:create, :update]
 
-  def index(conn, _params) do
-    predict_structure_options = Repo.all(PredictStructureOptions)
+  def index(conn, params) do
+    predict_structure_options = case params do
+
+      %{"filter" => %{"forFile" => file_id}} ->
+        query = from o in PredictStructureOptions,
+                  where: o.file_id == ^file_id,
+                  order_by: [desc: o.inserted_at]
+        Repo.all(query)
+
+      _ -> Repo.all(PredictStructureOptions)
+    end
+
     render(conn, "index.json-api", data: predict_structure_options)
   end
 
