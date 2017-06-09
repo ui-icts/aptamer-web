@@ -5,7 +5,9 @@ defmodule Aptamer.PageController do
   alias Aptamer.File, as: AptamerFile
 
   def index(conn, _params) do
-    render conn, "index.html"
+    conn
+      |> put_layout(false)
+      |> render("index.html")
   end
 
   def download_file(conn, %{"file_id" => file_id}) do
