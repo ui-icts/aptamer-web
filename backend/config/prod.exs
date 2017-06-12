@@ -58,7 +58,7 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-secret_file = case System.get_env("APTAMER_SECRET_CONFIG") do
+secret_file = case System.get_env("APTAMER_WEB_CONF") do
   nil -> "prod.secret.exs"
   sf -> sf
 end
