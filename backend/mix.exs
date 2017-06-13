@@ -30,7 +30,13 @@ defmodule Aptamer.Mixfile do
        :coherence,
        :timex,
        :timex_ecto,
-       :porcelain
+       :porcelain,
+       :ecto_enum,
+       :fs,
+       :ja_serializer,
+       :jsonapi,
+       :proper_case,
+       :temp
      ]
     ]
   end
@@ -63,6 +69,7 @@ defmodule Aptamer.Mixfile do
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
      {:porcelain, "~> 2.0"},
      {:temp, "~> 0.4"},
+     {:distillery, git: "https://github.com/bitwalker/distillery"},
     ]
   end
 
