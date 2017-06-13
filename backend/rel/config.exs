@@ -29,8 +29,9 @@ environment :dev do
 end
 
 environment :habitat do
-  set include_erts: false
+  set include_erts: true
   set include_src: false
+  set included_configs: ["/hab/svc/aptamer-web/config/sys.config"]
   set cookie: :"qsd<Ntl,YC{3oWegv;w>h,kqND`0W3a$Hl?_kCIp*MK4/IO!drEm%}/BY]IL9ot<"
 end
 
