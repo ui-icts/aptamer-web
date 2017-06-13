@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -o nounset
+set -e
+
+{{~#eachAlive bind.database.members as |member|}}
+    echo "Bound to database {{member.sys.ip}} on {{member.cfg.port}}"
+{{else}}
+    echo "No bound databases"
+{{~/eachAlive}}
+
+export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export MIX_ENV=prod
+
+
+exec 2>&1
+
