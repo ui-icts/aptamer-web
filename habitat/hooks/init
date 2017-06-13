@@ -10,8 +10,13 @@ set -e
 {{~/eachAlive}}
 
 export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-export MIX_ENV=prod
-
+export HOME={{pkg.svc_var_path}}
+export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
+export ERTS_VSN="8.1"
+#export PATH={{pkgPathFor "core/erlang"}}/bin:$PATH
 
 exec 2>&1
+
+exec aptamer command bootstrap
+exec aptamer command migrate
 

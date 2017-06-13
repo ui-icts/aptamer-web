@@ -3,5 +3,8 @@
 exec 2>&1
 
 export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export HOME={{pkg.svc_var_path}}
+export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
+export ERTS_VSN="8.1"
 
-exec {{pkgPathFor "chrisortman/aptamer-web"}}/bin/aptamer foreground
+exec aptamer foreground

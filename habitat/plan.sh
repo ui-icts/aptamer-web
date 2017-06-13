@@ -17,6 +17,7 @@ pkg_origin=chrisortman
 pkg_version="0.0.1"
 pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="TODO"
+pkg_bin_dirs=(bin)
 pkg_deps=(
   chrisortman/elixir
 )
@@ -94,9 +95,9 @@ do_check() {
 # specific directories in your package, or installing pre-built binaries into
 # your package.
 do_install() {
+
   mix release --env=habitat
-  echo "Copying current files to ${pkg_prefix}"
-  cp -a _build/prod/rel/aptamer ${pkg_prefix}
+  cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
 }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their
