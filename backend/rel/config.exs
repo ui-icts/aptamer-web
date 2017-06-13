@@ -45,7 +45,7 @@ release :aptamer do
     :runtime_tools
   ]
   set commands: [
-    "bootstrap" : "rel/commands/bootstrap.sh",
+    "bootstrap": "rel/commands/bootstrap.sh",
     "migrate": "rel/commands/migrate.sh"
   ]
 end
