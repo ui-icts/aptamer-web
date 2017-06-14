@@ -73,14 +73,27 @@ do_prepare() {
 }
 
 do_build() {
+
+  cd frontend
+  yarn install
+  node_modules/bower/bin/bower install
+
+  ember build --prod --output-path=../backend/priv/static/
+
+  cd ../backend
+  cat priv/static/index.html > web/templates/page/index.html.eex
+
   mix local.hex --force
   mix local.rebar --force
 
   mix deps.get --only prod
   mix compile
-  yarn install
-  ./node_modules/brunch/bin/brunch b -p
-  mix phoenix.digest
+
+  cd ..
+
+  # yarn install
+  # ./node_modules/brunch/bin/brunch b -p
+  # mix phoenix.digest
 }
 
 # The default implementation runs nothing during post-compile. An example of a
@@ -101,8 +114,10 @@ do_check() {
 # your package.
 do_install() {
 
+  cd backend
   mix release --env=habitat
   cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
+  cd ..
 }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their
