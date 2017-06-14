@@ -16,6 +16,18 @@ defmodule Aptamer.ReleaseTasks do
   def bootstrap do
 
     :ok = Application.load(:aptamer)
+    with :ok <- create_db,
+         :ok <- migrate
+    do
+      IO.puts "Database ready to go"
+      :ok
+    else
+      {:error, reason} -> IO.puts reason
+     end
+  end
+
+  def create_db do
+    IO.puts "Checking if aptamer database needs to be created..."
 
     repo = Aptamer.Repo
     config = get_repo_config(repo)
@@ -29,16 +41,17 @@ defmodule Aptamer.ReleaseTasks do
         :ok
 
       {:error, term} when is_binary(term) ->
-        raise "The database for #{inspect repo} couldn't be created: #{term}"
+        {:error, "The database for #{inspect repo} couldn't be created: #{term}"}
+
       {:error, term} ->
-        raise "The database for #{inspect repo} couldn't be created: #{inspect term}"
+        {:error, "The database for #{inspect repo} couldn't be created: #{inspect term}"}
+
     end
+
   end
 
   def migrate do
     IO.puts "Loading Aptamer.."
-    # Load the code for myapp, but don't start it
-    :ok = Application.load(:aptamer)
 
     IO.puts "Starting dependencies.."
     # Start apps necessary for executing migrations
@@ -61,6 +74,7 @@ defmodule Aptamer.ReleaseTasks do
     # Signal shutdown
     IO.puts "Success!"
     :init.stop()
+
   end
 
   def priv_dir(app), do: "#{:code.priv_dir(app)}"
