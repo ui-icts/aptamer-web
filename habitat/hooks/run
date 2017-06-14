@@ -7,4 +7,7 @@ export HOME={{pkg.svc_var_path}}
 export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
 export ERTS_VSN="8.1"
 
+export APTAMER_PYTHON="$(hab pkg path chrisortman/aptamer-scripts)/bin/python"
+export APTAMER_SCRIPT="$(hab pkg path chrisortman/aptamer-scripts)/scripts"
+
 exec aptamer foreground

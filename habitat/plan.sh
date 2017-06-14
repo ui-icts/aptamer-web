@@ -76,6 +76,7 @@ do_build() {
 
   mix deps.get --only prod
   mix compile
+  mix phoenix.digest
 }
 
 # The default implementation runs nothing during post-compile. An example of a
