@@ -64,14 +64,14 @@ defmodule Aptamer.JobControl do
         IO.puts "Calling #{python_path} script"
         IO.inspect args
 
-        {output, _exit_status} = System.cmd(
+        {running_job, _exit_status} = System.cmd(
           python_path,
           args,
           cd: temp_path,
           into: running_job
         )
 
-        IO.puts output
+        IO.puts running_job.output
         job = set_status(job, "gathering outputs")
         broadcast_status(job)
 
@@ -121,7 +121,7 @@ defmodule Aptamer.JobControl do
 
         File.rmdir temp_path
 
-        job = set_status(job, "finished", output)
+        job = set_status(job, "finished", running_job)
         broadcast_status(job)
 
       rescue
