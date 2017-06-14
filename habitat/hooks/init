@@ -20,5 +20,4 @@ export ERTS_VSN="8.1"
 exec 2>&1
 
 exec aptamer bootstrap
-exec aptamer migrate
 
