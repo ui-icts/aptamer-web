@@ -1,0 +1,32 @@
+<div class="ui right floated content">
+  <button class="small ui button" {{action (perform processTask sf)}}>
+    <i class="play icon"></i>
+    Create Graph
+  </button>
+  <button class="small ui icon button" {{action "toggleShowMore"}}>
+      <i class="options icon"></i>
+  </button>
+</div>
+
+<i class="large middle aligned file text icon"></i>
+
+<div class="content">
+  <a class="header">{{sf.fileName}}</a>
+  {{#if sf.generatedBy}}
+    <div class="description">Generated from {{sf.generatedBy.file.fileName}}</div>
+  {{else}}
+    <div class="description">Uploaded {{moment-from-now sf.uploadedOn}}</div>
+  {{/if}}
+  <div class="extra">
+    {{#each sf.results as |resultFile|}}
+      <p> Result #{{resultFile.resultNumber}} {{resultFile.status}}</p>
+    {{/each}}
+  </div>
+</div>
+
+{{#if showMore}}
+  <div class="extra">
+
+    {{graph-options-form fileName=sf.fileName optionsObject=optionsObject}}
+  </div>
+{{/if}}

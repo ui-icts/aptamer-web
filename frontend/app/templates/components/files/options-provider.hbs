@@ -1,0 +1,5 @@
+{{#if loadOptions.isRunning}}
+  Loading options...
+{{else}}
+  {{yield (hash forPredictStructure=predictStructureOptions forCreateGraph=createGraphOptions)}}
+{{/if}}

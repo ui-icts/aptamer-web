@@ -1,0 +1,95 @@
+<form class="ui small form">
+
+  <div class="inline fields">
+
+    <label>Edge Type</label>
+    <div class="field">
+      {{#ui-dropdown class="selection" selected=(get optionsObject 'edgeType') onChange=(action (mut (get optionsObject "edgeType")))}}
+        <div class="default text">Edge Type</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          {{#each edgeTypes as |edgeType|}}
+            <div class="item" data-value="{{edgeType}}">
+              {{edgeType}}
+            </div>
+          {{/each}}
+        </div>
+      {{/ui-dropdown}}
+    </div>
+
+    <div class="field">
+      {{ui-checkbox label="Seed" checked=(get optionsObject "seed") onChange=(action (mut (get optionsObject "seed"))) }}
+    </div>
+
+    <div class="field">
+      <label>Max Edit Distance {{optionsObject.maxEditDistance}}</label>
+      {{input type="range" value=optionsObject.maxEditDistance min=0 max=10}}
+    </div>
+
+    <div class="field">
+      <label>Max tree distance {{optionsObject.maxTreeDistance}}</label>
+      {{input type="range" value=optionsObject.maxTreeDistance min=0 max=10}}
+    </div>
+
+    <a {{action "toggleHelp"}}>Help</a>
+  </div>
+
+</form>
+{{#if showHelp}}
+  <div class="ui list">
+
+    <div class="item">
+        <div class="header">
+      Edge Type
+        </div>
+        Whether to create edges in output graph according to 
+        edit distance or tree distance. <code>-t or --edge_type</code>
+    </div>
+
+    <div class="item">
+        <div class="header">
+          Seed
+        </div>
+          Use seed sequence algorithm to find graph edges.
+    </div>
+
+    <div class="item">
+        <div class="header">
+          Maximum edit distance
+        </div>
+
+          Maximum edit distance allowed for an edge to be created 
+          in output graph. 
+          Assumes <code>--edge_type</code> is "edit" or "both". (Default: 3)
+        
+    </div>
+
+    <div class="item">
+        <div class="header">
+          Maximum tree distance
+        </div>
+
+          Maximum tree distance allowed for an edge to be created 
+          in output graph. 
+          Assumes <code>--edge_type</code> is "tree" or "both". (Default: 3)
+        
+    </div>
+
+  </div>
+{{/if}}
+
+{{#if showCommandPreview}}
+  <div class="ui secondary segment">
+    <code>
+      python create_graph.py {{fileName}} {{optionsObject.commandLinePreview}}
+    </code>
+    <!-- negative margin otherwise it lays outside the segment box -->
+    <button class="ui right floated primary button" style="margin-top: -10px" {{action fileRunCommand}}>
+      <i class="play icon"></i>
+      Run
+    </button>
+  </div>
+{{/if}}
+
+
+{{yield}}

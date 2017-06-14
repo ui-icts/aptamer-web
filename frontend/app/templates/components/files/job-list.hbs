@@ -1,0 +1,13 @@
+{{#each jobs as |job|}}
+  {{log job.status}}
+  {{#if (eq job.status 'finished')}}
+    <p>Job {{job.id}} finished. {{#link-to 'jobs.finished' job}}View Program Output{{/link-to}}
+    </p>
+  {{else}}
+  <p>
+  {{#link-to 'jobs.show' job }}
+    Job {{job.id}} {{job.status}}
+  {{/link-to}}
+  </p>
+  {{/if}}
+{{/each}}
