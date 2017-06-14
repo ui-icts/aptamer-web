@@ -5,3 +5,6 @@
 
 port = 4002
 database_name = "aptamer_prod"
+database_user = "postgres"
+database_password = "postgres"
+database_port = 5432

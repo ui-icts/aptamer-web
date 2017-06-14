@@ -3,11 +3,13 @@
 set -o nounset
 set -e
 
-{{~#eachAlive bind.database.members as |member|}}
-    echo "Bound to database {{member.sys.ip}} on {{member.cfg.port}}"
-{{else}}
-    echo "No bound databases"
-{{~/eachAlive}}
+{{#if bind.database.first}}
+  {{#with bind.database.first as |pg| }}
+    echo "Configuring database super user"
+    DB_SUPERUSER={{pg.cfg.superuser_password}}
+    DB_SUPERPASS={{pg.cfg.superuser_name}}
+  {{/with}}
+{{/if}}
 
 export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export HOME={{pkg.svc_var_path}}
@@ -17,6 +19,6 @@ export ERTS_VSN="8.1"
 
 exec 2>&1
 
-exec aptamer command bootstrap
-exec aptamer command migrate
+exec aptamer bootstrap
+exec aptamer migrate
 
