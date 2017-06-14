@@ -50,7 +50,7 @@ export default PhoenixSocket.extend({
       return;
     }
 
-    this._super('ws://localhost:4000/socket', {
+    this._super('/socket', {
       // logger: ((kind, msg, data) => {
       //   #<{(| eslint-disable |)}>#
       //   console.log(`${kind}: ${msg}`, data);
