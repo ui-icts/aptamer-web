@@ -44,8 +44,8 @@ defmodule Aptamer.JobControl do
         "fasta" -> {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options)}
       end
 
-      python_path = System.get_env("APTAMER_PYTHON")
-      script_path = System.get_env("APTAMER_SCRIPT")
+      python_path = System.get_env("APTAMER_PYTHON") || "/Users/cortman/.virtualenvs/aptamer-runtime/bin/python"
+      script_path = System.get_env("APTAMER_SCRIPT") || "/Users/cortman/icts/aptamer/python-scripts"
 
       common_args = [
         "#{script_path}/#{script_name}",
