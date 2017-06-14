@@ -48,7 +48,6 @@ defmodule Aptamer.JobControl do
       script_path = System.get_env("APTAMER_SCRIPT")
 
       common_args = [
-        "-u",
         "#{script_path}/#{script_name}",
         input_file
       ]
@@ -61,6 +60,9 @@ defmodule Aptamer.JobControl do
         broadcast_status(job)
 
         running_job = %RunningJob{job_id: job.id}
+
+        IO.puts "Calling #{python_path} script"
+        IO.inspect args
 
         {output, _exit_status} = System.cmd(
           python_path,
