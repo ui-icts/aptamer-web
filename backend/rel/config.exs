@@ -10,7 +10,7 @@ use Mix.Releases.Config,
     # This sets the default release built by `mix release`
     default_release: :default,
     # This sets the default environment used by `mix release`
-    default_environment: Mix.env()
+    default_environment: :dev
 
 # For a full list of config options for both releases
 # and environments, visit https://hexdocs.pm/distillery/configuration.html
@@ -24,7 +24,6 @@ use Mix.Releases.Config,
 environment :dev do
   set dev_mode: true
   set include_erts: false
-  set included_configs: ["/Users/cortman/aptamer.sys.config"]
   set cookie: :"o50JgBb:y%RKHIZ*J8Nb~sKN|rwr7~4*0MGP5<>L^Hb/Vn7m(oj1o{Q*B5NvVzdC"
 end
 

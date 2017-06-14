@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/aptamer command Elixir.MyApp.ReleaseTasks migrate
+bin/aptamer command Elixir.Aptamer.ReleaseTasks migrate

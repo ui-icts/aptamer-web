@@ -1,4 +1,4 @@
-defmodule MyApp.ReleaseTasks do
+defmodule Aptamer.ReleaseTasks do
 
   @start_apps [
     :postgrex,
@@ -14,11 +14,19 @@ defmodule MyApp.ReleaseTasks do
   ]
 
   def bootstrap do
-    
+
+    :ok = Application.load(:aptamer)
+
     repo = Aptamer.Repo
-    case repo.__adapter__.storage_up(repo.config) do
-      :ok -> :ok
-      {:error, :already_up} -> :ok
+    config = get_repo_config(repo)
+
+    case repo.__adapter__.storage_up(config) do
+      :ok ->
+        IO.puts "Database created"
+        :ok
+      {:error, :already_up} ->
+        IO.puts "Database already exists"
+        :ok
 
       {:error, term} when is_binary(term) ->
         raise "The database for #{inspect repo} couldn't be created: #{term}"
@@ -44,7 +52,7 @@ defmodule MyApp.ReleaseTasks do
     Enum.each(@myapps, &run_migrations_for/1)
 
     # Run the seed script if it exists
-    seed_script = Path.join([priv_dir(:myapp), "repo", "seeds.exs"])
+    seed_script = Path.join([priv_dir(:aptamer), "repo", "seeds.exs"])
     if File.exists?(seed_script) do
       IO.puts "Running seed script.."
       Code.eval_file(seed_script)
@@ -65,4 +73,15 @@ defmodule MyApp.ReleaseTasks do
   defp migrations_path(app), do: Path.join([priv_dir(app), "repo", "migrations"])
   defp seed_path(app), do: Path.join([priv_dir(app), "repo", "seeds.exs"])
 
+  defp get_repo_config(repo) do
+
+     case {System.get_env("DB_SUPERUSER"), System.get_env("DB_SUPERPASS")} do
+      {user,pass} when is_binary(user) and is_binary(pass) ->
+        repo.config
+        |> List.keyreplace(:username,0,{:username, user})
+        |> List.keyreplace(:password,0,{:password, pass})
+      _ ->
+        repo.config
+    end
+  end
 end

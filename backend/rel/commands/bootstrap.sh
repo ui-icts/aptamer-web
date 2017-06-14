@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/aptamer command Elixir.MyApp.ReleaseTasks bootstrap
+bin/aptamer command Elixir.Aptamer.ReleaseTasks bootstrap
