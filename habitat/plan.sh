@@ -76,9 +76,9 @@ do_build() {
 
   cd frontend
   yarn install
-  node_modules/bower/bin/bower install
+  node_modules/bower/bin/bower install --allow-root
 
-  ember build --prod --output-path=../backend/priv/static/
+  node_modules/ember-cli/bin/ember build --prod --output-path=../backend/priv/static/
 
   cd ../backend
   cat priv/static/index.html > web/templates/page/index.html.eex
