@@ -49,5 +49,5 @@ config :aptamer, Aptamer.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "aptamer_dev",
+  database: "aptamer_prod",
   pool_size: 20

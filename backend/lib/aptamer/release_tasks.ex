@@ -13,20 +13,33 @@ defmodule Aptamer.ReleaseTasks do
     Aptamer.Repo
   ]
 
+  defmodule Context do
+    defstruct run_seeds: false
+  end
+
   def bootstrap do
 
-    :ok = Application.load(:aptamer)
-    with :ok <- create_db,
-         :ok <- migrate
+    IO.puts "Loading Aptamer.."
+    case Application.load(:aptamer) do
+      :ok -> :ok
+      {:error, {:already_loaded, :aptamer}} -> :ok
+
+    end
+
+    context = %Context{}
+
+    with {:ok, context} <- create_db(context),
+         {:ok, context} <- migrate(context),
+         {:ok, context} <- seed(context),
+         {:ok, context} <- cleanup(context)
     do
       IO.puts "Database ready to go"
-      :ok
     else
       {:error, reason} -> IO.puts reason
      end
   end
 
-  def create_db do
+  def create_db(context) do
     IO.puts "Checking if aptamer database needs to be created..."
 
     repo = Aptamer.Repo
@@ -35,10 +48,10 @@ defmodule Aptamer.ReleaseTasks do
     case repo.__adapter__.storage_up(config) do
       :ok ->
         IO.puts "Database created"
-        :ok
+        {:ok, %{context | run_seeds: true}}
       {:error, :already_up} ->
         IO.puts "Database already exists"
-        :ok
+        {:ok, %{context | run_seeds: false}}
 
       {:error, term} when is_binary(term) ->
         {:error, "The database for #{inspect repo} couldn't be created: #{term}"}
@@ -50,8 +63,7 @@ defmodule Aptamer.ReleaseTasks do
 
   end
 
-  def migrate do
-    IO.puts "Loading Aptamer.."
+  def migrate(context) do
 
     IO.puts "Starting dependencies.."
     # Start apps necessary for executing migrations
@@ -64,23 +76,32 @@ defmodule Aptamer.ReleaseTasks do
     # Run migrations
     Enum.each(@myapps, &run_migrations_for/1)
 
+    {:ok, context}
+  end
+
+  def seed(%Context{run_seeds: true} = context) do
     # Run the seed script if it exists
     seed_script = Path.join([priv_dir(:aptamer), "repo", "seeds.exs"])
+
     if File.exists?(seed_script) do
       IO.puts "Running seed script.."
       Code.eval_file(seed_script)
     end
+    {:ok, context}
+  end
 
-    # Signal shutdown
-    IO.puts "Success!"
-    :init.stop()
+  def seed(context) do
+    IO.puts "Not loading seeds"
+    {:ok, context}
+  end
 
+  def cleanup(context) do
+    {:init.stop(), context}
   end
 
   def priv_dir(app), do: "#{:code.priv_dir(app)}"
 
-  defp run_migrations_for(app) do
-    IO.puts "Running migrations for #{app}"
+  defp run_migrations_for(app) do IO.puts "Running migrations for #{app}"
     Ecto.Migrator.run(Aptamer.Repo, migrations_path(app), :up, all: true)
   end
 
