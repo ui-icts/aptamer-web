@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -o nounset
+set -e
+
+{{#if bind.database.first}}
+  {{#with bind.database.first as |pg| }}
+    echo "Configuring database super user"
+    DB_SUPERUSER={{pg.cfg.superuser_password}}
+    DB_SUPERPASS={{pg.cfg.superuser_name}}
+  {{/with}}
+{{/if}}
+
+export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export HOME={{pkg.svc_var_path}}
+export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
+export ERTS_VSN="8.1"
+#export PATH={{pkgPathFor "core/erlang"}}/bin:$PATH
+
+exec 2>&1
+
+exec aptamer bootstrap
+
