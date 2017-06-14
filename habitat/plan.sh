@@ -26,6 +26,8 @@ pkg_build_deps=(
   core/git
   core/make
   core/gcc
+  core/yarn
+  core/node
 )
 
 pkg_binds_optional=(
@@ -76,6 +78,8 @@ do_build() {
 
   mix deps.get --only prod
   mix compile
+  yarn install
+  ./node_modules/brunch/bin/brunch b -p
   mix phoenix.digest
 }
 
