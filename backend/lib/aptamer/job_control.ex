@@ -71,20 +71,25 @@ defmodule Aptamer.JobControl do
           into: running_job
         )
 
+        IO.puts output
         job = set_status(job, "gathering outputs")
         broadcast_status(job)
 
         # if we ran predict_structures create
         # a structure file from the output
         if script_name == "predict_structures.py" do
-          {:ok, file_data} = Path.join(temp_path, "inputdata.aptamer.struct.fa") |> Elixir.File.read
-          file_struct = %Aptamer.File{
-            file_name: "#{job.file.file_name}.struct.fa",
-            uploaded_on: DateTime.utc_now(),
-            file_type: "structure",
-            data: file_data
-          }
-          {:ok, file_struct} = Repo.insert(file_struct)
+          with {:ok, file_data} <- Path.join(temp_path, "inputdata.aptamer.struct.fa") |> Elixir.File.read,
+               file_struct = %Aptamer.File{
+                 file_name: "#{job.file.file_name}.struct.fa",
+                 uploaded_on: DateTime.utc_now(),
+                 file_type: "structure",
+                 data: file_data
+               }
+          do
+               Repo.insert(file_struct)
+          else
+            {:error, :enoent} -> IO.puts "Could not find predict structure output file"
+          end
         end
 
         File.rm input_file
