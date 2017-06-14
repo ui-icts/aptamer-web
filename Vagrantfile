@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 4002, host: 4001
   #config.vm.network :forwarded_port, guest: 80, host: 3080
   config.vm.provision "main-install",type: :shell, :path => "vagrant-scripts/install.sh"
+  config.vm.provision "pg-install",type: :shell, :path => "vagrant-scripts/pg-install.sh"
   config.vm.provision "apache-install",type: :shell, :path => "vagrant-scripts/apache-install.sh"
   config.vm.provision "hab-install", type: :shell, :path => "vagrant-scripts/hab-install.sh"
   config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777", "fmode=666"]
