@@ -6,7 +6,7 @@
 brew install elixir node@6 yarn
 ```
 
-## Running (Development)
+## Development
 
 The code is divided into separate backend and frontend packages.
 
@@ -38,5 +38,33 @@ mix ecto.create
 mix ecto.migrate
 ```
 
+## Production
 
+Once habitat is installed on the server you need to install two
+packages
 
+```
+sudo hab pkg install chrisortman/aptamer-scripts
+sudo hab pkg install chrisortman/aptamer-web
+sudo hab svc load chrisortman/aptamer-web --strategy at-once
+```
+
+The service can be configured by creating a configuration file
+like the one below
+
+```
+port = 4002
+database_name = "aptamer_prod"
+database_user = "postgres"
+database_password = "postgres"
+database_port = 5432
+database_host = "localhost"
+```
+
+And then running 
+
+```
+sudo hab config apply aptamer-web.default 1 mine.config
+```
+
+You must create the database before running the service.
