@@ -66,10 +66,12 @@ defmodule Aptamer.ReleaseTasks do
         {:ok, %{context | run_seeds: false}}
 
       {:error, term} when is_binary(term) ->
-        {:error, "The database for #{inspect repo} couldn't be created: #{term}"}
+        IO.puts "The database for #{inspect repo} couldn't be created: #{term}"
+        {:ok, %{context | run_seeds: false}}
 
       {:error, term} ->
-        {:error, "The database for #{inspect repo} couldn't be created: #{inspect term}"}
+        IO.puts "The database for #{inspect repo} couldn't be created: #{inspect term}"
+        {:ok, %{context | run_seeds: false}}
 
     end
 
