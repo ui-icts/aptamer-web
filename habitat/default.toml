@@ -8,3 +8,4 @@ database_name = "aptamer2"
 database_user = "aptamer"
 database_password = "NOTSET"
 database_port = 5432
+database_usessl = false
