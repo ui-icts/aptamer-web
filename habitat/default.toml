@@ -4,6 +4,8 @@
 #
 
 port = 4002
+
+database_host = "localhost"
 database_name = "aptamer2"
 database_user = "aptamer"
 database_password = "NOTSET"
