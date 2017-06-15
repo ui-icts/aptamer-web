@@ -43,10 +43,10 @@ defmodule Aptamer.ReleaseTasks do
     IO.puts "Checking if aptamer database needs to be created..."
 
     repo = Aptamer.Repo
-    IO.puts "Database Configuration"
-    IO.inspect repo.config
-
     config = get_repo_config(repo)
+
+    IO.puts "Database Configuration"
+    IO.inspect config
 
     case repo.__adapter__.storage_up(config) do
       :ok ->
