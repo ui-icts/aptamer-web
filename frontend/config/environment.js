@@ -49,7 +49,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.rootURL = '/aptamer2';
+    ENV.rootURL = '/aptamer2/';
   }
 
   return ENV;

@@ -3,7 +3,7 @@ import ENV from 'aptamer/config/environment';
 var opts = {};
 
 if ( ENV.environment === 'production' ) {
-  opts['namespace'] = '/aptamer2';
+  opts['namespace'] = ENV.rootURL;
 }
 
 export default DS.JSONAPIAdapter.extend(opts);

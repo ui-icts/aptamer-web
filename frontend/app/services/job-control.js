@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'aptamer/config/environment';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
 import $ from 'jquery';
 
@@ -50,7 +51,7 @@ export default PhoenixSocket.extend({
       return;
     }
 
-    this._super('/socket', {
+    this._super(`${ENV.rootURL}socket`, {
       // logger: ((kind, msg, data) => {
       //   #<{(| eslint-disable |)}>#
       //   console.log(`${kind}: ${msg}`, data);
