@@ -4,7 +4,7 @@
 #
 
 port = 4002
-database_name = "aptamer_prod"
-database_user = "postgres"
-database_password = "postgres"
+database_name = "aptamer2"
+database_user = "aptamer"
+database_password = "NOTSET"
 database_port = 5432
