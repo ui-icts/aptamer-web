@@ -19,7 +19,6 @@ pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="TODO"
 pkg_bin_dirs=(bin)
 pkg_deps=(
-  chrisortman/elixir
 )
 pkg_build_deps=(
   core/coreutils
@@ -28,6 +27,7 @@ pkg_build_deps=(
   core/gcc
   core/yarn
   core/node
+  chrisortman/elixir
 )
 
 pkg_binds_optional=(
