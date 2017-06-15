@@ -56,6 +56,15 @@ defmodule Aptamer.ReleaseTasks do
         IO.puts "Database already exists"
         {:ok, %{context | run_seeds: false}}
 
+      {:error, "ERROR 42501" <> msg} ->
+        # The database might already be there but we're not running as SU and no (easy) way to really
+        # check if it is or not.
+        # In this case we're going to pretend that it is there and and if it isn't then
+        # migrations will not run.
+        # We also disable seeds just in case
+        IO.puts "User #{config[:username]} does not have permission to create databases. Database MIGHT NOT EXIST. ERROR 42501 #{msg}"
+        {:ok, %{context | run_seeds: false}}
+
       {:error, term} when is_binary(term) ->
         {:error, "The database for #{inspect repo} couldn't be created: #{term}"}
 
