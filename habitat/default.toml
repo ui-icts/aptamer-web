@@ -4,6 +4,7 @@
 #
 
 port = 4002
+host_url = "localhost"
 
 database_host = "localhost"
 database_name = "aptamer2"
