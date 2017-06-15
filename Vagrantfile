@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "pg-install",type: :shell, :path => "vagrant-scripts/pg-install.sh"
   config.vm.provision "apache-install",type: :shell, :path => "vagrant-scripts/apache-install.sh"
   config.vm.provision "hab-install", type: :shell, :path => "vagrant-scripts/hab-install.sh"
+  config.vm.provision "aptamer-config", type: :shell, :path => "vagrant-scripts/aptamer-config.sh"
   config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777", "fmode=666"]
   config.vm.synced_folder "~/.hab", "/home/vagrant/.hab"
   config.vm.network "private_network", ip: "33.33.34.10", type: "dhcp", auto_config: false
