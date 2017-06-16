@@ -1,5 +1,5 @@
 <p>
-{{upload-with-progress url="/files" onUpload=(route-action "fileUploaded")}}
+{{upload-with-progress url=(concat rootURL "files") onUpload=(route-action "fileUploaded")}}
 </p>
 
 <br/>

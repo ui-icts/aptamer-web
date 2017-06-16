@@ -5,7 +5,7 @@
   graph file. You can {{link-to 'generate' 'predict-structures'}} one if you don't have one
   </p>
   <p>
-  {{upload-with-progress url="/files/structure" onUpload=(route-action "fileUploaded")}}
+  {{upload-with-progress url=(concat rootURL 'files/structure' ) onUpload=(route-action "fileUploaded")}}
 
   <br/>
 
