@@ -1,8 +1,8 @@
-import { moduleFor, test } from 'ember-qunit';
+import { moduleForModel, test } from 'ember-qunit';
 
-moduleFor('model:create-graph-options', 'Unit | Model | create graph options', {
+moduleForModel('create-graph-options', 'Unit | Model | create graph options', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:file']
 });
 
 test('it exists', function(assert) {

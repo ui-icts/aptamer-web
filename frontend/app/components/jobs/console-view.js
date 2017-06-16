@@ -12,10 +12,13 @@ export default Ember.Component.extend({
 
   didInsertElement() {
 
+
+    /* eslint-disable */
     let psconsole = this.$();
     if ( psconsole.length > 0 ) {
       this.set('psconsole', psconsole);
     }
+    /* eslint-enable */
   },
 
   messageView: Ember.computed('messages.[]', function() {
@@ -32,9 +35,8 @@ export default Ember.Component.extend({
   }),
 
   scrollToBottom() {
-    console.log('scrolltobottom');
-    let psconsole = this.get('psconsole');
     /* eslint-disable */
+    let psconsole = this.get('psconsole');
     if ( psconsole ) {
       psconsole.scrollTop(psconsole[0].scrollHeight - 380);
     }

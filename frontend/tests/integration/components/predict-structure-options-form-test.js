@@ -10,16 +10,10 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{predict-structure-options-form}}`);
+  this.set('noop', function() {});
+  this.render(hbs`{{predict-structure-options-form fileRunCommand=noop}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.notEqual(this.$().text().trim(), '');
 
   // Template block usage:
-  this.render(hbs`
-    {{#predict-structure-options-form}}
-      template block text
-    {{/predict-structure-options-form}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

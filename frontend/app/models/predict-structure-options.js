@@ -12,7 +12,6 @@ export default DS.Model.extend({
   file: DS.belongsTo(),
 
   commandLinePreview: Ember.computed('runMfold','viennaVersion','prefix','suffix','passOptions', function() {
-    let runMfold = '';
     let args = [];
     if ( this.get('runMfold') ) {
       args.push('--run_mfold');

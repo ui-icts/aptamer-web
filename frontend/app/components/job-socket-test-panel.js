@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { Socket } from 'phoenix';
 
 export default Ember.Component.extend({
 

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import CreateGraphOptions from '../models/create-graph-options';
 import { task, timeout } from 'ember-concurrency';
 
 export default Ember.Component.extend({
@@ -9,7 +8,7 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('optionsObject', CreateGraphOptions.create());
+    this.set('optionsObject', this.get('store').createRecord('create-graph-options'));
   },
 
   processTask: task(function * (file) {

@@ -19,7 +19,7 @@ export default Ember.Route.extend({
     jc.captureOutput(job.get('id'));
   },
 
-   resetController(controller, isExiting, transition) {
+   resetController(_controller, _isExiting, _transition) {
      let jc = this.get('jobControl');
      jc.stopCurrentCapture();
      // if (isExiting) {

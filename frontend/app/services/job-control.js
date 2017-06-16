@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ENV from 'aptamer/config/environment';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
-import $ from 'jquery';
 
 const JobOutput = Ember.Object.extend({
   channel: null,
@@ -37,11 +36,16 @@ export default PhoenixSocket.extend({
 
   init() {
     this.on('open', () => {
+
+      /* eslint-disable */
       console.log('Socket was opened');
+      /* eslint-enable */
     });
 
     this.on('close', () => {
+      /* eslint-disable */
       console.log('Closing socket...');
+      /* eslint-enable */
     });
   },
 

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { task, timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 
 /**
  * Acts as a container/provider for exposing
@@ -18,6 +18,11 @@ export default Ember.Component.extend({
   },
 
   loadOptions: task( function * () {
+
+    if (!this.get('file') ) {
+      return
+    }
+
     let file = this.get('file'),
         store = file.get('store'),
         queryParams = {
