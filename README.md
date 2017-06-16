@@ -40,6 +40,28 @@ mix ecto.migrate
 
 ## Production
 
+### Database
+
+```
+createdb --lc-collate='en_US.utf8' \
+  --lc-ctype='en_US.utf8' \
+  --encoding='UTF8' \
+  --template=template0 \
+  --owner=aptamer \
+  aptamer2
+
+```
+
+### Habitat
+
+I split install into two steps, you should probably look at the file before you pipe it into
+sudo
+
+```
+curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh
+cat install.sh | sudo bash
+```
+
 Once habitat is installed on the server you need to install two
 packages
 
