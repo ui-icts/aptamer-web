@@ -1,3 +1,5 @@
+import { Response } from 'ember-cli-mirage';
+
 export default function() {
 
   // These comments are here to help you get started. Feel free to delete them.
@@ -28,5 +30,22 @@ export default function() {
   });
 
   this.post('/jobs');
+
+  this.post('/register', function(_schema, request) {
+
+    let params = JSON.parse(request.requestBody);
+
+    if ( params.name === 'Chris' ) {
+      return new Response(500, {'Content-Type': 'application/json'},{
+        errors: [{
+          status: 422,
+          title: 'Error',
+          description: 'Unable to register'
+        }]
+      });
+    } else {
+      return {}
+    }
+  });
 
 }

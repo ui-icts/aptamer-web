@@ -1,6 +1,23 @@
 defmodule Aptamer.Factory do
   use ExMachina.Ecto, repo: Aptamer.Repo
 
+  def registration_factory do
+    %Aptamer.Registration{
+      name: sequence(:user, &"User #{&1}"),
+      email: sequence(:user, &"user#{&1}@example.com"),
+      password: "welcome"
+    }
+  end
+
+  def user_factory do
+    {:ok, password} = Comeonin.Ecto.Password.cast("welcome")
+    %Aptamer.User{
+      name: sequence(:user, &"User #{&1}"),
+      email: sequence(:user, &"user#{&1}@example.com"),
+      password: password
+    }
+  end
+
   def file_factory do
     %Aptamer.File{
       file_name: "test.txt",

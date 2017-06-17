@@ -5,7 +5,7 @@
 
 {{login-form
   session=session
-  onSubmit=(route-action "doLogin")
+  onSubmit=(action "doLogin")
 }}
   </div>
   <div class="four wide column">
@@ -14,7 +14,12 @@
     </div>
   </div>
   <div class="five wide column">
-    {{signup-form createAccount=(route-action "createAccount")}}
+    {{#if signupError}}
+    <div class="ui error message">
+      {{signupError}}
+    </div>
+    {{/if}}
+    {{signup-form createAccount=(action "createAccount")}}
   </div>
   <div class="one wide column">
   </div>

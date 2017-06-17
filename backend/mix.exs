@@ -27,7 +27,6 @@ defmodule Aptamer.Mixfile do
        :gettext,
        :phoenix_ecto,
        :postgrex,
-       :coherence,
        :timex,
        :timex_ecto,
        :porcelain,
@@ -36,7 +35,8 @@ defmodule Aptamer.Mixfile do
        :ja_serializer,
        :jsonapi,
        :proper_case,
-       :temp
+       :temp,
+       :comeonin,
      ]
     ]
   end
@@ -57,7 +57,6 @@ defmodule Aptamer.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:coherence, git: "git://github.com/smpallen99/coherence.git"},
      {:ecto_enum, "~> 1.0"},
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
@@ -70,6 +69,8 @@ defmodule Aptamer.Mixfile do
      {:porcelain, "~> 2.0"},
      {:temp, "~> 0.4"},
      {:distillery, git: "https://github.com/bitwalker/distillery"},
+     {:comeonin, "~> 3.0"},
+     {:comeonin_ecto_password, "~> 2.0"},
     ]
   end
 
