@@ -9,32 +9,25 @@ defmodule Aptamer.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :protected do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
-    plug :accepts, ["html"]
-    plug :accepts, ["json"]
-    plug :accepts, ["json-api"]
+    plug :accepts, ["html","json","json-api"]
 
-    resources "/files", Aptamer.FileController
-    resources "/jobs", Aptamer.JobController
-    resources "/create-graph-options", Aptamer.CreateGraphOptionsController
-    resources "/predict-structure-options", Aptamer.PredictStructureOptionsController
-    resources "/registration", Aptamer.RegistrationController, only: [:create]
   end
 
   scope "/" do
     pipe_through :browser
   end
 
-  scope "/" do
-    pipe_through :protected
+  scope "/", Aptamer do
+    pipe_through :api
+    #protected routes here
+    resources "/files", FileController
+    resources "/jobs", JobController
+    resources "/create-graph-options", CreateGraphOptionsController
+    resources "/predict-structure-options", PredictStructureOptionsController
+    resources "/register", RegistrationController, only: [:create]
+
+    post "/token", SessionController, :create, as: :login
   end
 
   scope "/", Aptamer do
@@ -44,8 +37,4 @@ defmodule Aptamer.Router do
     #Public routes here
   end
 
-  scope "/", Aptamer do
-    pipe_through :protected
-    #protected routes here
-  end
 end

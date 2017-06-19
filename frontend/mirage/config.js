@@ -14,7 +14,13 @@ export default function() {
   // this.namespace = '';    // make this `/api`, for example, if your API is namespaced
   // this.timing = 400;      // delay for each _request, automatically set to 0 during testing
 
-  this.passthrough("/download/:file_id");
+  this.passthrough();
+
+
+
+}
+
+export function testConfig() {
 
   this.get('/files');
 
@@ -30,7 +36,6 @@ export default function() {
   });
 
   this.post('/jobs');
-
   this.post('/register', function(_schema, request) {
 
     let params = JSON.parse(request.requestBody);
@@ -47,5 +52,4 @@ export default function() {
       return {}
     }
   });
-
 }

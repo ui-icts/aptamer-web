@@ -40,6 +40,15 @@ config :mime, :types, %{
 config :ja_serializer,
   pluralize_types: true
 
+config :guardian, Guardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: Aptamer,
+  ttl: {30, :days },
+  allowed_drift: 2000,
+  verify_issuer: true,
+  secret_key: "I2L/NVCn3tkCLORNkTD6yjySm0SqIMmDv508WEIG/7uxccze8tYsWqbGA4seN9s",
+  serializer: Aptamer.GuardianSerializer
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

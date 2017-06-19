@@ -2,11 +2,16 @@
   <div class="one wide column">
   </div>
   <div class="five wide column">
+    {{#if loginError}}
+    <div class="ui error message">
+      {{loginError}}
+    </div>
+    {{/if}}
 
-{{login-form
-  session=session
-  onSubmit=(action "doLogin")
-}}
+    {{login-form
+      session=session
+      onSubmit=(action "doLogin")
+    }}
   </div>
   <div class="four wide column">
     <div class="ui center aligned basic segment">

@@ -7,8 +7,6 @@ defmodule Aptamer.UserTest do
   test "create from registration" do
     registration = build(:registration)
     changeset = User.register(registration)
-    IO.inspect changeset
-
 
     assert changeset.valid?
 

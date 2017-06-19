@@ -71,6 +71,7 @@ defmodule Aptamer.Mixfile do
      {:distillery, git: "https://github.com/bitwalker/distillery"},
      {:comeonin, "~> 3.0"},
      {:comeonin_ecto_password, "~> 2.0"},
+     {:guardian, "~> 0.14"},
     ]
   end
 
