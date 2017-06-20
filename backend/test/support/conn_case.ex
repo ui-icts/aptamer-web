@@ -29,6 +29,22 @@ defmodule Aptamer.ConnCase do
 
       # The default endpoint for testing
       @endpoint Aptamer.Endpoint
+
+      def guardian_login(conn, user) do
+        jwt =
+          conn
+          |> bypass_through(Aptamer.Router, [:browser])
+          |> get("/")
+          |> Guardian.Plug.api_sign_in(user)
+          |> Guardian.Plug.current_token()
+
+        conn =
+          conn
+          |> put_req_header( "authorization", jwt)
+
+
+        conn
+      end
     end
   end
 

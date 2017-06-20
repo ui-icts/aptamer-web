@@ -11,7 +11,13 @@ defmodule Aptamer.Router do
 
   pipeline :api do
     plug :accepts, ["html","json","json-api"]
+  end
 
+  pipeline :api_auth do
+    plug :accepts, ["html","json","json-api"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated
   end
 
   scope "/" do
@@ -21,15 +27,18 @@ defmodule Aptamer.Router do
   scope "/", Aptamer do
     pipe_through :api
     #protected routes here
-    resources "/files", FileController
-    resources "/jobs", JobController
-    resources "/create-graph-options", CreateGraphOptionsController
-    resources "/predict-structure-options", PredictStructureOptionsController
     resources "/register", RegistrationController, only: [:create]
 
     post "/token", SessionController, :create, as: :login
   end
 
+  scope "/", Aptamer do
+    pipe_through :api_auth
+    resources "/files", FileController
+    resources "/jobs", JobController
+    resources "/create-graph-options", CreateGraphOptionsController
+    resources "/predict-structure-options", PredictStructureOptionsController
+  end
   scope "/", Aptamer do
     pipe_through :browser # Use the default browser stack
     get "/download/:file_id", PageController, :download_file

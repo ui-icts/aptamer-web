@@ -10,7 +10,9 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
   @invalid_attrs %{}
 
   setup do
+    current_user = insert(:user)
     conn = build_conn()
+      |> guardian_login(current_user)
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
@@ -94,7 +96,7 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
 
     assert created != nil
 
-    created = Repo.preload(created, :file)
+    created = Repo.preload(created, file: :owner)
     assert created.file == file
   end
 

@@ -46,7 +46,7 @@ config :guardian, Guardian,
   issuer: Aptamer,
   ttl: {30, :days },
   allowed_drift: 2000,
-  verify_issuer: true,
+  verify_issuer: false,
   secret_key: "I2L/NVCn3tkCLORNkTD6yjySm0SqIMmDv508WEIG/7uxccze8tYsWqbGA4seN9s",
   serializer: Aptamer.GuardianSerializer
 # Import environment specific config. This must remain at the bottom

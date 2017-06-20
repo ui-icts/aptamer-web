@@ -17,7 +17,7 @@ defmodule Aptamer.SessionControllerTest do
     }
 
     conn = post conn, login_path(conn,:create), params
-    assert %{"access_token" => token} = json_response(conn, 201)
+    assert %{"access_token" => _token} = json_response(conn, 201)
     
   end
 

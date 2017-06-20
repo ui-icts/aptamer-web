@@ -1,7 +1,6 @@
 defmodule Aptamer.RegistrationControllerTest do
   use Aptamer.ConnCase
 
-  alias Aptamer.Registration
   @valid_attrs %{email: "bob@example.com", name: "Bob", password: "welcome"}
   @invalid_attrs %{}
 

@@ -7,6 +7,7 @@ defmodule Aptamer.File do
     field :file_type, :string
     field :data, :binary
 
+    belongs_to :owner, Aptamer.User
     has_one :create_graph_options, Aptamer.CreateGraphOptions
     has_many :jobs, Aptamer.Job
 

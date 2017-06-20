@@ -9,9 +9,12 @@ defmodule Aptamer.FileController do
   plug :scrub_params, "data" when action in [:update]
 
   def index(conn, params) do
+    current_user = Guardian.Plug.current_resource(conn)
+
     query = from file in File,
       left_join: jobs in assoc(file,:jobs),
       left_join: options in assoc(file, :create_graph_options),
+      where: file.owner_id == ^current_user.id,
       order_by: :uploaded_on,
       preload: [jobs: jobs, create_graph_options: options]
 

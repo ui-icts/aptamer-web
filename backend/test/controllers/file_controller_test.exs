@@ -5,24 +5,33 @@ defmodule Aptamer.FileControllerTest do
 
   setup %{conn: conn} do
 
+    current_user = insert(:user)
+
     conn =
       conn
+      |> guardian_login(current_user)
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    {:ok, conn: conn}
+
+  
+    {:ok, conn: conn, current_user: current_user}
   end
 
-  test "gets all the structure files", %{conn: conn} do
+  test "gets all the structure files", %{conn: conn, current_user: current_user} do
 
-    fasta_file = insert(:file, file_name: "fasta.txt", file_type: "fasta")
+    someone_else = insert(:user)
+    someone_elses_file = insert(:file, owner: someone_else)
+
+    fasta_file = insert(:file, file_name: "fasta.txt", file_type: "fasta", owner: current_user)
     structure_file = insert(:file,
                               file_name: "structure.txt",
                               file_type: "structure",
                               uploaded_on: Timex.shift(
                                 fasta_file.uploaded_on,
                                 hours: 2
-                              ) |> Timex.to_datetime
+                              ) |> Timex.to_datetime,
+                              owner: current_user
     )
     insert(:create_graph_options, file: structure_file)
     insert(:job, file: fasta_file)
@@ -31,9 +40,11 @@ defmodule Aptamer.FileControllerTest do
       conn
       |> get(file_path(conn, :index, include: "jobs,create_graph_options"))
 
-    body = json_response(conn, 200)
+    assert body = json_response(conn, 200)
     # Difficult to test this because the order of the
     # included array is not deterministic?
+    # NOTE there's only two rows here, so I didn't get
+    # someone_else's file
     assert %{
         "data" => [
           %{"attributes" => %{"file-type" => "fasta"}},
@@ -42,71 +53,6 @@ defmodule Aptamer.FileControllerTest do
         "included" => [_included1, _included2]
        } = body
 
-    # assert json_response(conn, 200) == %{
-    #   "jsonapi" => %{"version" => "1.0"},
-    #   "data" =>[
-    #     %{"id" => fasta_file.id,
-    #       "type" => "files",
-    #       "attributes" => %{
-    #         "file-name" => fasta_file.file_name,
-    #         "file-type" => fasta_file.file_type,
-    #         "uploaded-on" => NaiveDateTime.to_iso8601(fasta_file.uploaded_on),
-    #       },
-    #       "relationships" => %{
-    #         "jobs" => %{
-    #           "data" => [%{ "type" => "jobs", "id" => fasta_job.id }]
-    #         },
-    #         "create-graph-options" => %{
-    #           "data" => nil
-    #         }
-    #       }
-    #     },
-    #     %{"id" => structure_file.id,
-    #       "type" => "files",
-    #       "attributes" => %{
-    #         "file-name" => structure_file.file_name,
-    #         "file-type" => structure_file.file_type,
-    #         "uploaded-on" => NaiveDateTime.to_iso8601(structure_file.uploaded_on)
-    #       },
-    #       "relationships" => %{
-    #         "jobs" => %{"data" => []},
-    #         "create-graph-options" => %{"data" => %{"id" => graph_options.id, "type" => "create-graph-options"}},
-    #       }
-    #     }
-    #   ],
-    #   "included" => [
-    #     %{"id" => fasta_job.id,
-    #       "type" => "jobs",
-    #       "attributes" => %{
-    #         "status" => "not-started"
-    #       },
-    #       "relationships" => %{
-    #         "file" => %{
-    #             "data" => %{
-    #               "id" => fasta_job.file.id,
-    #               "type" => "files"
-    #             }
-    #         }
-    #       }
-    #     },
-    #     %{"id" => graph_options.id,
-    #       "type" => "create-graph-options",
-    #       "attributes" => %{
-    #         "edge-type" => "tree",
-    #         "max-edit-distance" => 3,
-    #         "max-tree-distance" => 4,
-    #         "seed" => true,
-    #       },
-    #       "relationships" => %{
-    #         "file" => %{
-    #           "data" => %{
-    #             "id" => structure_file.id,
-    #             "type" => "files"
-    #           }
-    #         }
-    #       }
-    #     },
-    #   ]}
   end
 
   test "can upload new structure file", %{conn: conn} do

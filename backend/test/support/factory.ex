@@ -22,7 +22,8 @@ defmodule Aptamer.Factory do
     %Aptamer.File{
       file_name: "test.txt",
       uploaded_on: "2016-12-05T10:00:00.000000Z",
-      file_type: "UNKNOWN"
+      file_type: "UNKNOWN",
+      owner: build(:user)
     }
   end
 
