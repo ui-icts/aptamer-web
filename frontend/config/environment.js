@@ -9,6 +9,11 @@ module.exports = function(environment) {
     'ember-cli-uuid': {
          defaultUUID: false
     },
+    'ember-simple-auth': {
+      authenticationRoute: 'login',
+      routeIfAlreadyAuthenticated: 'files',
+      routeAfterAuthentication: 'files'
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

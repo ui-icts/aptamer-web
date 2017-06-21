@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import {uuid} from 'ember-cli-uuid';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model() {
     return this.get('store').findAll('file', {include: 'jobs,createGraphOptions'});

@@ -10,6 +10,16 @@ function fileId(file) {
 export default Ember.Component.extend({
 
   uploadJobs: [],
+  session: Ember.inject.service(),
+
+  init() {
+    this._super(...arguments);
+    this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
+      let obj = {};
+      obj[headerName] = headerValue;
+      this.set('dropzoneHeaders', obj);
+    });
+  },
 
   actions: {
     addedFile(file) {

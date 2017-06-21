@@ -40,7 +40,7 @@ defmodule Aptamer.ConnCase do
 
         conn =
           conn
-          |> put_req_header( "authorization", jwt)
+          |> put_req_header( "authorization", "Bearer " <> jwt)
 
 
         conn
