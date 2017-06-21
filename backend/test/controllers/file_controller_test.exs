@@ -55,7 +55,7 @@ defmodule Aptamer.FileControllerTest do
 
   end
 
-  test "can upload new structure file", %{conn: conn} do
+  test "can upload new structure file", %{conn: conn, current_user: current_user} do
     upload = %Plug.Upload{path: "test/fixtures/Final_Rd12.fa", filename: "Final_Rd12.fa"}
     response =
       conn
@@ -78,6 +78,9 @@ defmodule Aptamer.FileControllerTest do
     cs2 = checksum(%{path: "test/fixtures/Final_Rd12.fa"})
     cs1 = checksum(db_file)
     assert cs1 == cs2
+
+    db_file = Repo.preload(db_file, :owner)
+    assert db_file.owner == current_user
   end
 
   test "shows chosen resource", %{conn: conn} do
