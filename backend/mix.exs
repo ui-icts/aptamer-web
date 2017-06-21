@@ -37,6 +37,7 @@ defmodule Aptamer.Mixfile do
        :proper_case,
        :temp,
        :comeonin,
+       :comeonin_ecto_password,
      ]
     ]
   end
