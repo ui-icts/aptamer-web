@@ -38,6 +38,7 @@ defmodule Aptamer.Mixfile do
        :temp,
        :comeonin,
        :comeonin_ecto_password,
+       :guardian
      ]
     ]
   end
