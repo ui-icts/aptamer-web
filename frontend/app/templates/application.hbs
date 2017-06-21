@@ -7,7 +7,7 @@
     <div class="right menu">
       {{#if session.isAuthenticated}}
         <a class="ui item" {{action 'invalidateSession'}}>
-          Logout
+          {{currentUser.user.name}} (Logout)
         </a>
 
       {{else}}

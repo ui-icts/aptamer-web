@@ -51,4 +51,9 @@ defmodule Aptamer.SessionController do
   def create(conn, %{"grant_type" => _}) do
     throw "Unsupported grant_type"
   end
+
+  def show(conn, params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    render(conn, Aptamer.UserView, "show.json-api", %{user: current_user})
+  end
 end

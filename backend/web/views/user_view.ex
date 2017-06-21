@@ -1,5 +1,8 @@
 defmodule Aptamer.UserView do
   use Aptamer.Web, :view
+  use JaSerializer.PhoenixView
+
+  attributes [:email, :name]
 
   def render("show.json", %{user: user}) do
     %{data: render_one(user, Aptamer.UserView, "user.json")}
@@ -10,4 +13,5 @@ defmodule Aptamer.UserView do
       email: user.email,
       name: user.name}
   end
+
 end

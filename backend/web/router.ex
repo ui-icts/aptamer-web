@@ -38,7 +38,9 @@ defmodule Aptamer.Router do
     resources "/jobs", JobController
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
+    get "/users/me", SessionController, :show
   end
+
   scope "/", Aptamer do
     pipe_through :browser # Use the default browser stack
     get "/download/:file_id", PageController, :download_file
