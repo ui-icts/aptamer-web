@@ -20,6 +20,12 @@ defmodule Aptamer.JobController do
     case Repo.insert(changeset) do
       {:ok, job} ->
 
+        job =
+          job
+          |> Repo.preload(:create_graph_options)
+          |> Repo.preload(:predict_structure_options)
+          |> Repo.preload(:file)
+
         if Application.get_env(:aptamer, :start_jobs) == true do
           Aptamer.JobControl.start_job(job)
         end

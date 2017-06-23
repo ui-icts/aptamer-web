@@ -1,6 +1,7 @@
 defmodule Aptamer.JobControlTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
+  import Aptamer.Factory
   # alias Aptamer.JobControl.Job, as: :JD
   # setup do
   #   {:ok, jc} = JobControl.start_link()
@@ -12,9 +13,12 @@ defmodule Aptamer.JobControlTest do
   #   {:ok, process: jc}
   # end
 
-  # test "Able to list registered jobs", %{process: jc} do
-  #   sample = %JD{owner_id: 1, file_id: 2}
-  #   job =  JobControl.submit_job(jc, sample)
-  #
-  # end
+
+  @tag :focus
+  test "Runs a job and delivers results on " do
+    file = build(:file) |> as_structure
+    job = insert(:job, file: file, create_graph_options: build(:create_graph_options))
+
+    {:ok, pid} = Aptamer.JobControl.start_job(job)
+  end
 end

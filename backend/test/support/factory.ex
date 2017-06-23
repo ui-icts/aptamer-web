@@ -43,7 +43,9 @@ defmodule Aptamer.Factory do
     %Aptamer.Job{
       id: Ecto.UUID.generate(),
       status: "not-started",
-      file: build(:file)
+      file: build(:file),
+      predict_structure_options: nil,
+      create_graph_options: nil
     }
   end
 
