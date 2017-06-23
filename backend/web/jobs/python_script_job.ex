@@ -92,7 +92,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     args = common_args ++ state.args
 
     command_file = Path.join(state.working_dir, "command.sh")
-    File.write(command_file, python_path <> " " <> Enum.join(args))
+    File.write(command_file, python_path <> " " <> Enum.join(args, " "))
 
     collector = state.output_collector || IO.stream(:stdio, :line)
 
@@ -143,15 +143,14 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     {:ok, zip_struct} = zip_outputs(
       state.working_dir,
-      "#{state.input_file_name}.zip",
-      "#{state.script_name} outputs",
-      state.current_user_id
+      state.job_id,
+      "#{state.input_file_name}.zip"
     )
 
     {:ok, state}
   end
 
-  def zip_outputs( output_directory, zip_file_name, zip_file_type,zip_file_owner_id) do
+  def zip_outputs( output_directory, job_id, zip_file_name ) do
     ## Gather all files excluding any dot.ps
     #and create a zip archive
     files = File.ls!(output_directory)
@@ -162,12 +161,9 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     {:ok, zip_data} = Elixir.File.read(Path.join(output_directory, zip_file_name))
 
-    zip_struct = %Aptamer.File{
-      file_name: zip_file_name,
-      uploaded_on: DateTime.utc_now(),
-      file_type: zip_file_type,
-      data: zip_data,
-      owner_id: zip_file_owner_id
+    zip_struct = %Aptamer.Result{
+      archive: zip_data,
+      job_id: job_id
     }
 
     Repo.insert(zip_struct)

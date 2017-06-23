@@ -9,7 +9,7 @@ defmodule Aptamer.Job do
     belongs_to :file, Aptamer.File
     belongs_to :create_graph_options, Aptamer.CreateGraphOptions
     belongs_to :predict_structure_options, Aptamer.PredictStructureOptions
-
+    has_one :results, Aptamer.Result
     timestamps()
   end
 

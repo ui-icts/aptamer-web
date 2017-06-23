@@ -1,13 +1,18 @@
 {{#each jobs as |job|}}
   {{log job.status}}
   {{#if (eq job.status 'finished')}}
-    <p>Job {{job.id}} finished. {{#link-to 'jobs.finished' job}}View Program Output{{/link-to}}
+    <p>
+      Job {{job.id}} finished. <a href="/results/{{job.id}}">Download Results</a>
+    </p>
+  {{else if (eq job.status 'error')}}
+    <p>
+      Job {{job.id}} failed. <a href="/results/{{job.id}}">Download Results</a>
     </p>
   {{else}}
-  <p>
-  {{#link-to 'jobs.show' job }}
-    Job {{job.id}} {{job.status}}
-  {{/link-to}}
-  </p>
+    <p>
+    {{#link-to 'jobs.show' job }}
+      Job {{job.id}} {{job.status}}
+    {{/link-to}}
+    </p>
   {{/if}}
 {{/each}}
