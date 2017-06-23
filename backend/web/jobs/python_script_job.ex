@@ -91,6 +91,9 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     args = common_args ++ state.args
 
+    command_file = Path.join(state.working_dir, "command.sh")
+    File.write(command_file, python_path <> " " <> Enum.join(args))
+
     collector = state.output_collector || IO.stream(:stdio, :line)
 
     {collector, exit_status} = System.cmd(
@@ -109,6 +112,17 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     end |> Enum.join("\n")
 
 
+    results = """
+    Program exited with code: #{exit_status}
+
+    Output
+    ---------------------------------------------------------
+    #{output}
+    """
+    
+    results_path = Path.join(state.working_dir,"results.log")
+    File.write(results_path, results)
+
     state = %{state | output: output, exit_code: exit_status}
     {:ok, state}
   end
@@ -116,8 +130,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   def step(:process_outputs, state) do
     # if we ran predict_structures create
     # a structure file from the output
-
-    IEx.pry
 
     if state.script_name == "predict_structures.py" && state.exit_code == 0 do
       create_structure_file_from_outputs(
