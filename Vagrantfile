@@ -17,4 +17,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777", "fmode=666"]
   config.vm.synced_folder "~/.hab", "/home/vagrant/.hab"
   config.vm.network "private_network", ip: "33.33.34.10", type: "dhcp", auto_config: false
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    vb.cpus = 2
+  end
 end
