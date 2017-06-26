@@ -1,6 +1,6 @@
 defmodule Aptamer.Jobs.PythonScriptJob do
 
-  require IEx
+  require Logger
 
   alias Aptamer.Repo
 
@@ -37,13 +37,16 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
   def run(%Aptamer.Jobs.PythonScriptJob{} = state) do
 
-    {:ok, state} = execute_step(:prepare_files, state)
-    {:ok, state} = execute_step(:run_script, state)
-    {:ok, state} = execute_step(:process_outputs, state)
-    {:ok, state} = execute_step(:cleanup, state)
+    Logger.debug "Running python job: #{inspect(state)}"
+
+    {:ok, state}
+    |> execute_step(:prepare_files)
+    |> execute_step(:run_script)
+    |> execute_step(:process_outputs)
+    |> execute_step(:cleanup)
   end
 
-  def execute_step(step_name, state) do
+  def execute_step({:ok, state}, step_name) do
     broadcast :begin, step_name, state
     result = step step_name, state
     broadcast :finish, step_name, state
@@ -51,7 +54,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   end
 
   def broadcast(action, step_name, %Aptamer.Jobs.PythonScriptJob{listener: nil}) do
-    IO.puts "[BROADCAST] - #{action} #{step_name}"
+    Logger.info "[BROADCAST] - #{action} #{step_name}"
   end
 
   def broadcast(action, step_name, %Aptamer.Jobs.PythonScriptJob{listener: listener}) when is_pid(listener) do
@@ -65,11 +68,14 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
       {nil, some} ->
 
+        Logger.debug "Generating input file from file contents"
         temp_file = Path.join(temp_path, "inputdata.aptamer")
         File.write temp_file, some
         {temp_file, some}
 
       {some, nil} -> 
+        Logger.debug "Generating input file from file path #{some}"
+
         {:ok, contents} = Elixir.File.read(some)
         {some, contents}
 
@@ -100,6 +106,8 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       python_path,
       args,
       cd: state.working_dir,
+      stderr_to_stdout: true,
+      parallelism: true,
       into: collector
     )
 
@@ -132,11 +140,15 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     # a structure file from the output
 
     if state.script_name == "predict_structures.py" && state.exit_code == 0 do
+      Logger.debug "Creating structure file output"
+
       create_structure_file_from_outputs(
         state.working_dir,
         "#{state.input_file_name}.struct.fa",
         state.current_user_id
       )
+    else
+      Logger.debug "Not creating a structure file. script_name: #{inspect(state.script_name)} exit status: #{inspect(state.exit_code)}"
     end
 
     remove_extraneous_files(state.working_dir)
@@ -193,9 +205,8 @@ defmodule Aptamer.Jobs.PythonScriptJob do
         }
 
         Repo.insert(file_struct)
-      {:error, _} ->
-        IO.puts "Unable to read generated structure file"
-        #Don't do anything if we can't read the file
+      {:error, e} ->
+        Logger.error "Unable to read generated structure file. #{inspect(e)}"
 
     end
 
