@@ -1,5 +1,5 @@
-{{#each orderedJobs as |job index|}}
-  {{log job.status}}
+{{#each orderedJobs key='id' as |job index|}}
+  {{log "JOB STATUS" index job.id job.status}}
   {{#if (eq job.status 'finished')}}
     <p>
       Job {{job-number index}} finished. <a href="/results/{{job.id}}">Download Results</a>
