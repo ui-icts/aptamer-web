@@ -42,7 +42,7 @@ defmodule Aptamer.JobControl do
           listener: listener, job_id: job.id,
           input_file_name: job.file.file_name}
 
-      wh_result = Wormhole.capture(Aptamer.Jobs.PythonScriptJob,:run,[script_job], timeout_ms: 1_200_000) 
+      wh_result = Wormhole.capture(Aptamer.Jobs.PythonScriptJob,:run,[script_job], timeout_ms: 3_600_000) 
       task_finished(wh_result, job.id)
     end)
 
