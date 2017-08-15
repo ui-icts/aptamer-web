@@ -3,7 +3,7 @@
 ### macOS
 
 ```
-brew install elixir node@6 yarn
+brew install elixir node@6 yarn postgresql
 ```
 
 ## Development
@@ -20,6 +20,24 @@ to elixir when needed.
 
 When running in production we build all the ember code and bundle it
 with the backend release.
+
+To get the code
+
+```
+mkdir -p ~/icts/aptamer
+cd ~/icts/aptamer
+# Or fork this and clone from your own
+git clone git@github.uiowa.edu:cortman/aptamer-web.git web
+git clone git@github.com:ui-icts/aptamer.git scripts
+```
+
+There are some other setup steps in the scripts repo.
+
+For now, focus on the web.
+
+```
+cd web
+```
 
 To start the servers
 
