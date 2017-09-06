@@ -22,4 +22,8 @@ defmodule Aptamer.File do
     |> cast(params, [:file_name, :uploaded_on, :file_type, :data, :owner_id])
     |> validate_required([:file_name, :uploaded_on, :file_type, :owner_id])
   end
+
+  def delete(struct) do
+    Ecto.Multi.new
+  end
 end
