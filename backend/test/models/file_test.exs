@@ -17,4 +17,24 @@ defmodule Aptamer.FileTest do
     changeset = File.changeset(%File{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "delete a file with all associations" do
+    file = build(:file) |> as_structure |> insert
+    cg_opts = build(:create_graph_options) |> for_file(file) |> insert
+    ps_opts = build(:predict_structure_options) |> for_file(file) |> insert
+    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: cg_opts)
+
+    multi = File.delete(file)
+
+    assert [
+      {:create_graph_options, {:delete_all, cg_query, []}},
+      {:predict_structure_options, {:delete_all, ps_query, []}},
+      {:jobs, {:delete_all, j_query, []}},
+      {:files, {:delete, file, []}}
+    ] = Ecto.Multi.to_list(multi)
+
+    {:ok, _} = Repo.transaction(multi)
+
+    assert Repo.get(File, file.id) == nil
+  end
 end
