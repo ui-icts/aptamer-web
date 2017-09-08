@@ -16,6 +16,7 @@
         processButtonText="Run"
         onFileTypeChange=(route-action "changeFileType" f)
         fileRunCommand=(route-action "startProcessFile" f)
+        onDelete=(route-action "deleteFile" f)
       }}
 
       {{#files/options-provider file=f as |options|}}

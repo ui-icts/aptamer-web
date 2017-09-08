@@ -14,6 +14,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.refresh();
     },
 
+    deleteFile(file) {
+      file.deleteRecord();
+      console.log(file.get("fileName") + " deleted: " + file.get('isDeleted'))
+      return file.save();
+    },
+
     changeFileType(file,newType) {
       file.set('fileType', newType);
       return file.save();

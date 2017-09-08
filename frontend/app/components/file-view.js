@@ -36,6 +36,11 @@ export default Ember.Component.extend({
       this.toggleProperty('confirmingDelete');
     },
 
+    deleteFile(file) {
+      this.toggleProperty('confirmingDelete');
+      this.get('onDelete')(file);
+    },
+
     selectCommand(newCommand) {
       if ( newCommand === 'predict_structures' ) {
         this.get('onFileTypeChange')('fasta');
