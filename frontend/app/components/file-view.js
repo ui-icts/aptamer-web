@@ -36,6 +36,10 @@ export default Ember.Component.extend({
       this.toggleProperty('confirmingDelete');
     },
 
+    errorViewed(file) {
+      this.get('onErrorViewed')(file);
+    },
+
     deleteFile(file) {
       this.toggleProperty('confirmingDelete');
       this.get('onDelete')(file);

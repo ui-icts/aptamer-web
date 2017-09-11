@@ -7,7 +7,7 @@
 {{#filter-panel as |currentFilter|}}
   {{#file-list files=model filter=currentFilter as |f|}}
 
-    {{#file-view 
+    {{#file-view
         routeObject=f
         fileName=f.fileName
         fileType=f.fileType
@@ -17,18 +17,19 @@
         onFileTypeChange=(route-action "changeFileType" f)
         fileRunCommand=(route-action "startProcessFile" f)
         onDelete=(route-action "deleteFile" f)
+        onErrorViewed=(route-action "clearError" f)
       }}
 
       {{#files/options-provider file=f as |options|}}
       {{#if (eq f.fileType "fasta")}}
 
-        {{predict-structure-options-form 
-          optionsObject=options.forPredictStructure 
+        {{predict-structure-options-form
+          optionsObject=options.forPredictStructure
           fileRunCommand=(route-action "startProcessFile" f options.forPredictStructure)}}
 
       {{else if (eq f.fileType "structure")}}
 
-        {{graph-options-form 
+        {{graph-options-form
             optionsObject=options.forCreateGraph
             fileRunCommand=(route-action "startProcessFile" f options.forCreateGraph)}}
 
