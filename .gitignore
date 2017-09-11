@@ -1,2 +1,4 @@
 results
 .vagrant
+.DS_Store
+/node_modules/*
