@@ -2,6 +2,7 @@ defmodule Aptamer.CreateGraphOptionsTest do
   use Aptamer.ModelCase
 
   alias Aptamer.CreateGraphOptions
+  doctest Aptamer.CreateGraphOptions
 
   @valid_attrs %{edge_type: "some content", max_edit_distance: 42, max_tree_distance: 42, seed: true}
   @invalid_attrs %{}
