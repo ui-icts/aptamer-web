@@ -173,10 +173,9 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     ## Gather all files excluding any dot.ps
     #and create a zip archive
     files = File.ls!(output_directory)
-            |> Enum.map(fn filename -> Path.join(output_directory, filename) end)
             |> Enum.map(&String.to_charlist/1)
 
-    :zip.create(Path.join(output_directory,zip_file_name), files)
+    :zip.create(Path.join(output_directory,zip_file_name), files, [{:cwd, output_directory}])
 
     {:ok, zip_data} = Elixir.File.read(Path.join(output_directory, zip_file_name))
 
