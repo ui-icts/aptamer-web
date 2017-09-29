@@ -4,6 +4,7 @@
   <div class="five wide column">
     {{#if loginError}}
     <div class="ui error message">
+      <i class="close icon" {{action (mut loginError "")}}></i>
       {{loginError}}
     </div>
     {{/if}}
