@@ -14,7 +14,7 @@ defmodule Aptamer.FileControllerTest do
       |> put_req_header("content-type", "application/vnd.api+json")
 
 
-  
+
     {:ok, conn: conn, current_user: current_user}
   end
 
@@ -127,7 +127,7 @@ defmodule Aptamer.FileControllerTest do
     assert Repo.get(File, file.id).file_type == "fasta"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
+  test "deletes file without associations", %{conn: conn} do
     file = Repo.insert! %File{}
     conn = delete conn, file_path(conn, :delete, file)
     assert response(conn, 204)

@@ -4,6 +4,7 @@
 
 ```
 brew install elixir node@6 yarn postgresql
+npm install -g ember-cli
 ```
 
 ## Development
@@ -40,12 +41,30 @@ cd web
 ```
 
 To start the servers
+*Note: After you run `mix phoenix.server`, you may be propmpted to allow the download (or run 
+commands) of other dependencies. Go ahead and say yes to those prompts.*
 
 ```
 cd backend
 mix phoenix.server
-cd ../frontend
+cd ..
+yarn install
+cd frontend
 ember s --proxy http://localhost:4000
+```
+
+If you receiver this error
+
+```
+psql: FATAL:  role "postgres" does not exist
+```
+
+Try creating a user by running this command (replacing '9.6.4' with your version of postgres):
+
+```
+/usr/local/Cellar/postgresql/9.6.4/bin/createuser -s postgres
+# Or if that doesn't fix it
+brew cask install postgres
 ```
 
 If you need to create a database for development you can

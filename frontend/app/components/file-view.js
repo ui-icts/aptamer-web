@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   fileTypes: Ember.inject.service(),
   classNames: ['item'],
   showMore: false,
+  confirmingDelete: false,
   processButtonText: 'Process',
   fileName: 'Test File',
   shortDescription: 'Sample text here',
@@ -29,6 +30,19 @@ export default Ember.Component.extend({
   actions: {
     toggleShowMore() {
       this.toggleProperty('showMore');
+    },
+
+    toggleConfirmModal() {
+      this.toggleProperty('confirmingDelete');
+    },
+
+    errorViewed(file) {
+      this.get('onErrorViewed')(file);
+    },
+
+    deleteFile(file) {
+      this.toggleProperty('confirmingDelete');
+      this.get('onDelete')(file);
     },
 
     selectCommand(newCommand) {

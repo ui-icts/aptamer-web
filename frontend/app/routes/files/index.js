@@ -14,6 +14,31 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.refresh();
     },
 
+    deleteFile(file) {
+      file.deleteRecord();
+      return file.save().catch(
+        retry(3)
+      );
+
+      function retry(retries) {
+        return file.save().catch(function(reason) {
+          console.log("Retries left: " + retries)
+
+          if(retries-- > 0) {
+            return retry(retries)
+          }
+          //Failed too many times; set status to error = true to show user
+          file.set('status.error', true)
+          return file.set('status.errorMessage', "Failed to delete file")
+        })
+      }
+    },
+
+    clearError(file) {
+      file.set('status.error', false)
+      return file.set('status.errorMessage', '')
+    },
+
     changeFileType(file,newType) {
       file.set('fileType', newType);
       return file.save();

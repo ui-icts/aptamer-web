@@ -86,9 +86,16 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     {:ok, %{state | working_dir: temp_path, input_file_path: path, input_file_contents: contents}}
   end
 
+  def path(type) do
+    case type do
+      :python -> System.get_env("APTAMER_PYTHON") || "#{System.user_home}/.virtualenvs/aptamer-runtime/bin/python"
+      :script -> System.get_env("APTAMER_SCRIPT") || "#{System.user_home}/icts/aptamer/scripts" 
+    end
+  end
+
   def step(:run_script, state) do
-    python_path = System.get_env("APTAMER_PYTHON") || "/Users/cortman/.virtualenvs/aptamer-runtime/bin/python"
-    script_path = System.get_env("APTAMER_SCRIPT") || "/Users/cortman/icts/aptamer/scripts"
+    python_path = path(:python)
+    script_path = path(:script)
 
     common_args = [
       "#{script_path}/#{state.script_name}",

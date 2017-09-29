@@ -26,15 +26,33 @@ defmodule Aptamer.FileTest do
 
     multi = File.delete(file)
 
-    assert [
-      {:create_graph_options, {:delete_all, cg_query, []}},
-      {:predict_structure_options, {:delete_all, ps_query, []}},
-      {:jobs, {:delete_all, j_query, []}},
-      {:files, {:delete, file, []}}
-    ] = Ecto.Multi.to_list(multi)
+    {:ok, _} = Repo.transaction(multi)
+
+    assert Repo.get(File, file.id) == nil
+  end
+
+  test "delete a file with some associations" do
+    file = build(:file) |> as_structure |> insert
+    ps_opts = build(:predict_structure_options) |> for_file(file) |> insert
+    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
+
+    multi = File.delete(file)
 
     {:ok, _} = Repo.transaction(multi)
 
     assert Repo.get(File, file.id) == nil
+  end
+
+  test "returns a unique list of all specified, non-nil keys in a struct" do
+    jobs1 = [
+      %Aptamer.Job{:create_graph_options_id => 4, :predict_structure_options_id => nil},
+      %Aptamer.Job{:create_graph_options_id => 8, :predict_structure_options_id => -2},
+      %Aptamer.Job{:create_graph_options_id => 4, :predict_structure_options_id => 00},
+      %Aptamer.Job{:create_graph_options_id => 0, :predict_structure_options_id => 83},
+      %Aptamer.Job{:create_graph_options_id => nil, :predict_structure_options_id => 0}
+    ]
+
+    assert [4, 8, 0] = File.uniqueIdList(jobs1, :create_graph_options_id)
+    assert [-2, 0, 83] = File.uniqueIdList(jobs1, :predict_structure_options_id)
   end
 end
