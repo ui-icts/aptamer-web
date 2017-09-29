@@ -27,11 +27,13 @@ defmodule Aptamer.PageController do
     input_file = Path.join(temp_path, file_name)
     File.write input_file, file_content
 
-    conn
-    |> put_resp_header("content-disposition", ~s(attachment; filename="#{file_name}"))
-    |> send_file(200, input_file)
+    conn =
+      conn
+      |> put_resp_header("content-disposition", ~s(attachment; filename="#{file_name}"))
+      |> send_file(200, input_file)
 
     File.rm input_file
 
+    conn
   end
 end
