@@ -34,6 +34,10 @@ defmodule Aptamer.PredictStructureOptions do
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options","-foo -bar"]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS"]
+    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
+    ["-v", "2"]
+    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: nil, pass_options: ""})
+    ["-v", "2", "--prefix", "PP"]
   """
   def args(options) do
 
@@ -43,10 +47,9 @@ defmodule Aptamer.PredictStructureOptions do
       ["--pass_options", options.pass_options]
     end
 
-    common_args = [
-      "--prefix", options.prefix,
-      "--suffix", options.suffix,
-    ]
+    prefix_args = ix_args("prefix", options.prefix)
+    suffix_args = ix_args("suffix", options.suffix)
+common_args = prefix_args ++ suffix_args
 
     tool_args = if options.run_mfold do
       ["--run_mfold"]
@@ -57,6 +60,16 @@ defmodule Aptamer.PredictStructureOptions do
     tool_args ++ common_args ++ pass_args
   end
   
+  defp ix_args(which, value) do
+    case value do
+      "" -> []
+      nil -> []
+      _ -> ["--#{which}", value]
+
+    end
+
+  end
+
   defp missing?(thing) do
     case thing do
       "" -> true

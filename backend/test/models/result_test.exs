@@ -3,7 +3,7 @@ defmodule Aptamer.ResultTest do
 
   alias Aptamer.Result
 
-  @valid_attrs %{archive: "some content"}
+  @valid_attrs %{job_id: "1", archive: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
