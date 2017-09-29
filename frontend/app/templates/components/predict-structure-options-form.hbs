@@ -18,6 +18,7 @@
       {{/ui-dropdown}}
     </div>
 
+    {{#unless optionsObject.runMfold}}
       <label>Version</label>
       <div class="field">
         {{ui-radio name="viennaVersion" label="1" value="1" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
@@ -25,7 +26,7 @@
       <div class="field">
         {{ui-radio name="viennaVersion" label="2" value="2" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
       </div>
-
+     {{/unless}}
     <a {{action "toggleHelp"}}>Help</a>
   </div>
 

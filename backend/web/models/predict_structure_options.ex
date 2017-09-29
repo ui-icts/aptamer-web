@@ -19,7 +19,7 @@ defmodule Aptamer.PredictStructureOptions do
     struct
     |> cast(params, [:run_mfold, :vienna_version, :prefix, :suffix, :pass_options, :file_id])
     |> cast_assoc(:file)
-    |> validate_required([:run_mfold, :vienna_version, :prefix, :suffix])
+    |> validate_required([:run_mfold, :vienna_version])
   end
 
   @doc ~S"""
