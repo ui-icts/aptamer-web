@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import _ from 'lodash';
+import ENV from 'aptamer/config/environment';
 
 function byInserted(job1, job2) {
   return job1.get('insertedAt') - job2.get('insertedAt');
@@ -21,6 +22,14 @@ function momentSort(field) {
 }
 
 export default Ember.Component.extend({
+
+  downloadHost: Ember.computed(function() {
+    if ( ENV['aptamer-results-host'] ) {
+      return ENV['aptamer-results-host'];
+    } else {
+      return '';
+    }
+  }),
 
   orderedJobs: Ember.computed('jobs.[]', function() {
     let jobs = this.get('jobs').toArray();

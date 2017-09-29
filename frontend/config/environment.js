@@ -40,6 +40,8 @@ module.exports = function(environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
+
+    ENV['aptamer-results-host'] = 'http://localhost:4000';
   }
 
   if (environment === 'test') {
