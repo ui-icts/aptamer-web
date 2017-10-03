@@ -52,7 +52,7 @@ defmodule Aptamer.CreateGraphOptionsController do
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "create-graph-options", "attributes" => _create_graph_options_params}}) do
-    create_graph_options = Repo.get!(CreateGraphOptions, id) |> Repo.preload(:file)
+    create_graph_options = Repo.get!(CreateGraphOptions, id)
     changeset = CreateGraphOptions.changeset(create_graph_options, Params.to_attributes(data))
 
     case Repo.update(changeset) do

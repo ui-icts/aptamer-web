@@ -12,10 +12,6 @@ defmodule Aptamer.PredictStructureOptionsController do
     predict_structure_options = case params do
 
       %{"filter" => %{"forFile" => file_id}} ->
-        query = from o in PredictStructureOptions,
-                  where: o.file_id == ^file_id,
-                  order_by: [desc: o.inserted_at]
-
         query = from j in Aptamer.Job,
                   where: j.file_id == ^file_id and not is_nil(j.predict_structure_options_id),
                   order_by: [desc: j.inserted_at]

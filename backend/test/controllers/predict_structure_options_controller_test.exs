@@ -23,17 +23,6 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
     %{}
   end
 
-  defp relationships(%Aptamer.File{} = file) do
-    %{
-      "file" => %{
-        "data" => %{
-          "type" => "files",
-          "id" => file.id
-        }
-      },
-    }
-  end
-
   test "lists all entries on index", %{conn: conn} do
     insert_list(3, :predict_structure_options)
     conn =
@@ -65,8 +54,7 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    file = insert(:file)
-    attrs = build(:predict_structure_options, file: file)
+    attrs = build(:predict_structure_options)
 
     json = %{
       "data" => %{
@@ -78,7 +66,7 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
           "suffix" => attrs.suffix,
           "pass-options" => attrs.pass_options
          },
-        "relationships" => relationships(file)
+        "relationships" => relationships()
       }
     } |> Poison.encode!
 
@@ -96,8 +84,6 @@ defmodule Aptamer.PredictStructureOptionsControllerTest do
 
     assert created != nil
 
-    created = Repo.preload(created, file: :owner)
-    assert created.file == file
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
