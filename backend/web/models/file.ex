@@ -33,24 +33,32 @@ defmodule Aptamer.File do
     |> Multi.delete(:file, file)
   end
 
-  def deleteJobs(multi, jobs, _) when jobs == [] do
+  def deleteJobs(multi, jobs, file) when jobs == [] do
+
+    create_graph_query = from cgo in Aptamer.CreateGraphOptions,
+      where: cgo.file_id == ^file.id
+    predict_structure_query = from pso in Aptamer.PredictStructureOptions,
+      where: pso.file_id == ^file.id
+
     multi
+     |> Multi.delete_all(:create_graph_options, create_graph_query)
+     |> Multi.delete_all(:predict_structure_options, predict_structure_query)
   end
 
   def deleteJobs(multi, jobs, file) do
-    cgoIdList = uniqueIdList(jobs, :create_graph_options_id)
-    psoIdList = uniqueIdList(jobs, :predict_structure_options_id)
+    create_graph_ids = uniqueIdList(jobs, :create_graph_options_id)
+    predict_structure_ids = uniqueIdList(jobs, :predict_structure_options_id)
     
-    cgoQuery = from cgo in Aptamer.CreateGraphOptions,
-      where: cgo.id in ^cgoIdList
-    psoQuery = from pso in Aptamer.PredictStructureOptions,
-      where: pso.id in ^psoIdList
+    create_graph_query = from cgo in Aptamer.CreateGraphOptions,
+      where: (cgo.id in ^create_graph_ids) or (cgo.file_id == ^file.id)
+    predict_structure_query = from pso in Aptamer.PredictStructureOptions,
+      where: (pso.id in ^predict_structure_ids) or (pso.file_id == ^file.id)
 
     multi
      |> Multi.delete_all(:results, Ecto.assoc(jobs, :results))
      |> Multi.delete_all(:jobs, Ecto.assoc(file, :jobs))
-     |> Multi.delete_all(:create_graph_options, cgoQuery)
-     |> Multi.delete_all(:predict_structure_options, psoQuery)
+     |> Multi.delete_all(:create_graph_options, create_graph_query)
+     |> Multi.delete_all(:predict_structure_options, predict_structure_query)
   end
 
   def uniqueIdList(structList, id_name) do
