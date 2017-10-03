@@ -15,7 +15,18 @@ defmodule Aptamer.PredictStructureOptionsController do
         query = from o in PredictStructureOptions,
                   where: o.file_id == ^file_id,
                   order_by: [desc: o.inserted_at]
-        Repo.all(query)
+
+        query = from j in Aptamer.Job,
+                  where: j.file_id == ^file_id and not is_nil(j.predict_structure_options_id),
+                  order_by: [desc: j.inserted_at]
+
+        job = query |> first |> preload(:predict_structure_options) |> Repo.one
+
+        if is_nil(job) do
+          []
+        else
+          [job.predict_structure_options]
+        end
 
       _ -> Repo.all(PredictStructureOptions)
     end

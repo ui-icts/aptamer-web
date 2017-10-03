@@ -33,12 +33,11 @@ defmodule Aptamer.FileControllerTest do
                               ) |> Timex.to_datetime,
                               owner: current_user
     )
-    insert(:create_graph_options, file: structure_file)
     insert(:job, file: fasta_file)
 
     conn =
       conn
-      |> get(file_path(conn, :index, include: "jobs,create_graph_options"))
+      |> get(file_path(conn, :index, include: "jobs"))
 
     assert body = json_response(conn, 200)
     # Difficult to test this because the order of the
@@ -50,7 +49,7 @@ defmodule Aptamer.FileControllerTest do
           %{"attributes" => %{"file-type" => "fasta"}},
           %{"attributes" => %{"file-type" => "structure"}}
         ],
-        "included" => [_included1, _included2]
+        "included" => [%{}]
        } = body
 
   end
