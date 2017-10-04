@@ -6,7 +6,6 @@ defmodule Aptamer.CreateGraphOptions do
     field :seed, :boolean, default: false
     field :max_edit_distance, :integer
     field :max_tree_distance, :integer
-    belongs_to :file, Aptamer.File
 
     timestamps()
   end
@@ -16,8 +15,7 @@ defmodule Aptamer.CreateGraphOptions do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:edge_type, :seed, :max_edit_distance, :max_tree_distance, :file_id])
-    |> cast_assoc(:file)
+    |> cast(params, [:edge_type, :seed, :max_edit_distance, :max_tree_distance])
     |> validate_required([:edge_type, :seed, :max_edit_distance, :max_tree_distance])
   end
 

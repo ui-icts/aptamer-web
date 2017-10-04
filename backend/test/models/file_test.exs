@@ -20,9 +20,13 @@ defmodule Aptamer.FileTest do
 
   test "delete a file with all associations" do
     file = build(:file) |> as_structure |> insert
-    cg_opts = build(:create_graph_options) |> for_file(file) |> insert
-    ps_opts = build(:predict_structure_options) |> for_file(file) |> insert
-    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: cg_opts)
+    cg_opts = build(:create_graph_options) |> insert
+    ps_opts = build(:predict_structure_options) |> insert
+
+    job = insert(:job,
+                 file: file,
+                 predict_structure_options: ps_opts,
+                 create_graph_options: cg_opts)
 
     multi = File.delete(file)
 
@@ -33,10 +37,27 @@ defmodule Aptamer.FileTest do
 
   test "delete a file with some associations" do
     file = build(:file) |> as_structure |> insert
-    ps_opts = build(:predict_structure_options) |> for_file(file) |> insert
+    ps_opts = build(:predict_structure_options) |> insert
     job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
 
     multi = File.delete(file)
+
+    {:ok, _} = Repo.transaction(multi)
+
+    assert Repo.get(File, file.id) == nil
+  end
+
+  test "delete a file with no jobs" do
+
+    # This winds up a special case because if the options aren't
+    # linked to a job then we might not find them dependening on
+    # how the delete gets implemented, so just a case to make
+    # sure we're covered
+    file = build(:file) |> as_structure |> insert
+
+    multi = File.delete(file)
+
+    IO.inspect Ecto.Multi.to_list(multi)
 
     {:ok, _} = Repo.transaction(multi)
 
@@ -52,7 +73,7 @@ defmodule Aptamer.FileTest do
       %Aptamer.Job{:create_graph_options_id => nil, :predict_structure_options_id => 0}
     ]
 
-    assert [4, 8, 0] = File.uniqueIdList(jobs1, :create_graph_options_id)
-    assert [-2, 0, 83] = File.uniqueIdList(jobs1, :predict_structure_options_id)
+    assert [4, 8, 0] = File.unique_id_list(jobs1, :create_graph_options_id)
+    assert [-2, 0, 83] = File.unique_id_list(jobs1, :predict_structure_options_id)
   end
 end

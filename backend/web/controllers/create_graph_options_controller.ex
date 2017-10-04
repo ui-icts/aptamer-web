@@ -12,10 +12,17 @@ defmodule Aptamer.CreateGraphOptionsController do
     create_graph_options = case params do
 
       %{"filter" => %{"forFile" => file_id}} ->
-        query = from o in CreateGraphOptions,
-                  where: o.file_id == ^file_id,
-                  order_by: [desc: o.inserted_at]
-        Repo.all(query)
+
+        query = from j in Aptamer.Job,
+                  where: j.file_id == ^file_id and not is_nil(j.create_graph_options_id),
+                  order_by: [desc: j.inserted_at]
+
+        job = query |> first |> preload(:create_graph_options) |> Repo.one
+        if is_nil(job) do
+          []
+        else
+          [job.create_graph_options]
+        end
 
       _ -> Repo.all(CreateGraphOptions)
     end
@@ -45,7 +52,7 @@ defmodule Aptamer.CreateGraphOptionsController do
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "create-graph-options", "attributes" => _create_graph_options_params}}) do
-    create_graph_options = Repo.get!(CreateGraphOptions, id) |> Repo.preload(:file)
+    create_graph_options = Repo.get!(CreateGraphOptions, id)
     changeset = CreateGraphOptions.changeset(create_graph_options, Params.to_attributes(data))
 
     case Repo.update(changeset) do

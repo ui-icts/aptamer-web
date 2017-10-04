@@ -7,7 +7,6 @@ defmodule Aptamer.PredictStructureOptions do
     field :prefix, :string
     field :suffix, :string
     field :pass_options, :string
-    belongs_to :file, Aptamer.File
 
     timestamps()
   end
@@ -17,8 +16,7 @@ defmodule Aptamer.PredictStructureOptions do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:run_mfold, :vienna_version, :prefix, :suffix, :pass_options, :file_id])
-    |> cast_assoc(:file)
+    |> cast(params, [:run_mfold, :vienna_version, :prefix, :suffix, :pass_options])
     |> validate_required([:run_mfold, :vienna_version])
   end
 

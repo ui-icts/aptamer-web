@@ -23,17 +23,6 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
     %{}
   end
 
-  defp relationships(%Aptamer.File{} = file) do
-    %{
-      "file" => %{
-        "data" => %{
-          "type" => "files",
-          "id" => file.id
-        }
-      },
-    }
-  end
-
   test "lists all entries on index", %{conn: conn} do
     insert_list(3, :create_graph_options)
     conn =
@@ -66,8 +55,7 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
 
   test "creates and renders resource when data is valid", %{conn: conn} do
 
-    file = insert(:file)
-    attrs = build(:create_graph_options, file: file)
+    attrs = build(:create_graph_options)
     
     json = %{
       "data" => %{
@@ -78,7 +66,7 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
           "max_tree_distance" => attrs.max_tree_distance,
           "seed" => attrs.seed
         },
-        "relationships" => relationships(file)
+        "relationships" => relationships()
 
       }
     } |> Poison.encode!
@@ -86,10 +74,8 @@ defmodule Aptamer.CreateGraphOptionsControllerTest do
     conn = post conn, create_graph_options_path(conn, :create), json
 
     assert json_response(conn, 201)["data"]["id"]
-    created = Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance}) |> Repo.preload(file: :owner)
+    created = Repo.get_by(CreateGraphOptions, %{edge_type: attrs.edge_type, seed: attrs.seed, max_edit_distance: attrs.max_edit_distance, max_tree_distance: attrs.max_tree_distance})
     assert created != nil
-    created = Repo.preload(created, :file)
-    assert created.file == file
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do

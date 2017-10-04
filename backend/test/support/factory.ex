@@ -55,13 +55,7 @@ defmodule Aptamer.Factory do
       seed: true,
       max_edit_distance: 3,
       max_tree_distance: 4,
-      file: nil
     }
-  end
-
-  def for_file(%Aptamer.CreateGraphOptions{} = options, file) do
-
-    %{ options | file: file }
   end
 
   def predict_structure_options_factory do
@@ -74,7 +68,4 @@ defmodule Aptamer.Factory do
     }
   end
 
-  def for_file(%Aptamer.PredictStructureOptions{} = options, file) do
-    %{ options | file: file }
-  end
 end
