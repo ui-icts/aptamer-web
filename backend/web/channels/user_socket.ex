@@ -3,6 +3,7 @@ defmodule Aptamer.UserSocket do
 
   ## Channels
   channel "jobs:*", Aptamer.JobsChannel
+  channel "file:*", Aptamer.FileChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
