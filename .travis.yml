@@ -12,6 +12,7 @@ services:
   - postgresql
 
 before_script:
+  - cd backend
   - cp config/travis.exs config/test.exs
   - mix do ecto.create, ecto.migrate
 
