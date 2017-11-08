@@ -1,18 +1,49 @@
 language: elixir
-
 elixir: '1.5.1'
-
 otp_release: '18.0'
+
+sudo: required
+dist: trusty
 
 addons:
   postgresql: '9.6'
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+matrix:
+  include:
+    - language: node_js
+      node_js: '6'
 
 before_install:
-  - cd backend
+  - cd frontend
+  # setting the path for phantom.js 2.0.0
+  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+
+install:
+  - mkdir travis-phantomjs
+  - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+  - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
+  - export PATH=$PWD/travis-phantomjs:$PATH
+  - yarn install
+
+  - cd ../backend
+  - mix local.rebar --force
+  - mix.local.hex --force
+  - mix deps.get
 
 before_script:
   - cp config/travis.exs config/test.exs
   - mix do ecto.create, ecto.migrate
 
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+
 script:
   - mix test
+  - cd ../frontend
+  - ember test --server
