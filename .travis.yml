@@ -30,20 +30,20 @@ install:
   - export PATH=$PWD/travis-phantomjs:$PATH
   - yarn install
 
-  - cd ../backend
-  - mix local.rebar --force
-  - mix.local.hex --force
-  - mix deps.get
+#  - cd ../backend
+#  - mix local.rebar --force
+#  - mix.local.hex --force
+#  - mix deps.get
 
 before_script:
-  - cp config/travis.exs config/test.exs
-  - mix do ecto.create, ecto.migrate
+#  - cp config/travis.exs config/test.exs
+#  - mix do ecto.create, ecto.migrate
 
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 
 script:
-  - mix test
-  - cd ../frontend
+#  - mix test
+#  - cd ../frontend
   - ember test --server
