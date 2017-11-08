@@ -1,3 +1,5 @@
+# Aptamer [![Build Status](https://travis-ci.org/ui-icts/aptamer-web.svg?branch=master)](https://travis-ci.org/ui-icts/aptamer-web)
+
 ## Setup
 
 ### macOS
