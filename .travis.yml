@@ -32,9 +32,8 @@ install:
   - bower install
 
   - cd ../backend
-  - echo $PWD
-  - mix.local.hex --force
   - mix local.rebar --force
+  - mix.local.hex --force
   - mix deps.get
 
 before_script:
