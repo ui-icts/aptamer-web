@@ -19,7 +19,7 @@ matrix:
       node_js: '6'
 
 before_install:
-  - cd /backend
+  - cd backend/
   # setting the path for phantom.js 2.0.0
   - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
   # Backend
