@@ -24,7 +24,7 @@ before_install:
   # Backend
 
 install:
-  - elixir -v
+  - echo $TRAVIS_OTP_RELEASE
   - erl --verison
   - mix local.hex --force
   - mix local.rebar --force
