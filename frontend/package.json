@@ -64,7 +64,7 @@
   },
   "private": true,
   "dependencies": {
-    "bower": "^1.8.0",
+    "bower": "^1.8.2",
     "phantomjs-prebuilt": "^2.1.7"
   }
 }
