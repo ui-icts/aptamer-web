@@ -51,4 +51,5 @@ script:
   - mix test
   # Frontend
   - cd ../frontend
+  - echo $PWD
   - ember test
