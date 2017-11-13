@@ -12,16 +12,11 @@ addons:
     packages:
       - google-chrome-stable
 
-# matrix:
-#  include:
-#    - language: node_js
-#      node_js: '6'
-
 before_install:
+  # Backend
   - cd backend/
   # setting the path for phantom.js 2.0.0
   - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  # Backend
 
 install:
   - echo $TRAVIS_OTP_RELEASE
@@ -35,8 +30,8 @@ install:
   - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
   - export PATH=$PWD/travis-phantomjs:$PATH
   - yarn global add bower
-  - npm install -g ember-cli
   - yarn install
+  - npm install -g ember-cli
   - bower install
 
 before_script:
