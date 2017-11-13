@@ -35,6 +35,7 @@ install:
   - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
   - export PATH=$PWD/travis-phantomjs:$PATH
   - yarn global add bower
+  - yarn global add ember
   - yarn install
   - bower install
 
