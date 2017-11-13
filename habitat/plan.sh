@@ -10,7 +10,7 @@ pkg_name=aptamer-web
 
 # Required unless overridden by the `HAB_ORIGIN` environment variable.
 # The origin is used to denote a particular upstream of a package.
-pkg_origin=ui-icts
+pkg_origin=chrisortman
 
 # Required.
 # Sets the version of the package.
