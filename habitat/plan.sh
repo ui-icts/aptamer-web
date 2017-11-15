@@ -27,7 +27,7 @@ pkg_build_deps=(
   core/make
   core/gcc
   core/yarn
-  core/node
+  core/node6
   chrisortman/elixir
 )
 
