@@ -1,3 +1,5 @@
+const isTestEnv = process.env.EMBER_ENV === 'test';
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -9,6 +11,7 @@ module.exports = {
     browser: true
   },
   rules: {
-    "no-unused-vars": ["error", {"argsIgnorePattern": "^_"}]
+    "no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],
+    "no-console": isTestEnv ? "off" : "on"
   }
 };
