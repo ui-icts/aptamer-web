@@ -11,7 +11,8 @@ test('it renders', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
 
   this.set('noop', function() {});
-  this.render(hbs`{{file-view fileRunCommand=(action noop)}}`);
+  this.set('jobs', {});
+  this.render(hbs`{{file-view fileRunCommand=(action noop) jobs=jobs}}`);
   assert.notEqual(this.$().text().trim(), '');
 
 });

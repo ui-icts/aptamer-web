@@ -11,7 +11,11 @@ test('it renders', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
 
   this.set('noop', function() {})
-  this.render(hbs`{{graph-options-form fileRunCommand=noop}}`);
+  this.set('stubbedOptionsObject', {
+    maxEditDistance: 1,
+    maxTreeDistance: 1
+  })
+  this.render(hbs`{{graph-options-form fileRunCommand=noop optionsObject=stubbedOptionsObject}}`);
 
   assert.notEqual(this.$().text().trim(), '');
 
