@@ -12,6 +12,6 @@ module.exports = {
   },
   rules: {
     "no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],
-    "no-console": isTestEnv ? "off" : "on"
+    "no-console": isTestEnv ? "off" : "error"
   }
 };
