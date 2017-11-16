@@ -14,7 +14,7 @@ pkg_origin=chrisortman
 
 # Required.
 # Sets the version of the package.
-pkg_version="0.0.1"
+pkg_version=$(cat VERSION.txt)
 pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="TODO"
 pkg_bin_dirs=(bin)

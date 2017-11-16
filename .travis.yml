@@ -49,3 +49,6 @@ script:
   - cd ../frontend
   - echo $PWD
   - ember test
+
+after_success:
+  -awk -F'[.]' '{print $1"."$2"."$TRAVIS_BUILD_NUMBER}' version.txt > temp_file && mv temp_file version.txt | cat version.txt
