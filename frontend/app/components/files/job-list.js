@@ -2,6 +2,7 @@ import Ember from 'ember';
 import _ from 'lodash';
 import ENV from 'aptamer/config/environment';
 
+// eslint-disable-next-line no-unused-vars
 function byInserted(job1, job2) {
   return job1.get('insertedAt') - job2.get('insertedAt');
 }

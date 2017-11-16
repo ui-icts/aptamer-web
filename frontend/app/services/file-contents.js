@@ -94,7 +94,7 @@ export default PhoenixSocket.extend({
     .receive('ok', response => {
       onComplete(response.body)
     })
-    .receive('error', response => {
+    .receive('error', _response => {
       onComplete("Error")
     })
   },
