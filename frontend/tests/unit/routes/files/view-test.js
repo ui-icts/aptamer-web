@@ -2,7 +2,7 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('route:files/view', 'Unit | Route | files/view', {
   // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
+  needs: ['service:fileContents']
 });
 
 test('it exists', function(assert) {
