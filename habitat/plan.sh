@@ -15,7 +15,7 @@ pkg_origin=chrisortman
 # Required.
 # Sets the version of the package.
 pkg_version() {
-  cat "$SRC_PATH/version.txt"
+  cat "../version.txt"
 }
 
 
