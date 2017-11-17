@@ -1,0 +1,3 @@
+[aptamer-web]
+plan_path = "habitat/plan.sh"
+paths = [ "/*" ]
