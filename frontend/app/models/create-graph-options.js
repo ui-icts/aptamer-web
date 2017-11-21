@@ -5,7 +5,7 @@ export default DS.Model.extend({
   edgeType: DS.attr('string', {defaultValue: 'both'}),
   seed: DS.attr('boolean', {defaultValue: false}),
   maxEditDistance: DS.attr('distance', { defaultValue: 3}),
-  maxTreeDistance: DS.attr('distance', { defaultValue: 3}),
+  maxTreeDistance: DS.attr('distance', { defaultValue: 0}),
 
   file: DS.belongsTo(),
 
