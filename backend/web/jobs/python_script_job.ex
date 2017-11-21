@@ -69,7 +69,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       {nil, some} ->
 
         Logger.debug "Generating input file from file contents"
-        temp_file = Path.join(temp_path, "inputdata.aptamer")
+        temp_file = Path.join(temp_path, state.input_file_name)
         File.write temp_file, some
         {temp_file, some}
 
