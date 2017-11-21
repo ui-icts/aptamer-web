@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 function formatSliderValue(value) {
-  if ( Number.parseInt(value) === 0 ) {
+  if ( Number.parseInt(value) === 11 ) {
     return "None";
   } else {
     return value.toString();

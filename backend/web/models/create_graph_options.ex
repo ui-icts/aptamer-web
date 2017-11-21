@@ -29,20 +29,24 @@ defmodule Aptamer.CreateGraphOptions do
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 3, max_tree_distance: 3})
     ["-t", "both", "-e", "3", "-d", "3", "--seed"]
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 0, max_tree_distance: 3})
+    ["-t", "both", "-e", "0", "-d", "3", "--seed"]
+    iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: -1, max_tree_distance: 3})
     ["-t", "both", "-d", "3", "--seed"]
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 2, max_tree_distance: 0})
+    ["-t", "both", "-e", "2", "-d", "0", "--seed"]
+    iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 2, max_tree_distance: -1})
     ["-t", "both", "-e", "2", "--seed"]
   """
   def args(options) do
 
     edge_args = [ "-t", options.edge_type]
     ed_args = case options.max_edit_distance do
-      0 -> []
+      -1 -> []
       _ -> ["-e", to_string(options.max_edit_distance)]
     end
 
     td_args = case options.max_tree_distance do
-      0 -> []
+      -1 -> []
       _ -> ["-d", to_string(options.max_tree_distance)]
     end
 

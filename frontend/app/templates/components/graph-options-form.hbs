@@ -23,12 +23,14 @@
 
     <div class="field">
       <label>Max Edit Distance {{editDistanceDisplay}}</label>
-      {{input type="range" value=optionsObject.maxEditDistance min=0 max=10}}
+      <br>
+      {{input type="range" value=optionsObject.maxEditDistance min=0 max=11}}
     </div>
 
     <div class="field">
       <label>Max tree distance {{treeDistanceDisplay}}</label>
-      {{input type="range" value=optionsObject.maxTreeDistance min=0 max=10}}
+      <br>
+      {{input type="range" value=optionsObject.maxTreeDistance min=0 max=11}}
     </div>
 
     <a {{action "toggleHelp"}}>Help</a>
@@ -42,7 +44,7 @@
         <div class="header">
       Edge Type
         </div>
-        Whether to create edges in output graph according to 
+        Whether to create edges in output graph according to
         edit distance or tree distance. <code>-t or --edge_type</code>
     </div>
 
@@ -58,10 +60,10 @@
           Maximum edit distance
         </div>
 
-          Maximum edit distance allowed for an edge to be created 
-          in output graph. 
+          Maximum edit distance allowed for an edge to be created
+          in output graph.
           Assumes <code>--edge_type</code> is "edit" or "both". (Default: 3)
-        
+
     </div>
 
     <div class="item">
@@ -69,10 +71,10 @@
           Maximum tree distance
         </div>
 
-          Maximum tree distance allowed for an edge to be created 
-          in output graph. 
+          Maximum tree distance allowed for an edge to be created
+          in output graph.
           Assumes <code>--edge_type</code> is "tree" or "both". (Default: 3)
-        
+
     </div>
 
   </div>
