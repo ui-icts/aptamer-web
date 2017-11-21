@@ -73,7 +73,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
         File.write temp_file, some
         {temp_file, some}
 
-      {some, nil} -> 
+      {some, nil} ->
         Logger.debug "Generating input file from file path #{some}"
 
         {:ok, contents} = Elixir.File.read(some)
@@ -89,7 +89,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   def path(type) do
     case type do
       :python -> System.get_env("APTAMER_PYTHON") || "#{System.user_home}/.virtualenvs/aptamer-runtime/bin/python"
-      :script -> System.get_env("APTAMER_SCRIPT") || "#{System.user_home}/icts/aptamer/scripts" 
+      :script -> System.get_env("APTAMER_SCRIPT") || "#{System.user_home}/icts/aptamer/scripts"
     end
   end
 
@@ -104,9 +104,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     args = common_args ++ state.args
 
-    command_file = Path.join(state.working_dir, "command.sh")
-    File.write(command_file, python_path <> " " <> Enum.join(args, " "))
-
     collector = state.output_collector || IO.stream(:stdio, :line)
 
     {collector, exit_status} = System.cmd(
@@ -120,7 +117,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
 
     output = case collector do
-      %Aptamer.JobControl.RunningJob{output: x} -> x 
+      %Aptamer.JobControl.RunningJob{output: x} -> x
       %IO.Stream{} -> []
       [h|t] = lines -> lines
       _ -> []
@@ -134,7 +131,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     ---------------------------------------------------------
     #{output}
     """
-    
+
     results_path = Path.join(state.working_dir,"results.log")
     File.write(results_path, results)
 
