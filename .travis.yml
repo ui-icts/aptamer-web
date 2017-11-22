@@ -27,7 +27,6 @@ before_install:
     | awk '{printf($1==$2?\"v\"$2$3+1:\"v\"$1\"0\")}') "
   - git tag -a $semver
   - echo > $semver > 'version.txt'
-
   # Backend
   - cd backend/
   # setting the path for phantom.js 2.0.0
