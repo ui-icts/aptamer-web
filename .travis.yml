@@ -29,8 +29,7 @@ before_install:
   - echo > $semver > 'version.txt'
   # Backend
   - cd backend/
-  # setting the path for phantom.js 2.0.0
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH # setting the path for phantom.js 2.0.0
 
 install:
   - mix local.hex --force
