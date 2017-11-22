@@ -18,15 +18,15 @@ branches:
     - /^v?\d+\.\d+\.\d+$/
 
 before_install:
-  # Get version number from package.json and the git tag (controlled by Travis)
-  # If major and minor of the git tag match package.json version, ++ the patch #
+  # Get version number from version.txt and the git tag (controlled by Travis)
+  # If major and minor of the git tag match version.txt version, ++ the patch #
   # else, dev has manually updated major or minor and patch needs to reset to 0
-  - "{ sed -nE 's/^[ \\t]*\"version\": \"([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}\",$/\\1/p' package.json;
+  - "semver=$({ sed -nE 's/^[ \\t]*\"version\": \"([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}\",$/\\1/p' version.txt;
       git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\\.[0-9]{1,}\\.)([0-9]{1,})$/\\1 \\2/g'; }
     | tr \"\\n\" \" \"
-    | awk '{printf($1==$2?\"v\"$2$3+1:\"v\"$1\"0\")}'
-    | xargs -I {} git tag -a {} -m \"{}\"\n"
-  - npm --no-git-tag-version version from-git
+    | awk '{printf($1==$2?\"v\"$2$3+1:\"v\"$1\"0\")}') "
+  - git tag -a $semver
+  - echo > $semver > 'version.txt'
 
   # Backend
   - cd backend/
