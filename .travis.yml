@@ -63,7 +63,9 @@ script:
   - cd ../frontend
   - ember test
 
-after_success:
-  script: git push --tags
-    on:
-      branch: master
+deploy:
+  - provider: script
+      skip_cleanup: true
+      script: git push --tags
+      on:
+        branch: master
