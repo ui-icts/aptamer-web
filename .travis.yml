@@ -57,6 +57,7 @@ before_deploy:
     \2/g''; } | tr "\n" " " | awk ''{printf($1==$2?"v"$2$3+1:"v"$1)}'') '
   - git tag -a $semver -m $semver
   - echo > $semver > 'version.txt'
+  - cat version.txt
 
 deploy:
   provider: releases
