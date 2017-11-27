@@ -12,21 +12,11 @@ addons:
     packages:
       - google-chrome-stable
 
-# Do not build all tags pushed by Travis
 branches:
   except:
-    - /^v?\d+\.\d+\.\d+$/
+    - "/^v?\\d+\\.\\d+\\.\\d+$/"
 
 before_install:
-  # Get version number from version.txt and the git tag (controlled by Travis)
-  # If major and minor of the git tag match version.txt version, ++ the patch #
-  # else, dev has manually updated major or minor and patch needs to reset to 0
-  - "semver=$({ sed -nE 's/^[ \\t]*\"version\": \"([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}\",$/\\1/p' version.txt;
-      git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\\.[0-9]{1,}\\.)([0-9]{1,})$/\\1 \\2/g'; }
-    | tr \"\\n\" \" \"
-    | awk '{printf($1==$2?\"v\"$2$3+1:\"v\"$1\"0\")}') "
-  - git tag -a $semver -m $semver
-  - echo > $semver > 'version.txt'
   # Backend
   - cd backend/
   - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH # setting the path for phantom.js 2.0.0
@@ -61,9 +51,17 @@ script:
   - cd ../frontend
   - ember test
 
+before_deploy:
+  - 'semver=$({ sed -nE ''s/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p''
+    version.txt; git describe --abbrev=0 | sed -E ''s/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\1
+    \2/g''; } | tr "\n" " " | awk ''{printf($1==$2?"v"$2$3+1:"v"$1"0")}'') '
+  - git tag -a $semver -m $semver
+  - echo > $semver > 'version.txt'
+
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: git push --tags
+  provider: releases
+  api_key:
+    secure: G8P3muWMThtIOR57J+lRFajwcZ8stLbVnC+IfQyBqcGTHEb93brUqLG/gsMIYOztNIdwtqtG2/zM/5cgSNe+xGY6+a0kjfd4SMO2dfBlqeyeswP/Q35YGFjsCM7J3KakpijjWW3WkMYsiWRydiOgLwWoNLe24bF7NgqgrCqY9BJwn+wZt8O9HFoprT+97c50+kn8fwD84P7HdZEUuJkhWcE4jCA6M3wf2PNNUpuf6AMXypRARmG3gCFf9d+dl2FaMJoWb/iex2dnzMGqnj+0KZE9MDsPc+/SuDYMXyXUasDeZURJtpLAJY8cZRcUZblLs0Ss/nirz5kxgXaRORen2B93OkoWLdoBlb9Mk3FebwgUjyaqWORqbdnYhB+FkW2luSliXm0Wq0i7ck3mdYxJXOLryJFGlg4078vGFJIS3CcLF3s2yMsN5g5ztFK3aElUh0qzrZ95s+w1yja9wjEc5PLJuHqlgMWR4hQPWObEaqDfJnMMw2fhnUF0F4AJS1G7qe2Xq+5GLA0QIPFlipP4eLbrfzF+Xn5UYWx7uBEAcICV36r3qu0FLPdsKFKUp4w8lyspXqV8D01eHL5fBQv9efGDZLTyA4B3zV6H14FK/HqUVPeL4rBB1YHaJMdRaBDtkKZDg5Ek3LaM48AHBKzXTs/1PAOHPY+3EjuMN7e39Lo=
+  file: version.txt
   on:
-    branch: master
+    repo: ui-icts/aptamer-web
