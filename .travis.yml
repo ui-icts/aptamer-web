@@ -53,9 +53,9 @@ script:
 
 before_deploy:
   - cd ..
-  - 'semver=$({ sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p'
-    version.txt; git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\1
-    \2/g'; } | tr "\n" " " | awk '{printf($1==$2?"v"$2$3+1:"v"$1"0")}') '
+  - 'semver=$({ sed -nE ''s/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p''
+    version.txt; git describe --abbrev=0 | sed -E ''s/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\1
+    \2/g''; } | tr "\n" " " | awk ''{printf($1==$2?"v"$2$3+1:"v"$1"0")}'') '
   - echo $semver
   - git tag -a $semver -m $semver
   - echo > $semver > 'version.txt'
