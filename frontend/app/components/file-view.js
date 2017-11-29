@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'aptamer/config/environment';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -24,6 +25,14 @@ export default Ember.Component.extend({
       return 'predict_structures';
     } else {
       return 'create_graph';
+    }
+  }),
+
+  downloadHost: Ember.computed(function() {
+    if ( ENV['aptamer-results-host'] ) {
+      return ENV['aptamer-results-host'];
+    } else {
+      return '';
     }
   }),
 
