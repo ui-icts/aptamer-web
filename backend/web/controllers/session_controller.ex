@@ -54,6 +54,6 @@ defmodule Aptamer.SessionController do
 
   def show(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
-    render(conn, Aptamer.UserView, "show.json-api", %{user: current_user})
+    render(conn, Aptamer.UserView, "show.json-api", %{data: current_user})
   end
 end
