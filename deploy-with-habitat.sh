@@ -1,22 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
 
 export HAB_ORIGIN=chrisortman
 export HAB_ORIGIN_KEYS=chrisortman
 export HAB_NONINTERACTIVE=true
 
 echo "Preparing habitat keys"
-mkdir -p $HOME/.hab/cache/keys
-cp chrisortman-20160618040827.pub $HOME/.hab/cache/keys
+mkdir -p ${HOME}/.hab/cache/keys
+cp chrisortman-20160618040827.pub ${HOME}/.hab/cache/keys
 
 
 echo "Installing habitat"
-curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh
+curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh | sudo bash
 
 echo "Building package"
 hab studio -r /hab/studio/travis build -R habitat
 source results/last_build.env
 
 echo "Uploading package"
-hab pkg upload results/$pkg_artifact
+hab pkg upload results/${pkg_artifact}
