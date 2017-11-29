@@ -2,6 +2,30 @@ defmodule Aptamer.JobsChannel do
   use Phoenix.Channel
   alias Porcelain.Process, as: Proc
 
+  ###### Client Calls ###########
+  def broadcast_job_status(job) do
+    json = JaSerializer.format( Aptamer.JobView, job )
+    #I think usually these channel objects aren't meant
+    #to have a client interface that is called from other
+    #parts of the code ... but this is the place we wanted
+    #to look for this behaviour so YOLO
+    #The way you initiate a broadcast from somewhere else
+    #was to use the `Endpoint` because at this point I don't
+    #have a socket so can't call the 'broadcast!' function
+    Aptamer.Endpoint.broadcast("jobs:status", "status_change", json)
+  end
+
+  def broadcast_job_output(job, output) do
+    Aptamer.Endpoint.broadcast("jobs:" <> job.job_id, "job_output", %{job_id: job.job_id, lines: [output]})
+  end
+
+  def broadcast_file_added(file) do
+    json = JaSerializer.format( Aptamer.FileView, file )
+    Aptamer.Endpoint.broadcast("jobs:status", "file_added", json)
+  end
+
+  ###############################
+
   def join("jobs:status", _message, socket) do
     {:ok,"Welcome to the jobs status channel", socket}
   end

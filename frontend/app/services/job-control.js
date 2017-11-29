@@ -67,6 +67,7 @@ export default PhoenixSocket.extend({
 
     channel.on("job_output", (payload) => this._onJobOutput(payload) );
     channel.on("status_change", (payload) => this._onStatusChange(payload) );
+    channel.on("file_added", (payload) => this._onFileAdded(payload) );
 
     channel.onError( _e => {
       /* eslint-disable */
@@ -104,6 +105,10 @@ export default PhoenixSocket.extend({
   },
 
   _onStatusChange(payload) {
+    this.get('store').pushPayload(payload);
+  },
+
+  _onFileAdded(payload) {
     this.get('store').pushPayload(payload);
   },
 

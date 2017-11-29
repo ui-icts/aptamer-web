@@ -7,12 +7,13 @@ defmodule Aptamer.JobControl do
     defstruct job_id: "UNSET", output: []
 
     defimpl Collectable do
-      import Aptamer.Endpoint, only: [broadcast: 3]
 
       def into(job) do
         {job.output, fn
           list, {:cont, output} ->
-            broadcast("jobs:" <> job.job_id, "job_output", %{job_id: job.job_id, lines: [output]})
+
+            Aptamer.JobsChannel.broadcast_job_output(job,output)
+
             [output|list]
 
           list, :done -> %{job | output: Enum.reverse(list)}
@@ -62,11 +63,21 @@ defmodule Aptamer.JobControl do
     end
 
   end
+
   def task_finished({:ok, {:ok, script_job}}, job_id) do
+
+    # Update job to mark as finished
     job = Repo.get!(Aptamer.Job,job_id)
     cs = Aptamer.Job.changeset(job, %{status: "finished", output: script_job.output})
     {:ok, job} = Repo.update cs
     broadcast_status(job)
+
+    # send added file if present
+    case script_job do
+      %{generated_file: file} when not is_nil(file) ->
+        Aptamer.JobsChannel.broadcast_file_added(file)
+      _ -> :ok
+    end
   end
 
   def task_finished({:error, error}, job_id) do
@@ -92,8 +103,7 @@ defmodule Aptamer.JobControl do
   end
 
   defp broadcast_status(job) do
-    json = JaSerializer.format( Aptamer.JobView, job )
-    Aptamer.Endpoint.broadcast("jobs:status", "status_change", json)
+    Aptamer.JobsChannel.broadcast_job_status(job)
   end
   ##
   # Client

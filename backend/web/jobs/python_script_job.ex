@@ -15,7 +15,8 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     input_file_name: nil, #The original name of the file
     input_file_contents: nil, #The contents
     input_file_path: nil, #The temp path where we've written it for processing
-    output_collector: nil
+    output_collector: nil,
+    generated_file: nil
 
 
   def create(script_name, args, input_file) do
@@ -143,16 +144,16 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     # if we ran predict_structures create
     # a structure file from the output
 
-    if state.script_name == "predict_structures.py" && state.exit_code == 0 do
+    state = if state.script_name == "predict_structures.py" && state.exit_code == 0 do
       Logger.debug "Creating structure file output"
 
-      create_structure_file_from_outputs(
-        state.working_dir,
-        "#{state.input_file_name}.struct.fa",
-        state.current_user_id
-      )
+      case create_structure_file_from_outputs( state.working_dir, "#{state.input_file_name}.struct.fa", state.current_user_id) do
+        {:ok, file} -> %{state | generated_file: file}
+        _ -> state
+      end
     else
       Logger.debug "Not creating a structure file. script_name: #{inspect(state.script_name)} exit status: #{inspect(state.exit_code)}"
+      state
     end
 
     remove_extraneous_files(state.working_dir)
@@ -194,7 +195,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
   def create_structure_file_from_outputs(output_directory, new_file_name, file_owner_id) do
 
-    structure_file = Path.join(output_directory, "inputdata.aptamer.struct.fa")
+    structure_file = Path.join(output_directory, new_file_name)
 
     case Elixir.File.read(structure_file) do
       {:ok, file_data} ->
