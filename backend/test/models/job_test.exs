@@ -22,4 +22,17 @@ defmodule Aptamer.JobTest do
     refute changeset.valid?
   end
 
+  test "gives correct description" do
+    file = build(:file, file_name: "1 quarter portion") |> as_structure |> insert
+    ps_opts = build(:predict_structure_options) |> insert
+    cg_opts = build(:create_graph_options) |> insert
+    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
+
+    assert "predict structures for file 1 quarter portion" == Job.description(job)
+
+    job = insert(:job, file: file, predict_structure_options: nil, create_graph_options: cg_opts)
+    
+    assert "create graph for file 1 quarter portion" == Job.description(job)
+  end
+
 end
