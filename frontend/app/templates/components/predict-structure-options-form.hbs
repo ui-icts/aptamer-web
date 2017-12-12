@@ -19,13 +19,13 @@
     </div>
 
     {{#unless optionsObject.runMfold}}
-      <label>Version</label>
-      <div class="field">
+      <label>Version: 2</label>
+      {{!-- <div class="field">
         {{ui-radio name="viennaVersion" label="1" value="1" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
       </div>
       <div class="field">
         {{ui-radio name="viennaVersion" label="2" value="2" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
-      </div>
+      </div> --}}
      {{/unless}}
     <a {{action "toggleHelp"}}>Help</a>
   </div>
@@ -65,7 +65,7 @@
         <div class="header">
           Vienna Version
         </div>
-        ViennaRNA package version
+        ViennaRNA package version 2 is used
     </div>
 
     <div class="item">
