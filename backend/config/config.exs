@@ -20,8 +20,10 @@ config :aptamer, Aptamer.Endpoint,
 
 config :aptamer, Aptamer.Mailer,
   adapter: Bamboo.SMTPAdapter,
-  server: "ns-mx.uiowa.edu",
+  server: "localhost", #SMTP server here
   hostname: "aptamer.icts.uiowa.edu",
+  # username: {:system, "SMTP_USERNAME"},
+  # password: {:system, "SMTP_PASSWORD"},
   port: 1025,
   tls: :if_available, # can be `:always` or `:never`
   allowed_tls_versions: [:"tlsv1", :"tlsv1.1", :"tlsv1.2"], # or {":system", ALLOWED_TLS_VERSIONS"} w/ comma seprated values (e.g. "tlsv1.1,tlsv1.2")
