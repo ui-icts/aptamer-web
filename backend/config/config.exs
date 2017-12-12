@@ -18,6 +18,16 @@ config :aptamer, Aptamer.Endpoint,
   pubsub: [name: Aptamer.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :aptamer, Aptamer.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: "ns-mx.uiowa.edu",
+  hostname: "aptamer.icts.uiowa.edu",
+  port: 1025,
+  tls: :if_available, # can be `:always` or `:never`
+  allowed_tls_versions: [:"tlsv1", :"tlsv1.1", :"tlsv1.2"], # or {":system", ALLOWED_TLS_VERSIONS"} w/ comma seprated values (e.g. "tlsv1.1,tlsv1.2")
+  ssl: false, # can be `true`
+  retries: 3
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -52,4 +62,3 @@ config :guardian, Guardian,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
-

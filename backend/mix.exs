@@ -39,7 +39,9 @@ defmodule Aptamer.Mixfile do
        :comeonin,
        :comeonin_ecto_password,
        :guardian,
-       :wormhole
+       :wormhole,
+       :bamboo,
+       :bamboo_smtp
      ]
     ]
   end
@@ -76,6 +78,8 @@ defmodule Aptamer.Mixfile do
      {:comeonin_ecto_password, "~> 2.0"},
      {:guardian, "~> 0.14"},
      {:wormhole, git: "https://github.com/renderedtext/wormhole"},
+     {:bamboo, "~> 0.8"},
+     {:bamboo_smtp, "~> 1.4.0"}
     ]
   end
 

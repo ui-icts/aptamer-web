@@ -36,14 +36,14 @@ defmodule Aptamer.JobControl do
       listener = spawn(Aptamer.JobControl,:on_broadcast,[job])
 
       script_job = Aptamer.Jobs.PythonScriptJob.create(script_name, program_args, job.file.data)
-      script_job = %{script_job | 
+      script_job = %{script_job |
           current_user_id: job.file.owner_id,
           output_collector: %Aptamer.JobControl.RunningJob{job_id: job.id,
           output: ["Initializing job..."]},
           listener: listener, job_id: job.id,
           input_file_name: job.file.file_name}
 
-      wh_result = Wormhole.capture(Aptamer.Jobs.PythonScriptJob,:run,[script_job], timeout_ms: 3_600_000) 
+      wh_result = Wormhole.capture(Aptamer.Jobs.PythonScriptJob,:run,[script_job], timeout_ms: 3_600_000)
       task_finished(wh_result, job.id)
     end)
 
@@ -70,6 +70,7 @@ defmodule Aptamer.JobControl do
     job = Repo.get!(Aptamer.Job,job_id)
     cs = Aptamer.Job.changeset(job, %{status: "finished", output: script_job.output})
     {:ok, job} = Repo.update cs
+    Aptamer.Email.send_job_complete(job)
     broadcast_status(job)
 
     # send added file if present
@@ -87,6 +88,7 @@ defmodule Aptamer.JobControl do
     job = Repo.get!(Aptamer.Job,job_id)
     cs = Aptamer.Job.changeset(job, %{status: "error"})
     {:ok, job} = Repo.update cs
+    Aptamer.Email.send_job_complete(job)
     broadcast_status(job)
   end
 
