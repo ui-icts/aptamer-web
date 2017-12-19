@@ -9,5 +9,6 @@ export ERTS_VSN="8.1"
 
 export APTAMER_PYTHON="$(hab pkg path chrisortman/aptamer-scripts)/bin/run-aptamer"
 export APTAMER_SCRIPT="$(hab pkg path chrisortman/aptamer-scripts)/scripts"
+export SMTP_PASSWORD="{{cfg.smtp_password}}"
 
 exec aptamer foreground
