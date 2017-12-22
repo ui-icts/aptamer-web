@@ -3,6 +3,14 @@ defmodule Aptamer.Email do
   require Logger
   alias Aptamer.{Repo,Endpoint,Mailer,Job}
 
+  def send_job_complete(job) when is_nil(job) do
+    error = "job cannot be nil. Not sending job completion email..."
+
+    Logger.error(error)
+
+    {:error, error}
+  end
+
 
   def send_job_complete(job) do
     IO.puts("Sending completion email..")
@@ -11,20 +19,12 @@ defmodule Aptamer.Email do
     |> Mailer.deliver_later
   end
 
-  def send_job_complete(job) when is_nil(job) do
-    error = "job cannot be nil. Not sending job completion email..."
-
-    Logger.error(error, :send_job_complete)
-
-    {:error, error}
-  end
-
   defp aptamer_job_email(job) do
     {:ok, user} = job_author(job)
 
     new_email
     |> to(user.email)
-    |> from(System.get_env("SMTP_USERNAME"))
+    |> from({"Aptamer Notifier", "ICTS-aptamer-mailer@uiowa.edu"})
     |> subject("Job complete")
     |> html_body("<i>This email was automatically sent to notify you that a job was completed. Please do not reply to this address</i><hr><br>")
     |> html_body(job_email_text(job))
@@ -53,9 +53,7 @@ defmodule Aptamer.Email do
   end
 
   defp job_author(job) do
-    file = Repo.get(Aptamer.File, job.file_id)
-    user = Repo.get(Aptamer.User, file.owner_id)
 
-    {:ok, user}
+    {:ok, job.file.owner}
   end
 end
