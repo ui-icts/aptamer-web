@@ -53,6 +53,8 @@ defmodule Aptamer.Email do
   end
 
   defp job_author(job) do
+    job = job
+          |> Repo.preload([file: :owner])
 
     {:ok, job.file.owner}
   end
