@@ -19,7 +19,7 @@ defmodule Aptamer.Email do
     |> Mailer.deliver_later
   end
 
-  defp aptamer_job_email(job) do
+  def aptamer_job_email(job) do
     {:ok, user} = job_author(job)
 
     new_email
