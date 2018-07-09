@@ -18,31 +18,6 @@ defmodule Aptamer.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Aptamer, []},
-     applications: [
-       :phoenix,
-       :phoenix_pubsub,
-       :phoenix_html,
-       :cowboy,
-       :logger,
-       :gettext,
-       :phoenix_ecto,
-       :postgrex,
-       :timex,
-       :timex_ecto,
-       :porcelain,
-       :ecto_enum,
-       :fs,
-       :ja_serializer,
-       :jsonapi,
-       :proper_case,
-       :temp,
-       :comeonin,
-       :comeonin_ecto_password,
-       :guardian,
-       :wormhole,
-       :bamboo,
-       :bamboo_smtp
-     ]
     ]
   end
 
@@ -73,7 +48,7 @@ defmodule Aptamer.Mixfile do
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
      {:porcelain, "~> 2.0"},
      {:temp, "~> 0.4"},
-     {:distillery, git: "https://github.com/bitwalker/distillery"},
+     {:distillery, "~> 1.5", runtime: false},
      {:comeonin, "~> 3.0"},
      {:comeonin_ecto_password, "~> 2.0"},
      {:guardian, "~> 0.14"},
