@@ -42,7 +42,7 @@ defmodule Aptamer.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:jsonapi, git: "https://github.com/jeregrine/jsonapi"},
      {:ex_machina, "~> 2.0", only: :test},
-     {:proper_case, "~> 1.0.0", git: "https://github.com/johnnyji/proper_case"},
+     {:proper_case, "~> 1.2.0"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:fs, "~> 0.9", override: true},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
