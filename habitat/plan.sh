@@ -32,7 +32,7 @@ pkg_build_deps=(
   core/gcc
   core/yarn
   core/node6
-  chrisortman/elixir
+  core/elixir
 )
 
 pkg_binds_optional=(
