@@ -1,5 +1,5 @@
+import { computed } from '@ember/object';
 import DS from 'ember-data';
-import Ember from 'ember';
 import _ from 'lodash';
 
 export default DS.Model.extend({
@@ -11,7 +11,7 @@ export default DS.Model.extend({
   createGraphOptions: DS.belongsTo('create-graph-options'),
   predictStructureOptions: DS.belongsTo('predict-structure-options'),
 
-  outputLines: Ember.computed('output', function() {
+  outputLines: computed('output', function() {
     return _.split( this.get('output'), '\n' );
   }),
 });

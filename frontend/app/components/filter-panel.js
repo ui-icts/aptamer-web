@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import EmberObject, { computed } from '@ember/object';
 
-const MenuItem = Ember.Object.extend({
+const MenuItem = EmberObject.extend({
   text: '',
   selected: false,
   value: null
@@ -11,11 +13,11 @@ const allItem = MenuItem.create({
   value: 'all'
 });
 
-export default Ember.Component.extend({
-  fileTypes: Ember.inject.service('file-types'),
+export default Component.extend({
+  fileTypes: service('file-types'),
 
   currentFilter: 'all',
-  menuItems: Ember.computed('currentFilter', function() {
+  menuItems: computed('currentFilter', function() {
     let fileTypes = this.get('fileTypes'),
         items;
 

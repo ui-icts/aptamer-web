@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 
 function formatSliderValue(value) {
   if ( Number.parseInt(value) === 11 ) {
@@ -8,17 +9,17 @@ function formatSliderValue(value) {
   }
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
   showHelp: false,
   showCommandPreview: true,
   edgeTypes: ['edit', 'tree', 'both'],
 
-  editDistanceDisplay: Ember.computed('optionsObject.maxEditDistance', function() {
+  editDistanceDisplay: computed('optionsObject.maxEditDistance', function() {
     let value = this.get('optionsObject.maxEditDistance');
     return formatSliderValue(value);
   }),
 
-  treeDistanceDisplay: Ember.computed('optionsObject.maxTreeDistance', function() {
+  treeDistanceDisplay: computed('optionsObject.maxTreeDistance', function() {
     let value = this.get('optionsObject.maxTreeDistance');
     return formatSliderValue(value);
   }),

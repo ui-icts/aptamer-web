@@ -1,16 +1,18 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import EmberObject from '@ember/object';
 import $ from 'jquery';
 
-const UploadJob = Ember.Object.extend({ });
+const UploadJob = EmberObject.extend({ });
 
 function fileId(file) {
   return `${file.name}-${file.lastModified}-${file.size}`;
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   uploadJobs: [],
-  session: Ember.inject.service(),
+  session: service(),
 
   init() {
     this._super(...arguments);

@@ -1,7 +1,7 @@
-import Ember from 'ember';
-const { isBlank } = Ember;
+import Component from '@ember/component';
+import { isBlank } from '@ember/utils';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   invalid: false,
 

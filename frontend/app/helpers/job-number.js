@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 export function jobNumber([value,..._rest]/*, hash*/) {
   let number = value + 1;
   return `#${number}`;
 }
 
-export default Ember.Helper.helper(jobNumber);
+export default helper(jobNumber);

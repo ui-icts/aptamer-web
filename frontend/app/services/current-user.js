@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { resolve } from 'rsvp';
+import Service, { inject as service } from '@ember/service';
 
-export default Ember.Service.extend({
-  session: Ember.inject.service('session'),
-  store: Ember.inject.service(),
+export default Service.extend({
+  session: service('session'),
+  store: service(),
 
   load() {
     if (this.get('session.isAuthenticated')) {
@@ -14,7 +15,7 @@ export default Ember.Service.extend({
           this.set('user', user);
         });
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   }
 });

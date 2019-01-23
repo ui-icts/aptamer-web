@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['item'],
-  store: Ember.inject.service(),
+  store: service(),
   showMore: false,
 
   init() {

@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { run, schedule } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import ENV from 'aptamer/config/environment';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
 
-const FileContents = Ember.Object.extend({
+const FileContents = EmberObject.extend({
   channel: null,
   fileId: null,
   messages: [],
@@ -21,8 +23,8 @@ const FileContents = Ember.Object.extend({
   },
 
   _onFileContents(payload) {
-    Ember.run(() => {
-      Ember.run.schedule('sync', () => {
+    run(() => {
+      schedule('sync', () => {
         let messages = this.get('messages');
         messages.pushObjects(payload.lines);
       });
@@ -31,7 +33,7 @@ const FileContents = Ember.Object.extend({
 });
 
 export default PhoenixSocket.extend({
-  store: Ember.inject.service(),
+  store: service(),
   currentContentsChannel: null,
 
   init() {

@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   showHelp: false,
   showCommandPreview: true,
 
   predictionTools: ['ViennaRNA', 'mFold'],
-  currentTool: Ember.computed('optionsObject.runMfold', 'optionsObject.viennaVersion', function() {
+  currentTool: computed('optionsObject.runMfold', 'optionsObject.viennaVersion', function() {
     let runmfold = this.get('optionsObject.runMfold');
 
     if ( runmfold ) {

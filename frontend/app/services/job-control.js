@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { run, schedule } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import ENV from 'aptamer/config/environment';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
 
-const JobOutput = Ember.Object.extend({
+const JobOutput = EmberObject.extend({
   channel: null,
   jobId: null,
   messages: [],
@@ -21,8 +23,8 @@ const JobOutput = Ember.Object.extend({
   },
 
   _onJobOutput(payload) {
-    Ember.run(() => {
-      Ember.run.schedule('sync', () => {
+    run(() => {
+      schedule('sync', () => {
         let messages = this.get('messages');
         messages.pushObjects(payload.lines);
       });
@@ -31,7 +33,7 @@ const JobOutput = Ember.Object.extend({
 });
 
 export default PhoenixSocket.extend({
-  store: Ember.inject.service(),
+  store: service(),
   currentOutputChannel: null,
 
   init() {

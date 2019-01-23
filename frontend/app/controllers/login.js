@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session'),
+export default Controller.extend({
+  session: service('session'),
 
   actions: {
     doLogin({username, password}) {
@@ -25,7 +27,7 @@ export default Ember.Controller.extend({
           password
         }
       };
-      return Ember.$.ajax({
+      return $.ajax({
           url: '/register',
           method: 'POST',
           data: JSON.stringify(params),

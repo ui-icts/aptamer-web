@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { throttle } from '@ember/runloop';
+import { computed, observer } from '@ember/object';
+import Component from '@ember/component';
 import _ from 'lodash';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: 'textarea',
   attributeBindings: ['rows','cols'],
 
@@ -21,15 +23,15 @@ export default Ember.Component.extend({
     /* eslint-enable */
   },
 
-  messageView: Ember.computed('messages.[]', function() {
+  messageView: computed('messages.[]', function() {
     let messages = this.get('messages');
-    Ember.run.throttle(this,'scrollToBottom', 500);
+    throttle(this,'scrollToBottom', 500);
     return _(messages).takeRight(50).join("\n");
   }),
 
-  messagesChanged: Ember.observer('messages.[]',function() {
+  messagesChanged: observer('messages.[]',function() {
 
-    Ember.run.throttle(this,'scrollToBottom', 500);
+    throttle(this,'scrollToBottom', 500);
     // Ember.run.scheduleOnce('afterRender', this, 'scrollToBottom');
 
   }),

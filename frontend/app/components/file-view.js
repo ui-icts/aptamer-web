@@ -1,10 +1,13 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { filterBy } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import ENV from 'aptamer/config/environment';
 
-export default Ember.Component.extend({
-  store: Ember.inject.service(),
+export default Component.extend({
+  store: service(),
 
-  fileTypes: Ember.inject.service(),
+  fileTypes: service(),
   classNames: ['item'],
   showMore: false,
   confirmingDelete: false,
@@ -12,14 +15,14 @@ export default Ember.Component.extend({
   fileName: 'Test File',
   shortDescription: 'Sample text here',
 
-  readyJobs: Ember.computed.filterBy('jobs', 'status', 'ready'),
-  runningJobs: Ember.computed.filterBy('jobs', 'status', 'running'),
+  readyJobs: filterBy('jobs', 'status', 'ready'),
+  runningJobs: filterBy('jobs', 'status', 'running'),
 
-  fileTypeOptions: Ember.computed(function() {
+  fileTypeOptions: computed(function() {
     return this.get('fileTypes').list()
   }),
 
-  selectedCommand: Ember.computed('fileType', function() {
+  selectedCommand: computed('fileType', function() {
     let ft = this.get('fileType');
     if ( ft === 'fasta' ) {
       return 'predict_structures';
@@ -28,7 +31,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  downloadHost: Ember.computed(function() {
+  downloadHost: computed(function() {
     if ( ENV['aptamer-results-host'] ) {
       return ENV['aptamer-results-host'];
     } else {

@@ -1,7 +1,6 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { isBlank } from '@ember/utils';
 import DS from 'ember-data';
-
-const { isBlank } = Ember;
 
 export default DS.Model.extend({
   runMfold: DS.attr('boolean', { defaultValue: false }),
@@ -11,7 +10,7 @@ export default DS.Model.extend({
   passOptions: DS.attr('string'),
   file: DS.belongsTo(),
 
-  commandLinePreview: Ember.computed('runMfold','viennaVersion','prefix','suffix','passOptions', function() {
+  commandLinePreview: computed('runMfold','viennaVersion','prefix','suffix','passOptions', function() {
     let args = [];
     if ( this.get('runMfold') ) {
       args.push('--run_mfold');
