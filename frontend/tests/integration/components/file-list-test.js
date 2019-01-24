@@ -1,27 +1,29 @@
 import EmberObject from '@ember/object';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('file-list', 'Integration | Component | file list', {
-  integration: true
-});
+module('Integration | Component | file list', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
+  test('it renders', async function(assert) {
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.set('filesStub', [
-    EmberObject.create({fileName: 'file1'}),
-    EmberObject.create({fileName: 'file2'}),
-  ]);
+    this.set('filesStub', [
+      EmberObject.create({fileName: 'file1'}),
+      EmberObject.create({fileName: 'file2'}),
+    ]);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#file-list files=filesStub as |sf|}}
-      {{sf.fileName}}
-    {{/file-list}}
-  `);
+    // Template block usage:
+    await render(hbs`
+      {{#file-list files=filesStub as |sf|}}
+        {{sf.fileName}}
+      {{/file-list}}
+    `);
 
-  assert.notEqual(this.$().text().trim(), 'template block text');
+    assert.notEqual(find('*').textContent.trim(), 'template block text');
+  });
 });

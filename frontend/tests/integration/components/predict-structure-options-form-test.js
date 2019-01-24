@@ -1,19 +1,21 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('predict-structure-options-form', 'Integration | Component | predict structure options form', {
-  integration: true
-});
+module('Integration | Component | predict structure options form', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
+  test('it renders', async function(assert) {
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.set('noop', function() {});
-  this.render(hbs`{{predict-structure-options-form fileRunCommand=noop}}`);
+    this.set('noop', function() {});
+    await render(hbs`{{predict-structure-options-form fileRunCommand=noop}}`);
 
-  assert.notEqual(this.$().text().trim(), '');
+    assert.notEqual(find('*').textContent.trim(), '');
 
-  // Template block usage:
+    // Template block usage:
+  });
 });
