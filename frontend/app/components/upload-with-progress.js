@@ -16,11 +16,16 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     this.uploadJobs = [];
-    this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
-      let obj = {};
-      obj[headerName] = headerValue;
-      this.set('dropzoneHeaders', obj);
-    });
+    
+    //TODO: This header name here might be wrong
+    //OR ... I might need to add Bearer in front of the token
+    //https://github.com/simplabs/ember-simple-auth/blob/master/addon/authorizers/oauth2-bearer.js
+    let { access_token } = this.get('session.data.authenticated');
+    let obj = {
+      "Authorization": access_token
+    };
+    this.set('dropzoneHeaders', obj);
+
   },
 
   actions: {
