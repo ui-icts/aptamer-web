@@ -57,7 +57,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-ember": "^2.0.1",
-    "ui-dropzone": "^0.7.4"
+    "ui-dropzone": "^0.7.4",
     "eslint-plugin-ember": "^5.0.0",
     "loader.js": "^4.2.3"
   },
