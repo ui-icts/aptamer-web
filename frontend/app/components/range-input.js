@@ -12,7 +12,7 @@ export default Component.extend({
   actions: {
     selectValue(num) {
       this.set('currentValue', num);
-      this.get('onChange')(num);
+      this.onChange(num);
     }
   }
 

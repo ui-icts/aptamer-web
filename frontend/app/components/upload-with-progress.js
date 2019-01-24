@@ -36,7 +36,7 @@ export default Component.extend({
         percentComplete: 0
       });
 
-      this.get('uploadJobs').pushObject(fileObj);
+      this.uploadJobs.pushObject(fileObj);
     },
 
     successFile(_file,responseText,_evt) {
@@ -46,18 +46,18 @@ export default Component.extend({
 
       if ( typeof responseText === 'string' ) {
         let json = $.parseJSON(responseText);
-        this.get('onUpload')(json);
+        this.onUpload(json);
       } else {
-        this.get('onUpload')(responseText);
+        this.onUpload(responseText);
       }
     },
 
     completeFile(file) {
       let id = fileId(file);
 
-      let fileObj = this.get('uploadJobs').findBy('id', id);
+      let fileObj = this.uploadJobs.findBy('id', id);
       if (fileObj) {
-        this.get('uploadJobs').removeObject(fileObj);
+        this.uploadJobs.removeObject(fileObj);
       }
 
     },
@@ -68,7 +68,7 @@ export default Component.extend({
     progressFile(file, percent) {
       let id = fileId(file);
 
-      let fileObj = this.get('uploadJobs').findBy('id', id);
+      let fileObj = this.uploadJobs.findBy('id', id);
       if (fileObj) {
         fileObj.set('percentComplete', percent);
       }

@@ -12,26 +12,26 @@ export default DS.Model.extend({
 
   commandLinePreview: computed('runMfold','viennaVersion','prefix','suffix','passOptions', function() {
     let args = [];
-    if ( this.get('runMfold') ) {
+    if ( this.runMfold ) {
       args.push('--run_mfold');
     } else {
       args.push('-v');
-      args.push( this.get('viennaVersion') );
+      args.push( this.viennaVersion );
     }
 
-    if ( !isBlank(this.get('prefix')) ) {
+    if ( !isBlank(this.prefix) ) {
       args.push('--prefix');
-      args.push( `"${this.get('prefix')}"` );
+      args.push( `"${this.prefix}"` );
     }
 
-    if ( !isBlank(this.get('suffix')) ) {
+    if ( !isBlank(this.suffix) ) {
       args.push('--suffix');
-      args.push( `"${this.get('suffix')}"` );
+      args.push( `"${this.suffix}"` );
     }
 
-    if ( !isBlank(this.get('passOptions')) ) {
+    if ( !isBlank(this.passOptions) ) {
       args.push('--pass_options');
-      args.push( this.get('passOptions') );
+      args.push( this.passOptions );
     }
 
     return args.join(' ');

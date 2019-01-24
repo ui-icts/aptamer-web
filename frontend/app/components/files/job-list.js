@@ -34,7 +34,7 @@ export default Component.extend({
   }),
 
   orderedJobs: computed('jobs.[]', function() {
-    let jobs = this.get('jobs').toArray();
+    let jobs = this.jobs.toArray();
     return _(jobs)
       .sort(momentSort('insertedAt'))
       .value();

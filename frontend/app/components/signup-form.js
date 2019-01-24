@@ -42,11 +42,11 @@ export default Component.extend({
         this.set('invalid', true);
       }
 
-      if ( this.get('invalid') ) {
+      if ( this.invalid ) {
         this.set('errorMessage', 'Please fill out all required fields');
 
       } else {
-        this.get('createAccount')(params);
+        this.createAccount(params);
       }
     },
   }

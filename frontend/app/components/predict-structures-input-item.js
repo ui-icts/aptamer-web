@@ -7,7 +7,7 @@ export default Component.extend({
   store: service(),
 
   processTask: task( function * (file) {
-    let result = this.get('store').createRecord('result', {
+    let result = this.store.createRecord('result', {
       file: file,
       status: 'Not Started'
     });
@@ -16,7 +16,7 @@ export default Component.extend({
 
     result = yield result.save();
 
-    let childFile = this.get('store').createRecord('file', {
+    let childFile = this.store.createRecord('file', {
       generatedBy: result,
       fileName: file.get('fileName') + '.struct',
       filePurpose: 'create-graph-input'

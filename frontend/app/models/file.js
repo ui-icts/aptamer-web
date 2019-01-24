@@ -26,8 +26,8 @@ export default DS.Model.extend({
   },
 
   ready() {
-    let createGraphOptions = this.get('createGraphOptions'),
-        predictStructureOptions = this.get('predictStructureOptions');
+    let createGraphOptions = this.createGraphOptions,
+        predictStructureOptions = this.predictStructureOptions;
 
     if ( !createGraphOptions ) {
 

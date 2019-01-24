@@ -5,12 +5,12 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 export default Route.extend(AuthenticatedRouteMixin, {
 
   model() {
-    return this.get('store').findAll('file', {include: 'jobs,createGraphOptions'});
+    return this.store.findAll('file', {include: 'jobs,createGraphOptions'});
   },
 
   actions: {
     fileUploaded(uploadResponse) {
-      this.get('store').pushPayload(uploadResponse);
+      this.store.pushPayload(uploadResponse);
       this.refresh();
     },
 
@@ -46,7 +46,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
     async startProcessFile(file, options) {
 
-      let job = this.get('store').createRecord('job', {
+      let job = this.store.createRecord('job', {
         id: uuid(),
         file: file,
         status: 'ready'

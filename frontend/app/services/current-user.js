@@ -7,7 +7,7 @@ export default Service.extend({
 
   load() {
     if (this.get('session.isAuthenticated')) {
-      return this.get('store').queryRecord('user', { me: true })
+      return this.store.queryRecord('user', { me: true })
         .catch((error) => {
           console.log(error);
         })

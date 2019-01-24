@@ -8,7 +8,7 @@ export default Controller.extend({
 
   actions: {
     doLogin({username, password}) {
-      this.get('session').authenticate('authenticator:aptamer', username, password)
+      this.session.authenticate('authenticator:aptamer', username, password)
         .catch( (_reason) => {
           this.set('loginError', "Unable to log in");
         })
@@ -37,7 +37,7 @@ export default Controller.extend({
         this.set('signupError', 'Unable to create an account at this time.');
 
       }) ).then( bind(this, () => {
-        return this.get('session').authenticate( 'authenticator:aptamer',email,password);
+        return this.session.authenticate( 'authenticator:aptamer',email,password);
 
       }) ).catch( bind(this, () => {
         this.set('signupError', 'Thank you, please login on the left');

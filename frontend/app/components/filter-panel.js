@@ -18,7 +18,7 @@ export default Component.extend({
 
   currentFilter: 'all',
   menuItems: computed('currentFilter', function() {
-    let fileTypes = this.get('fileTypes'),
+    let fileTypes = this.fileTypes,
         items;
 
     items = fileTypes.list().map( (ft) => {
@@ -31,7 +31,7 @@ export default Component.extend({
     items.insertAt(0, allItem);
 
     items.forEach( (i) => {
-      if ( i.get('value') === this.get('currentFilter') ) {
+      if ( i.get('value') === this.currentFilter ) {
         i.set('selected', true);
       } else {
         i.set('selected', false);

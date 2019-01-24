@@ -11,23 +11,23 @@ const JobOutput = EmberObject.extend({
   init() {
     this._super(...arguments);
 
-    this.get('channel').on("job_output", (payload) => this._onJobOutput(payload) );
+    this.channel.on("job_output", (payload) => this._onJobOutput(payload) );
     this.messages =  [];
   },
 
   start() {
-    this.get('channel').join();
+    this.channel.join();
   },
 
   stop() {
-    this.get('channel').leave();
-    this.get('messages').clear();
+    this.channel.leave();
+    this.messages.clear();
   },
 
   _onJobOutput(payload) {
     run(() => {
       schedule('sync', () => {
-        let messages = this.get('messages');
+        let messages = this.messages;
         messages.pushObjects(payload.lines);
       });
     });
@@ -56,7 +56,7 @@ export default PhoenixSocket.extend({
 
   connect() {
 
-    if ( this.get('isHealthy') === true ) {
+    if ( this.isHealthy === true ) {
       return;
     }
 
@@ -88,7 +88,7 @@ export default PhoenixSocket.extend({
 
     this.stopCurrentCapture();
 
-    let channel = this.get('socket').channel(`jobs:${jobId}`,{messagePosition: 0});
+    let channel = this.socket.channel(`jobs:${jobId}`,{messagePosition: 0});
 
     let output = JobOutput.create({
       channel,
@@ -103,22 +103,22 @@ export default PhoenixSocket.extend({
   },
 
   stopCurrentCapture() {
-    let currentOutput = this.get('currentOutputChannel');
+    let currentOutput = this.currentOutputChannel;
     if ( currentOutput != null ) {
       currentOutput.stop();
     }
   },
 
   _onStatusChange(payload) {
-    this.get('store').pushPayload(payload);
+    this.store.pushPayload(payload);
   },
 
   _onFileAdded(payload) {
-    this.get('store').pushPayload(payload);
+    this.store.pushPayload(payload);
   },
 
   reset() {
-    let channel = this.get('statusChannel');
+    let channel = this.statusChannel;
     if ( channel ) {
       channel.leave();
     }

@@ -17,14 +17,14 @@ export default Route.extend(ApplicationRouteMixin, {
   },
 
   setupController(controller) {
-    controller.set('session', this.get('session') );
-    controller.set('currentUser', this.get('currentUser') );
+    controller.set('session', this.session );
+    controller.set('currentUser', this.currentUser );
   },
 
   _loadCurrentUser() {
-    return this.get('currentUser')
+    return this.currentUser
       .load()
-      .catch(() => this.get('session').invalidate());
+      .catch(() => this.session.invalidate());
   },
 
 });

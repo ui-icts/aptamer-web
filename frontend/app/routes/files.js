@@ -9,8 +9,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
   fileContents: service('file-contents'),
 
   afterModel() {
-    this.get('jobControl').connect();
-    this.get('fileContents').connect();
+    this.jobControl.connect();
+    this.fileContents.connect();
   }
 
 });

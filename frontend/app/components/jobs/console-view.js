@@ -24,7 +24,7 @@ export default Component.extend({
   },
 
   messageView: computed('messages.[]', function() {
-    let messages = this.get('messages');
+    let messages = this.messages;
     throttle(this,'scrollToBottom', 500);
     return _(messages).takeRight(50).join("\n");
   }),
@@ -38,7 +38,7 @@ export default Component.extend({
 
   scrollToBottom() {
     /* eslint-disable */
-    let psconsole = this.get('psconsole');
+    let psconsole = this.psconsole;
     if ( psconsole ) {
       psconsole.scrollTop(psconsole[0].scrollHeight - 380);
     }

@@ -19,11 +19,11 @@ export default Component.extend({
   runningJobs: filterBy('jobs', 'status', 'running'),
 
   fileTypeOptions: computed(function() {
-    return this.get('fileTypes').list()
+    return this.fileTypes.list();
   }),
 
   selectedCommand: computed('fileType', function() {
-    let ft = this.get('fileType');
+    let ft = this.fileType;
     if ( ft === 'fasta' ) {
       return 'predict_structures';
     } else {
@@ -49,19 +49,19 @@ export default Component.extend({
     },
 
     errorViewed(file) {
-      this.get('onErrorViewed')(file);
+      this.onErrorViewed(file);
     },
 
     deleteFile(file) {
       this.toggleProperty('confirmingDelete');
-      this.get('onDelete')(file);
+      this.onDelete(file);
     },
 
     selectCommand(newCommand) {
       if ( newCommand === 'predict_structures' ) {
-        this.get('onFileTypeChange')('fasta');
+        this.onFileTypeChange('fasta');
       } else {
-        this.get('onFileTypeChange')('structure');
+        this.onFileTypeChange('structure');
       }
     },
   }

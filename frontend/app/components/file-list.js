@@ -11,8 +11,8 @@ export default Component.extend({
   },
 
   filteredFiles: computed('files.[]','filter',function() {
-    let filterValue = this.get('filter'),
-        files = this.get('files');
+    let filterValue = this.filter,
+        files = this.files;
 
     if ( isBlank( filterValue ) || filterValue === 'all' ) {
       return files;

@@ -8,8 +8,8 @@ export default Component.extend({
   didReceiveAttrs () {
     this._super(...arguments);
 
-    let fileContents = this.get('fileContents');
-    fileContents.captureContents(this.get('file').id, (payload) => {
+    let fileContents = this.fileContents;
+    fileContents.captureContents(this.file.id, (payload) => {
       this.set("contents", payload)
     });
   }

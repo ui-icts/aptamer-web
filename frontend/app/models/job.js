@@ -12,6 +12,6 @@ export default DS.Model.extend({
   predictStructureOptions: DS.belongsTo('predict-structure-options'),
 
   outputLines: computed('output', function() {
-    return _.split( this.get('output'), '\n' );
+    return _.split( this.output, '\n' );
   }),
 });

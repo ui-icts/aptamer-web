@@ -9,11 +9,11 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('optionsObject', this.get('store').createRecord('create-graph-options'));
+    this.set('optionsObject', this.store.createRecord('create-graph-options'));
   },
 
   processTask: task(function * (file) {
-    let result = this.get('store').createRecord('result', {
+    let result = this.store.createRecord('result', {
       file: file,
       status: 'Not Started'
     });

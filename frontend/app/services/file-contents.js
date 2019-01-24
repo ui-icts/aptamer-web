@@ -10,23 +10,23 @@ const FileContents = EmberObject.extend({
 
   init() {
     this._super(...arguments);
-    this.get('channel').on("file_contents", (payload) => this._onFileContents(payload) );
+    this.channel.on("file_contents", (payload) => this._onFileContents(payload) );
     this.messages = [];
   },
 
   start() {
-    this.get('channel').join();
+    this.channel.join();
   },
 
   stop() {
-    this.get('channel').leave();
-    this.get('messages').clear();
+    this.channel.leave();
+    this.messages.clear();
   },
 
   _onFileContents(payload) {
     run(() => {
       schedule('sync', () => {
-        let messages = this.get('messages');
+        let messages = this.messages;
         messages.pushObjects(payload.lines);
       });
     });
@@ -55,7 +55,7 @@ export default PhoenixSocket.extend({
 
   connect() {
 
-    if ( this.get('isHealthy') === true ) {
+    if ( this.isHealthy === true ) {
       return;
     }
 
@@ -84,7 +84,7 @@ export default PhoenixSocket.extend({
   captureContents(fileId, onComplete) {
     this.stopCurrentCapture();
 
-    let channel = this.get('socket').channel(`file:contents:${fileId}`);
+    let channel = this.socket.channel(`file:contents:${fileId}`);
     let contents = FileContents.create({
       channel,
       fileId,
@@ -104,14 +104,14 @@ export default PhoenixSocket.extend({
   },
 
   stopCurrentCapture() {
-    let currentChannel = this.get('currentContentsChannel');
+    let currentChannel = this.currentContentsChannel;
     if ( currentChannel != null ) {
       currentChannel.stop();
     }
   },
 
   reset() {
-    let channel = this.get('contentsChannel');
+    let channel = this.contentsChannel;
     if ( channel ) {
       channel.leave();
     }

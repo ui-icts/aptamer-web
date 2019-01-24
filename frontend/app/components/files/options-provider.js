@@ -16,16 +16,16 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     //trigger file computed?
-    this.get('loadOptions').perform();
+    this.loadOptions.perform();
   },
 
   loadOptions: task( function * () {
 
-    if (!this.get('file') ) {
+    if (!this.file ) {
       return
     }
 
-    let file = this.get('file'),
+    let file = this.file,
         store = file.get('store'),
         queryParams = {
           filter: {

@@ -19,15 +19,15 @@ export default Component.extend({
     },
 
     start() {
-      this.get('jobControl').connect();
+      this.jobControl.connect();
     },
 
     reset() {
-      this.get('jobControl').reset();
+      this.jobControl.reset();
     },
 
     startJob() {
-      this.get('jobControl').startJob(this.get('jobText'));
+      this.jobControl.startJob(this.jobText);
     },
   }
 });
