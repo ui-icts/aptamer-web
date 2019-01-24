@@ -14,7 +14,7 @@ module('Integration | Component | upload with progress', function(hooks) {
     this.set('noop', function() {});
     await render(hbs`{{upload-with-progress url='/test' onUpload=(action noop)}}`);
 
-    assert.equal(find('*').textContent.trim(), 'Drop files here to upload');
+    assert.dom('*').hasText('Drop files here to upload');
 
   });
 });

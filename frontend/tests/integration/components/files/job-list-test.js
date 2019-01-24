@@ -13,7 +13,7 @@ module('Integration | Component | files/job list', function(hooks) {
     this.set('jobs', {});
     await render(hbs`{{files/job-list orderedJobs=jobs}}`);
 
-    assert.equal(find('*').textContent.trim(), '');
+    assert.dom('*').hasText('');
 
   });
 });

@@ -13,7 +13,7 @@ module('Integration | Component | jobs/console view', function(hooks) {
 
     await render(hbs`{{jobs/console-view}}`);
 
-    assert.equal(find('*').textContent.trim(), '');
+    assert.dom('*').hasText('');
 
   });
 });
