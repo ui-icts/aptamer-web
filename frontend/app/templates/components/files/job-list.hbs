@@ -1,18 +1,17 @@
-{{#each orderedJobs key='id' as |job index|}}
-  {{log "JOB STATUS" index job.id job.status}}
-  {{#if (eq job.status 'finished')}}
+{{#each orderedJobs key="id" as |job index|}}
+  {{#if (eq job.status "finished")}}
     <p>
-    Job {{job-number index}} finished. <a href="{{downloadHost}}/results/{{job.id}}">Download Results</a>
+      Job {{job-number index}} finished. <a href="{{downloadHost}}/results/{{job.id}}">Download Results</a>
     </p>
-  {{else if (eq job.status 'error')}}
+  {{else if (eq job.status "error")}}
     <p>
-    Job {{job-number index}} failed. <a href="{{downloadHost}}/results/{{job.id}}">Download Results</a>
+      Job {{job-number index}} failed. <a href="{{downloadHost}}/results/{{job.id}}">Download Results</a>
     </p>
   {{else}}
     <p>
-    {{#link-to 'jobs.show' job }}
-      Job {{job-number index}} {{job.status}}
-    {{/link-to}}
+      {{#link-to "jobs.show" job }}
+        Job {{job-number index}} {{job.status}}
+      {{/link-to}}
     </p>
   {{/if}}
 {{/each}}

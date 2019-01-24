@@ -4,7 +4,7 @@
     Predict Structures
   </button>
   <button class="small ui icon button" {{action "toggleShowMore"}}>
-      <i class="options icon"></i>
+    <i class="options icon"></i>
   </button>
 </div>
 
@@ -18,7 +18,7 @@
       <p> Graph File #{{resultFile.resultNumber}} {{resultFile.status}}</p>
       <ul>
         {{#each resultFile.generatedFiles as |genFile|}}
-          <li>{{link-to genFile.fileName 'create-graph'}}</li>
+          <li>{{link-to genFile.fileName "create-graph"}}</li>
         {{/each}}
       </ul>
     {{/each}}

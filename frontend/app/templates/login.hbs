@@ -3,10 +3,10 @@
   </div>
   <div class="five wide column">
     {{#if loginError}}
-    <div class="ui error message">
-      <i class="close icon" {{action (mut loginError "")}}></i>
-      {{loginError}}
-    </div>
+      <div class="ui error message">
+        <i class="close icon" role="button" {{action (mut loginError "")}}></i>
+        {{loginError}}
+      </div>
     {{/if}}
 
     {{login-form
@@ -21,9 +21,9 @@
   </div>
   <div class="five wide column">
     {{#if signupError}}
-    <div class="ui error message">
-      {{signupError}}
-    </div>
+      <div class="ui error message">
+        {{signupError}}
+      </div>
     {{/if}}
     {{signup-form createAccount=(action "createAccount")}}
   </div>

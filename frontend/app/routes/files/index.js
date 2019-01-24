@@ -22,7 +22,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
       function retry(retries) {
         return file.save().catch(function(_reason) {
-          console.log("Retries left: " + retries)
 
           if(retries-- > 0) {
             return retry(retries)

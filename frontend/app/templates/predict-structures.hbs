@@ -1,12 +1,15 @@
 <div class="ui basic segment">
 
-  <p>You can use vienna rnaFold to generate structures. After your file has been processed
-     you can {{link-to "create a graph of your structures" "create-graph"}} </p>
   <p>
-  {{upload-with-progress url=(concat rootURL '/upload/predict-structures') onUpload=(route-action "fileUploaded")}}
+    You can use vienna rnaFold to generate structures. After your file has been processed
+    you can {{link-to "create a graph of your structures" "create-graph"}} 
+  </p>
+  <p>
 
-  {{#file-list files=model as |sf|}}
-    {{predict-structures-input-item sf=sf}}
-  {{/file-list}}
+    {{upload-with-progress url=(concat rootURL "/upload/predict-structures") onUpload=(route-action "fileUploaded")}}
+
+    {{#file-list files=model as |sf|}}
+      {{predict-structures-input-item sf=sf}}
+    {{/file-list}}
   </p>
 </div>

@@ -9,8 +9,8 @@
 }}
 
 {{#each uploadJobs as |job|}}
-{{#ui-progress percent=job.percentComplete class="teal indicating"}}
-  <div class="bar"></div>
-  <div class="label">{{job.fileName}}</div>
-{{/ui-progress}}
+  {{#ui-progress percent=job.percentComplete class="teal indicating"}}
+    <div class="bar"></div>
+    <div class="label">{{job.fileName}}</div>
+  {{/ui-progress}}
 {{/each}}
