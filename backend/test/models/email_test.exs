@@ -1,7 +1,7 @@
-defmodule Aptamer.EmailTest do
+defmodule AptamerWeb.EmailTest do
   use Aptamer.ModelCase
   import Aptamer.Factory
-  alias Aptamer.Email
+  alias AptamerWeb.Email
 
   doctest Email
 

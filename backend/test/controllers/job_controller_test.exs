@@ -1,5 +1,5 @@
 defmodule Aptamer.JobControllerTest do
-  use Aptamer.ConnCase
+  use AptamerWeb.ConnCase
 
   import Aptamer.Factory
 

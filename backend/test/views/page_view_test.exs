@@ -1,3 +1,3 @@
 defmodule Aptamer.PageViewTest do
-  use Aptamer.ConnCase, async: true
+  use AptamerWeb.ConnCase, async: true
 end

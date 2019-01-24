@@ -1,5 +1,5 @@
 defmodule Aptamer.SecurityTest do
-  use Aptamer.ConnCase
+  use AptamerWeb.ConnCase
 
   import Aptamer.Factory
   alias Aptamer.File

@@ -11,7 +11,7 @@ defmodule Aptamer do
       # Start the Ecto repository
       supervisor(Aptamer.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Aptamer.Endpoint, []),
+      supervisor(AptamerWeb.Endpoint, []),
       # Start your own worker by calling: Aptamer.Worker.start_link(arg1, arg2, arg3)
       # worker(Aptamer.Worker, [arg1, arg2, arg3]),
     ]
@@ -25,7 +25,7 @@ defmodule Aptamer do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Aptamer.Endpoint.config_change(changed, removed)
+    AptamerWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

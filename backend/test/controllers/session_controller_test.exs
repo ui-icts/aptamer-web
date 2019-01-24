@@ -1,5 +1,5 @@
 defmodule Aptamer.SessionControllerTest do
-  use Aptamer.ConnCase
+  use AptamerWeb.ConnCase
 
   import Aptamer.Factory
 

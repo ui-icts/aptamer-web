@@ -1,7 +1,7 @@
-defmodule Aptamer.Endpoint do
+defmodule AptamerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :aptamer
 
-  socket "/socket", Aptamer.UserSocket
+  socket "/socket", AptamerWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -39,5 +39,5 @@ defmodule Aptamer.Endpoint do
     key: "_aptamer_key",
     signing_salt: "Lge7Tfm3"
 
-  plug Aptamer.Router
+  plug AptamerWeb.Router
 end

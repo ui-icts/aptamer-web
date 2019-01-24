@@ -1,5 +1,5 @@
 defmodule Aptamer.PageControllerTest do
-  use Aptamer.ConnCase
+  use AptamerWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

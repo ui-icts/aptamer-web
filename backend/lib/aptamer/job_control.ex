@@ -12,7 +12,7 @@ defmodule Aptamer.JobControl do
         {job.output, fn
           list, {:cont, output} ->
 
-            Aptamer.JobsChannel.broadcast_job_output(job,output)
+            AptamerWeb.JobsChannel.broadcast_job_output(job,output)
 
             [output|list]
 
@@ -70,13 +70,13 @@ defmodule Aptamer.JobControl do
     job = Repo.get!(Aptamer.Job,job_id)
     cs = Aptamer.Job.changeset(job, %{status: "finished", output: script_job.output})
     {:ok, job} = Repo.update cs
-    Aptamer.Email.send_job_complete(job)
+    AptamerWeb.Email.send_job_complete(job)
     broadcast_status(job)
 
     # send added file if present
     case script_job do
       %{generated_file: file} when not is_nil(file) ->
-        Aptamer.JobsChannel.broadcast_file_added(file)
+        AptamerWeb.JobsChannel.broadcast_file_added(file)
       _ -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Aptamer.JobControl do
     job = Repo.get!(Aptamer.Job,job_id)
     cs = Aptamer.Job.changeset(job, %{status: "error"})
     {:ok, job} = Repo.update cs
-    Aptamer.Email.send_job_complete(job)
+    AptamerWeb.Email.send_job_complete(job)
     broadcast_status(job)
   end
 
@@ -105,7 +105,7 @@ defmodule Aptamer.JobControl do
   end
 
   defp broadcast_status(job) do
-    Aptamer.JobsChannel.broadcast_job_status(job)
+    AptamerWeb.JobsChannel.broadcast_job_status(job)
   end
   ##
   # Client
