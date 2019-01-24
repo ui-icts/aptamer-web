@@ -7,10 +7,11 @@ import PhoenixSocket from 'phoenix/services/phoenix-socket';
 const FileContents = EmberObject.extend({
   channel: null,
   fileId: null,
-  messages: [],
 
   init() {
+    this._super(...arguments);
     this.get('channel').on("file_contents", (payload) => this._onFileContents(payload) );
+    this.messages = [];
   },
 
   start() {
@@ -37,6 +38,7 @@ export default PhoenixSocket.extend({
   currentContentsChannel: null,
 
   init() {
+    this._super(...arguments);
     this.on('open', () => {
 
       /* eslint-disable */

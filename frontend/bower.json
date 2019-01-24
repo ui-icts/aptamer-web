@@ -1,8 +1,0 @@
-{
-  "name": "aptamer",
-  "dependencies": {
-    "semantic-ui": "^2.2.10",
-    "dropzone": "^4.2.0",
-    "node-uuid": "1.4.1"
-  }
-}

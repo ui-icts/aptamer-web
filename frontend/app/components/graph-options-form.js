@@ -12,7 +12,11 @@ function formatSliderValue(value) {
 export default Component.extend({
   showHelp: false,
   showCommandPreview: true,
-  edgeTypes: ['edit', 'tree', 'both'],
+
+  init() {
+    this._super(...arguments);
+    this.edgeTypes = ['edit', 'tree', 'both'];
+  },
 
   editDistanceDisplay: computed('optionsObject.maxEditDistance', function() {
     let value = this.get('optionsObject.maxEditDistance');

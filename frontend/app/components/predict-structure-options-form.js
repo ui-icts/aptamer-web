@@ -5,8 +5,12 @@ export default Component.extend({
   showHelp: false,
   showCommandPreview: true,
 
-  predictionTools: ['ViennaRNA', 'mFold'],
-  currentTool: computed('optionsObject.runMfold', 'optionsObject.viennaVersion', function() {
+  init() {
+    this._super(...arguments);
+    this.predictionTools = ['ViennaRNA', 'mFold'];
+  },
+
+  currentTool: computed('optionsObject.{runMfold,viennaVersion}', function() {
     let runmfold = this.get('optionsObject.runMfold');
 
     if ( runmfold ) {

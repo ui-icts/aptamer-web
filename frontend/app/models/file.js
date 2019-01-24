@@ -9,17 +9,21 @@ export default DS.Model.extend({
   fileType: DS.attr('string'),
   jobs: DS.hasMany({async: false}),
 
-  //Ember docs claim that simple DS.Store errors are set when the API returns
-  //an error. However, this only works in certain specific situations that don't
-  //include ours, so we'll just do it ourselves.
-  //See https://stackoverflow.com/a/36636638
-  status: {
-    error: false,
-    errorMessage: null
-  },
 
   results: DS.hasMany(),
   generatedBy: DS.belongsTo('result' , { inverse: 'generatedFiles' }),
+
+  init() {
+    this._super(...arguments);
+    //Ember docs claim that simple DS.Store errors are set when the API returns
+    //an error. However, this only works in certain specific situations that don't
+    //include ours, so we'll just do it ourselves.
+    //See https://stackoverflow.com/a/36636638
+    this.status = {
+      error: false,
+      errorMessage: null
+    };
+  },
 
   ready() {
     let createGraphOptions = this.get('createGraphOptions'),

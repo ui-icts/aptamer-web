@@ -11,11 +11,11 @@ function fileId(file) {
 
 export default Component.extend({
 
-  uploadJobs: [],
   session: service(),
 
   init() {
     this._super(...arguments);
+    this.uploadJobs = [];
     this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
       let obj = {};
       obj[headerName] = headerValue;

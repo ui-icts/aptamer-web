@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { bind } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
@@ -7,8 +8,6 @@ export default Controller.extend({
 
   actions: {
     doLogin({username, password}) {
-      console.log("USERNAME", username);
-      console.log("PASSWORD", password);
       this.get('session').authenticate('authenticator:aptamer', username, password)
         .catch( (_reason) => {
           this.set('loginError', "Unable to log in");
@@ -34,16 +33,16 @@ export default Controller.extend({
           dataType: 'json',
           contentType: 'application/json'
 
-      }).catch( () => {
+      }).catch( bind(this, () => {
         this.set('signupError', 'Unable to create an account at this time.');
 
-      }).then( () => {
+      }) ).then( bind(this, () => {
         return this.get('session').authenticate( 'authenticator:aptamer',email,password);
 
-      }).catch( () => {
+      }) ).catch( bind(this, () => {
         this.set('signupError', 'Thank you, please login on the left');
 
-      }).then( () => this.transitionToRoute('files') );
+      }) ).then( bind(this, () => this.transitionToRoute('files')) );
 
 
 

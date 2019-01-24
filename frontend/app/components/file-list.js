@@ -5,7 +5,10 @@ import Component from '@ember/component';
 
 export default Component.extend({
 
-  fileSortString: ['uploadedOn:desc'],
+  init() {
+    this._super(...arguments);
+    this.fileSortString = ['uploadedOn:desc'];
+  },
 
   filteredFiles: computed('files.[]','filter',function() {
     let filterValue = this.get('filter'),

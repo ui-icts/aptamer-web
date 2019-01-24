@@ -7,10 +7,12 @@ import PhoenixSocket from 'phoenix/services/phoenix-socket';
 const JobOutput = EmberObject.extend({
   channel: null,
   jobId: null,
-  messages: [],
 
   init() {
+    this._super(...arguments);
+
     this.get('channel').on("job_output", (payload) => this._onJobOutput(payload) );
+    this.messages =  [];
   },
 
   start() {
@@ -37,6 +39,7 @@ export default PhoenixSocket.extend({
   currentOutputChannel: null,
 
   init() {
+    this._super(...arguments);
     this.on('open', () => {
 
       /* eslint-disable */
