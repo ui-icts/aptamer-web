@@ -3,6 +3,8 @@ import { isBlank } from '@ember/utils';
 
 export default Component.extend({
 
+  name: '',
+
   invalid: false,
 
   resetValidations() {

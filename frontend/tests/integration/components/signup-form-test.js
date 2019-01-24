@@ -1,21 +1,15 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, find } from '@ember/test-helpers';
+import { fillIn, click, render, find, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import {
   assertionInjector,
   assertionCleanup
 } from '../../assertions';
 
-function _fillInput(placeholder, value) {
-  let input = this.$(`input[placeholder="${placeholder}"]`);
-  input.val(value);
-  input.trigger('keyup');
-}
-
-function _clickButton(text) {
-  let btn = this.$(`button:contains("${text}")`);
-  return btn.click();
+async function _fillInput(placeholder, value) {
+  let input = this.element.querySelector(`input[placeholder="${placeholder}"]`);
+  await fillIn(input, value)
 }
 
 module('Integration | Component | signup form', function(hooks) {
@@ -23,7 +17,6 @@ module('Integration | Component | signup form', function(hooks) {
 
   hooks.beforeEach(function() {
     this.fillInput = _fillInput.bind(this);
-    this.submit = _clickButton.bind(this);
     assertionInjector(this);
   });
 
@@ -57,12 +50,13 @@ module('Integration | Component | signup form', function(hooks) {
 
     await render(hbs`{{signup-form createAccount=(action createCallback)}}`);
 
-    this.fillInput('Name','Bob');
-    this.fillInput('Email','bob@example.com');
-    this.fillInput('Password','welcome');
-    this.fillInput('Confirm Password','welcome');
+    await this.fillInput('Name','Bob');
+    await this.fillInput('Email','bob@example.com');
+    await this.fillInput('Password','welcome');
+    await this.fillInput('Confirm Password','welcome');
 
-    this.submit("Create Account");
+    await settled;
+    await click('#createAccount');
 
   });
 
@@ -73,7 +67,7 @@ module('Integration | Component | signup form', function(hooks) {
     });
 
     await render(hbs`{{signup-form createAccount=(action callback)}}`);
-    this.submit('Create Account');
+    await click('#createAccount');
 
     assert.fieldError('Name');
     assert.fieldError('Email');
