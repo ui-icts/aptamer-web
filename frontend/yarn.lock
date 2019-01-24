@@ -3706,7 +3706,7 @@ ember-cli-app-version@^3.2.0:
     ember-cli-babel "^6.12.0"
     git-repo-version "^1.0.2"
 
-ember-cli-babel@^6.0.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.18.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
+ember-cli-babel@6.18.0, ember-cli-babel@^6.0.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.18.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -4346,12 +4346,15 @@ ember-moment@^7.3.0:
     ember-getowner-polyfill "^2.0.1"
     ember-macro-helpers "^1.0.0"
 
-ember-phoenix@^0.1.6:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/ember-phoenix/-/ember-phoenix-0.1.7.tgz#06fd9b4bc31e6597093bf56d351e59706a3dde6f"
-  integrity sha1-Bv2bS8MeZZcJO/VtNR5ZcGo93m8=
+ember-phoenix@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-phoenix/-/ember-phoenix-1.0.1.tgz#5719efe1bcf5a6594eb28d9fcaaa704244ee68e0"
+  integrity sha512-RpFgqxwfT8B3zCnX9xVt/xsjLXN9ddq0e1egAXZqzSSIF89vYutMlDIeyq3IvsaJuRu4P4DiU/R2//jU2jYIvg==
   dependencies:
-    ember-cli-babel "^6.6.0"
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^3.0.1"
+    ember-cli-babel "6.18.0"
+    phoenix "^1.2.1"
 
 ember-promise-utils@^0.1.1:
   version "0.1.1"
@@ -8738,6 +8741,11 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+phoenix@^1.2.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/phoenix/-/phoenix-1.4.0.tgz#9cec8dbd8cbc59ecd2147bc09ca8ceb56b860d75"
+  integrity sha512-+M7erjPRtrHM53Bc9sT/WSyNFOEhsAc48PBsex0R87hu0GhBRMNE2uAb8MT2gKtJmAYxv5Quaozh/PBuhO8tdQ==
 
 pify@^2.0.0:
   version "2.3.0"

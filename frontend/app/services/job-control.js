@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import { run, schedule } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import ENV from 'aptamer/config/environment';
-import PhoenixSocket from 'phoenix/services/phoenix-socket';
+import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
 
 const JobOutput = EmberObject.extend({
   channel: null,
