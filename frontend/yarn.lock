@@ -1451,11 +1451,6 @@ babel-plugin-syntax-exponentiation-operator@^6.8.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-exponentiation-operator/-/babel-plugin-syntax-exponentiation-operator-6.13.0.tgz#9ee7e8337290da95288201a6a57f4170317830de"
   integrity sha1-nufoM3KQ2pUoggGmpX9BcDF4MN4=
 
-babel-plugin-syntax-object-rest-spread@^6.8.0:
-  version "6.13.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
-  integrity sha1-/WU28rzhODb/o6VFjEkDpZe7O/U=
-
 babel-plugin-syntax-trailing-function-commas@^6.22.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-6.22.0.tgz#ba0360937f8d06e40180a43fe0d5616fff532cf3"
@@ -1668,14 +1663,6 @@ babel-plugin-transform-exponentiation-operator@^6.22.0:
     babel-helper-builder-binary-assignment-operator-visitor "^6.24.1"
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
-
-babel-plugin-transform-object-rest-spread@^6.19.0:
-  version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.26.0.tgz#0f36692d50fef6b7e2d4b3ac1478137a963b7b06"
-  integrity sha1-DzZpLVD+9rfi1LOsFHgTepY7ewY=
-  dependencies:
-    babel-plugin-syntax-object-rest-spread "^6.8.0"
-    babel-runtime "^6.26.0"
 
 babel-plugin-transform-regenerator@^6.22.0:
   version "6.26.0"
@@ -2290,7 +2277,7 @@ broccoli-lint-eslint@^4.2.1:
     lodash.defaultsdeep "^4.6.0"
     md5-hex "^2.0.0"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.4:
+broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-1.2.4.tgz#a001519bb5067f06589d91afa2942445a2d0fdb5"
   integrity sha1-oAFRm7UGfwZYnZGvopQkRaLQ/bU=
@@ -3706,7 +3693,7 @@ ember-cli-app-version@^3.2.0:
     ember-cli-babel "^6.12.0"
     git-repo-version "^1.0.2"
 
-ember-cli-babel@6.18.0, ember-cli-babel@^6.0.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.18.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
+ember-cli-babel@6.18.0, ember-cli-babel@^6.0.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -3912,7 +3899,7 @@ ember-cli-mirage@^0.4.0:
     pretender "2.1.1"
     route-recognizer "^0.3.4"
 
-ember-cli-moment-shim@^3.3.1:
+ember-cli-moment-shim@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/ember-cli-moment-shim/-/ember-cli-moment-shim-3.7.1.tgz#3ad691c5027c1f38a4890fe47d74b5224cc98e32"
   integrity sha512-U3HHuEU7sXQ78v25ifmIa9w4nQPQ7vK/LZ2bt18pN3aKNvIDYiLe/MDeXGmqfFIq3OfruKG+CF+7dOLqxuzSlQ==
@@ -4174,7 +4161,7 @@ ember-cli@~3.7.1:
     watch-detector "^0.1.0"
     yam "^1.0.0"
 
-ember-compatibility-helpers@^1.1.1, ember-compatibility-helpers@^1.1.2:
+ember-compatibility-helpers@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.1.2.tgz#ae0ee4a7a2858b5ffdf79b428c23aee85c47d93d"
   integrity sha512-yN163MzERpotO8M0b+q+kXs4i3Nx6aIriiZHWv+yXQzr2TAtYlVwg9V7/3+jcurOa3oDEYDpN7y9UZ6q3mnoTg==
@@ -4298,13 +4285,6 @@ ember-load-initializers@^1.1.0:
   dependencies:
     ember-cli-babel "^6.6.0"
 
-ember-lodash-shim@^4.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/ember-lodash-shim/-/ember-lodash-shim-4.0.0.tgz#50c98605ae47f5a93031ef033b06e5fd7ca1bcd3"
-  integrity sha512-TSQTomUav9+RbYmEL96zMYDHpEGXG2S7PWjkmMBoVSyLZxxVxhgi/elP/2GsXI7/0YlKdiZL0duPoe+gxQhSsg==
-  dependencies:
-    ember-cli-babel "^6.6.0"
-
 ember-lodash@^4.17.4, ember-lodash@^4.19.4:
   version "4.19.4"
   resolved "https://registry.yarnpkg.com/ember-lodash/-/ember-lodash-4.19.4.tgz#3e76e6cb04c9312c2158180bf16d7983aae05774"
@@ -4375,32 +4355,6 @@ ember-qunit@^3.4.1:
     ember-cli-babel "^6.8.2"
     ember-cli-test-loader "^2.2.0"
     qunit "~2.6.0"
-
-ember-redux-shim@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/ember-redux-shim/-/ember-redux-shim-4.0.1.tgz#8177e65a5f9578468c4303cabf17ca10aa6ab5a7"
-  integrity sha512-+MQV0A2DljPwwBZ82Xw9FaGXYc4qOpcH9e8IqpHrLzMFmVNPraxVzfXXEX8PvZmQ3WkFS0TQRNWJKIDFKLjXBQ==
-  dependencies:
-    babel-plugin-transform-object-rest-spread "^6.19.0"
-    broccoli-merge-trees "^1.1.4"
-    broccoli-string-replace "^0.1.2"
-    ember-cli-babel "^6.8.2"
-
-ember-redux-thunk-shim@^2.0.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/ember-redux-thunk-shim/-/ember-redux-thunk-shim-2.5.0.tgz#9ef58eeb9704a9fb1f39267d023ef9baf143dd93"
-  integrity sha512-Ch+dgX3lMCWWSMHy9qmjzRCwv+CDyj+tWa0pc42vMCHj8cZ54l4fqSQEC0zASIUpAiGsybqUAJ3PhVq7znPBKA==
-  dependencies:
-    broccoli-merge-trees "^1.1.4"
-    ember-cli-babel "^6.8.2"
-
-ember-redux@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/ember-redux/-/ember-redux-4.0.1.tgz#861396f59ae26a94a29d86f5d31bc4e3fda1e5d6"
-  integrity sha512-MIv3Ebtw3O72FyVEHFzEKgmrzNySHNcOE9NMzWDADjH+eVUWH6227J4aJKir2ZCQLrNQm3mesbCcHh7wd3i6tw==
-  dependencies:
-    ember-cli-babel "^6.18.0"
-    ember-compatibility-helpers "^1.1.2"
 
 ember-resolver@^5.0.1:
   version "5.0.1"
