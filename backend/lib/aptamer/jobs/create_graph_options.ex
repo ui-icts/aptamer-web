@@ -1,5 +1,6 @@
 defmodule Aptamer.Jobs.CreateGraphOptions do
   use Ecto.Schema
+  use Aptamer.BinaryIdColums
   import Ecto.Changeset
   alias Aptamer.Jobs.CreateGraphOptions
 

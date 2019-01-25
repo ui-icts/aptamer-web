@@ -1,7 +1,8 @@
 defmodule AptamerWeb.Email do
   import Bamboo.Email
   require Logger
-  alias Aptamer.{Repo,Mailer,Job}
+  alias Aptamer.{Repo,Mailer}
+  alias Aptamer.Jobs.Job
   alias AptamerWeb.Endpoint
 
   def send_job_complete(job) when is_nil(job) do

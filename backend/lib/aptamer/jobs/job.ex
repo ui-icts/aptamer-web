@@ -1,5 +1,6 @@
 defmodule Aptamer.Jobs.Job do
   use Ecto.Schema
+  use Aptamer.BinaryIdColums
   import Ecto.Changeset
   alias Aptamer.Repo
   alias Aptamer.Jobs.{File,Job}

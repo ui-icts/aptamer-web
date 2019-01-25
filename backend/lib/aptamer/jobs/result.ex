@@ -1,10 +1,11 @@
 defmodule Aptamer.Jobs.Result do
   use Ecto.Schema
+  use Aptamer.BinaryIdColums
   import Ecto.Changeset
 
   schema "results" do
     field :archive, :binary
-    belongs_to :job, Aptamer.Job
+    belongs_to :job, Aptamer.Jobs.Job
 
     timestamps()
   end

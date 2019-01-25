@@ -1,7 +1,8 @@
 defmodule AptamerWeb.FileController do
   use AptamerWeb, :controller
 
-  alias Aptamer.{File,Repo}
+  alias Aptamer.Repo
+  alias Aptamer.Jobs.File
   alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
 

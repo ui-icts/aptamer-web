@@ -26,7 +26,7 @@ defmodule AptamerWeb.JobControllerTest do
     |> Enum.reduce( &Map.merge/2 )
   end
 
-  defp relationships(%Aptamer.File{} = file) do
+  defp relationships(%Aptamer.Jobs.File{} = file) do
     %{
       "file" => %{
         "data" => %{

@@ -1,5 +1,6 @@
 defmodule Aptamer.Auth.Registration do
   use Ecto.Schema
+  use Aptamer.BinaryIdColums
   import Ecto.Changeset
 
   schema "registration" do

@@ -1,4 +1,4 @@
-defmodule Aptamer.PageControllerTest do
+defmodule AptamerWeb.PageControllerTest do
   use AptamerWeb.ConnCase
 
   test "GET /", %{conn: conn} do

@@ -1,8 +1,8 @@
-defmodule Aptamer.FileTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Jobs.FileTest do
+  use Aptamer.DataCase
 
   import Aptamer.Factory
-  alias Aptamer.File
+  alias Aptamer.Jobs.File
 
   @valid_attrs %{file_name: "some content", file_type: "some content", uploaded_on: ~N[2000-01-01 23:00:07]}
   @invalid_attrs %{}

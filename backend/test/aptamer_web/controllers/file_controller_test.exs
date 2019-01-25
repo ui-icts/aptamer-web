@@ -1,7 +1,7 @@
-defmodule Aptamer.FileControllerTest do
+defmodule AptamerWeb.FileControllerTest do
   use AptamerWeb.ConnCase
   import Aptamer.Factory
-  alias Aptamer.File
+  alias Aptamer.Jobs.File
 
   setup %{conn: conn} do
 
@@ -138,7 +138,7 @@ defmodule Aptamer.FileControllerTest do
     Elixir.File.read!(path) |> checksum
   end
 
-  def checksum(%Aptamer.File{data: data}), do: checksum(data)
+  def checksum(%Aptamer.Jobs.File{data: data}), do: checksum(data)
 
   def checksum(data) do
     :crypto.hash(:sha256,data) |> Base.encode16

@@ -11,7 +11,7 @@ defmodule AptamerWeb.SessionController do
 
     try do
       user =
-        Aptamer.User
+        Aptamer.Auth.User
         |> where(email: ^username)
         |> Repo.one!
       cond do

@@ -1,8 +1,8 @@
-defmodule Aptamer.UserTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Auth.UserTest do
+  use Aptamer.DataCase
   import Aptamer.Factory
 
-  alias Aptamer.User
+  alias Aptamer.Auth.User
 
   test "create from registration" do
     registration = build(:registration)

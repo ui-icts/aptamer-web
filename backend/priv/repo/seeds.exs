@@ -9,4 +9,4 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-Aptamer.User.changeset(%Aptamer.User{}, %{name: "Test User", email: "testuser@example.com", password: "welcome", password_confirmation: "welcome"}) |> Aptamer.Repo.insert!
+Aptamer.Auth.User.changeset(%Aptamer.Auth.User{}, %{name: "Test User", email: "testuser@example.com", password: "welcome", password_confirmation: "welcome"}) |> Aptamer.Repo.insert!

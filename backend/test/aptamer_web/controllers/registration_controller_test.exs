@@ -1,4 +1,4 @@
-defmodule Aptamer.RegistrationControllerTest do
+defmodule AptamerWeb.RegistrationControllerTest do
   use AptamerWeb.ConnCase
 
   @valid_attrs %{email: "bob@example.com", name: "Bob", password: "welcome"}
@@ -12,7 +12,7 @@ defmodule Aptamer.RegistrationControllerTest do
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn = post conn, registration_path(conn, :create), registration: @valid_attrs
     response = json_response(conn, 201)
-    assert Repo.get(Aptamer.User, response["data"]["id"])
+    assert Repo.get(Aptamer.Auth.User, response["data"]["id"])
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do

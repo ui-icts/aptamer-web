@@ -1,8 +1,8 @@
-defmodule Aptamer.SecurityTest do
+defmodule AptamerWeb.SecurityTest do
   use AptamerWeb.ConnCase
 
   import Aptamer.Factory
-  alias Aptamer.File
+  alias Aptamer.Jobs.File
 
   setup %{conn: conn} do
 

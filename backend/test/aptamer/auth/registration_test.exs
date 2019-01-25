@@ -1,7 +1,7 @@
-defmodule Aptamer.RegistrationTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Auth.RegistrationTest do
+  use Aptamer.DataCase
 
-  alias Aptamer.Registration
+  alias Aptamer.Auth.Registration
 
   @valid_attrs %{email: "bob@example.com", name: "Bob", password: "welcome"}
   @invalid_attrs %{}

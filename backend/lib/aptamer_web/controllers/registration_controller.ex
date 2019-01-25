@@ -1,7 +1,7 @@
 defmodule AptamerWeb.RegistrationController do
   use AptamerWeb, :controller
 
-  alias Aptamer.{Registration,User}
+  alias Aptamer.Auth.{Registration,User}
 
   plug :accepts, ~w(json)
 

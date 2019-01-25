@@ -1,5 +1,6 @@
 defmodule Aptamer.Jobs.File do
   use Ecto.Schema
+  use Aptamer.BinaryIdColums
   import Ecto.Changeset
   import Ecto.Query
   alias Ecto.Multi
@@ -12,7 +13,7 @@ defmodule Aptamer.Jobs.File do
     field :file_type, :string
     field :data, :binary
 
-    belongs_to :owner, Aptamer.User
+    belongs_to :owner, Aptamer.Auth.User
     has_many :jobs, Aptamer.Jobs.Job
 
     timestamps()

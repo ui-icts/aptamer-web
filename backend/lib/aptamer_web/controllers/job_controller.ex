@@ -1,7 +1,7 @@
 defmodule AptamerWeb.JobController do
   use AptamerWeb, :controller
 
-  alias Aptamer.Job
+  alias Aptamer.Jobs.Job
   alias JaSerializer.Params
 
   plug JaSerializer.ContentTypeNegotiation when action in [:create,:update]
