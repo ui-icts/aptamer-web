@@ -22,7 +22,7 @@ export default Component.extend({
     //https://github.com/simplabs/ember-simple-auth/blob/master/addon/authorizers/oauth2-bearer.js
     let { access_token } = this.get('session.data.authenticated');
     let obj = {
-      "Authorization": access_token
+      "Authorization": `Bearer ${access_token}`
     };
     this.set('dropzoneHeaders', obj);
 
