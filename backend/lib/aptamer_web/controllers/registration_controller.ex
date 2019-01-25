@@ -18,7 +18,8 @@ defmodule AptamerWeb.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(AptamerWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(AptamerWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 

@@ -2,7 +2,7 @@ defmodule AptamerWeb.PageController do
   use AptamerWeb, :controller
 
   alias Aptamer.Repo
-  alias Aptamer.File, as: AptamerFile
+  alias Aptamer.Jobs.File, as: AptamerFile
 
   def index(conn, _params) do
     conn
@@ -17,7 +17,7 @@ defmodule AptamerWeb.PageController do
         file = Repo.get!(AptamerFile, file_id)
         {file.file_name, file.data}
       %{"job_id" => job_id} ->
-        query = from result in Aptamer.Result,
+        query = from result in Aptamer.Jobs.Result,
                   where: result.job_id == ^job_id
         result = Repo.one!(query)
         {"results.zip", result.archive}
