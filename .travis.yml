@@ -32,7 +32,7 @@ install:
   - export PATH=$PWD/travis-phantomjs:$PATH
   - nvm install $TRAVIS_NODE_VERSION
   - nvm use $TRAVIS_NODE_VERSION
-  - yarn install
+  - yarn install --non-interactive
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
@@ -43,7 +43,8 @@ before_script:
 script:
   - mix test
   - cd ../frontend
-  - ember test
+  - yarn lint:js
+  - yarn test
 before_deploy:
   - cd ..
   - 'semver=$({ sed -nE ''s/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p''
