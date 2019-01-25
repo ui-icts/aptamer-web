@@ -19,7 +19,7 @@ defmodule Aptamer.ReleaseTasks do
   def bootstrap do
     IO.puts("Loading Aptamer..")
 
-    case Application.load(:aptamer) do
+    case Aptamer.Application.load(:aptamer) do
       :ok -> :ok
       {:error, {:already_loaded, :aptamer}} -> :ok
     end
@@ -81,7 +81,7 @@ defmodule Aptamer.ReleaseTasks do
   def migrate(context) do
     IO.puts("Starting dependencies..")
     # Start apps necessary for executing migrations
-    Enum.each(@start_apps, &Application.ensure_all_started/1)
+    Enum.each(@start_apps, &Aptamer.Application.ensure_all_started/1)
 
     # Start the Repo(s) for myapp
     IO.puts("Starting repos..")

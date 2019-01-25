@@ -54,7 +54,7 @@ defmodule Aptamer.Mixfile do
       {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
       {:porcelain, "~> 2.0"},
       {:temp, "~> 0.4"},
-      {:distillery, "~> 1.5", runtime: false},
+      {:distillery, "~> 2.0", runtime: false},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.1"},
       {:guardian, "~> 1.0"},
