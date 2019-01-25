@@ -46,7 +46,7 @@ defmodule Aptamer.Mixfile do
      {:jsonapi, git: "https://github.com/jeregrine/jsonapi"},
      {:ex_machina, "~> 2.2.2", only: :test},
      {:proper_case, "~> 1.2.0"},
-     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
+     {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
      {:fs, "~> 0.9", override: true},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
      {:porcelain, "~> 2.0"},
