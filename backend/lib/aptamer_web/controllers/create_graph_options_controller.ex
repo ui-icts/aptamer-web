@@ -1,7 +1,7 @@
 defmodule AptamerWeb.CreateGraphOptionsController do
   use AptamerWeb, :controller
 
-  alias Aptamer.CreateGraphOptions
+  alias Aptamer.Jobs.CreateGraphOptions
   alias JaSerializer.Params
 
   plug JaSerializer.ContentTypeNegotiation when action in [:create,:update]

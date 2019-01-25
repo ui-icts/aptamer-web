@@ -1,4 +1,4 @@
-defmodule AptamerWeb.Jobs.PythonScriptJob do
+defmodule Aptamer.Jobs.PythonScriptJob do
 
   require Logger
 
@@ -27,7 +27,7 @@ defmodule AptamerWeb.Jobs.PythonScriptJob do
       true -> {"temp_input", nil, input_file}
     end
 
-    %AptamerWeb.Jobs.PythonScriptJob{
+    %Aptamer.Jobs.PythonScriptJob{
       script_name: script_name,
       args: args,
       input_file_name: file_name,
@@ -36,7 +36,7 @@ defmodule AptamerWeb.Jobs.PythonScriptJob do
     }
   end
 
-  def run(%AptamerWeb.Jobs.PythonScriptJob{} = state) do
+  def run(%Aptamer.Jobs.PythonScriptJob{} = state) do
 
     Logger.debug "Running python job: #{inspect(state)}"
 
@@ -54,11 +54,11 @@ defmodule AptamerWeb.Jobs.PythonScriptJob do
     result
   end
 
-  def broadcast(action, step_name, %AptamerWeb.Jobs.PythonScriptJob{listener: nil}) do
+  def broadcast(action, step_name, %Aptamer.Jobs.PythonScriptJob{listener: nil}) do
     Logger.info "[BROADCAST] - #{action} #{step_name}"
   end
 
-  def broadcast(action, step_name, %AptamerWeb.Jobs.PythonScriptJob{listener: listener}) when is_pid(listener) do
+  def broadcast(action, step_name, %Aptamer.Jobs.PythonScriptJob{listener: listener}) when is_pid(listener) do
     send(listener, {:broadcast, {action, step_name}})
   end
 
@@ -177,7 +177,7 @@ defmodule AptamerWeb.Jobs.PythonScriptJob do
 
     {:ok, zip_data} = Elixir.File.read(Path.join(output_directory, zip_file_name))
 
-    zip_struct = %Aptamer.Result{
+    zip_struct = %Aptamer.Jobs.Result{
       archive: zip_data,
       job_id: job_id
     }
@@ -200,7 +200,7 @@ defmodule AptamerWeb.Jobs.PythonScriptJob do
     case Elixir.File.read(structure_file) do
       {:ok, file_data} ->
 
-        file_struct = %Aptamer.File{
+        file_struct = %Aptamer.Jobs.File{
           file_name: new_file_name,
           uploaded_on: DateTime.utc_now(),
           file_type: "structure",

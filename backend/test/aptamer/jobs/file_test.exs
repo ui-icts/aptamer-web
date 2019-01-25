@@ -66,11 +66,11 @@ defmodule Aptamer.FileTest do
 
   test "returns a unique list of all specified, non-nil keys in a struct" do
     jobs1 = [
-      %Aptamer.Job{:create_graph_options_id => 4, :predict_structure_options_id => nil},
-      %Aptamer.Job{:create_graph_options_id => 8, :predict_structure_options_id => -2},
-      %Aptamer.Job{:create_graph_options_id => 4, :predict_structure_options_id => 00},
-      %Aptamer.Job{:create_graph_options_id => 0, :predict_structure_options_id => 83},
-      %Aptamer.Job{:create_graph_options_id => nil, :predict_structure_options_id => 0}
+      %Aptamer.Jobs.Job{:create_graph_options_id => 4, :predict_structure_options_id => nil},
+      %Aptamer.Jobs.Job{:create_graph_options_id => 8, :predict_structure_options_id => -2},
+      %Aptamer.Jobs.Job{:create_graph_options_id => 4, :predict_structure_options_id => 00},
+      %Aptamer.Jobs.Job{:create_graph_options_id => 0, :predict_structure_options_id => 83},
+      %Aptamer.Jobs.Job{:create_graph_options_id => nil, :predict_structure_options_id => 0}
     ]
 
     assert [4, 8, 0] = File.unique_id_list(jobs1, :create_graph_options_id)

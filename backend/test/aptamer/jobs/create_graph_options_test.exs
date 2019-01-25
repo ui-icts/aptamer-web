@@ -1,8 +1,8 @@
-defmodule Aptamer.CreateGraphOptionsTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Jobs.CreateGraphOptionsTest do
+  use Aptamer.DataCase
 
-  alias Aptamer.CreateGraphOptions
-  doctest Aptamer.CreateGraphOptions
+  alias Aptamer.Jobs.CreateGraphOptions
+  doctest Aptamer.Jobs.CreateGraphOptions
 
   @valid_attrs %{edge_type: "some content", max_edit_distance: 42, max_tree_distance: 42, seed: true}
   @invalid_attrs %{}

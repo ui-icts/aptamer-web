@@ -1,5 +1,7 @@
 defmodule Aptamer.Jobs.File do
   use Ecto.Schema
+  import Ecto.Changeset
+  import Ecto.Query
   alias Ecto.Multi
   alias Aptamer.Repo
   alias Aptamer.Jobs.{File,CreateGraphOptions,PredictStructureOptions}
@@ -19,7 +21,7 @@ defmodule Aptamer.Jobs.File do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
+  def changeset(%File{} = struct, params \\ %{}) do
     struct
     |> cast(params, [:file_name, :uploaded_on, :file_type, :data, :owner_id])
     |> validate_required([:file_name, :uploaded_on, :file_type, :owner_id])
@@ -41,10 +43,8 @@ defmodule Aptamer.Jobs.File do
     create_graph_ids = unique_id_list(jobs, :create_graph_options_id)
     predict_structure_ids = unique_id_list(jobs, :predict_structure_options_id)
     
-    create_graph_query = from cgo in CreateGraphOptions,
-      where: cgo.id in ^create_graph_ids
-    predict_structure_query = from pso in PredictStructureOptions,
-      where: pso.id in ^predict_structure_ids
+    create_graph_query = from cgo in CreateGraphOptions, where: cgo.id in ^create_graph_ids
+    predict_structure_query = from pso in PredictStructureOptions, where: pso.id in ^predict_structure_ids
 
     multi
      |> Multi.delete_all(:results, Ecto.assoc(jobs, :results))

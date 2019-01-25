@@ -1,9 +1,9 @@
-defmodule Aptamer.PredictStructureOptionsControllerTest do
+defmodule AptamerWeb.PredictStructureOptionsControllerTest do
   use AptamerWeb.ConnCase
 
   import Aptamer.Factory
 
-  alias Aptamer.PredictStructureOptions
+  alias Aptamer.Jobs.PredictStructureOptions
   alias Aptamer.Repo
 
   @valid_attrs %{pass_options: "some content", prefix: "some content", run_mfold: true, suffix: "some content", vienna_version: 42}

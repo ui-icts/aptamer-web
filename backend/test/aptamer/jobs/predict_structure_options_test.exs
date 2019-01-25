@@ -1,9 +1,9 @@
-defmodule Aptamer.PredictStructureOptionsTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Jobs.PredictStructureOptionsTest do
+  use Aptamer.DataCase
 
-  alias Aptamer.PredictStructureOptions
+  alias Aptamer.Jobs.PredictStructureOptions
 
-  doctest Aptamer.PredictStructureOptions
+  doctest Aptamer.Jobs.PredictStructureOptions
 
 
   @valid_attrs %{pass_options: "some content", prefix: "some content", run_mfold: true, suffix: "some content", vienna_version: 42}

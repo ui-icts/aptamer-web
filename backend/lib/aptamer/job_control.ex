@@ -1,7 +1,8 @@
 defmodule Aptamer.JobControl do
   # use GenServer
 
-  alias Aptamer.{Repo, PredictStructureOptions, CreateGraphOptions}
+  alias Aptamer.Repo
+  alias Aptamer.Jobs.{PredictStructureOptions, CreateGraphOptions}
 
   defmodule RunningJob do
     defstruct job_id: "UNSET", output: []
@@ -25,7 +26,7 @@ defmodule Aptamer.JobControl do
 
   end
 
-  def start_job(%Aptamer.Job{} = job) do
+  def start_job(%Aptamer.Jobs.Job{} = job) do
     Task.start(fn ->
 
       {script_name, program_args} = case job.file.file_type do

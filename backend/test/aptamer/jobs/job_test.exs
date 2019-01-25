@@ -1,8 +1,8 @@
-defmodule Aptamer.JobTest do
-  use Aptamer.ModelCase
+defmodule Aptamer.Jobs.JobTest do
+  use Aptamer.DataCase
   import Aptamer.Factory
 
-  alias Aptamer.Job
+  alias Aptamer.Jobs.Job
 
   @valid_attrs %{status: "some content", file_id: 1}
   @invalid_attrs %{}

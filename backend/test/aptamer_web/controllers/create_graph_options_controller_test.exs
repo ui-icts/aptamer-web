@@ -1,9 +1,9 @@
-defmodule Aptamer.CreateGraphOptionsControllerTest do
+defmodule AptamerWeb.CreateGraphOptionsControllerTest do
   use AptamerWeb.ConnCase
 
   import Aptamer.Factory
 
-  alias Aptamer.CreateGraphOptions
+  alias Aptamer.Jobs.CreateGraphOptions
   alias Aptamer.Repo
 
   @valid_attrs %{edge_type: "some content", max_edit_distance: 42, max_tree_distance: 42, seed: true}

@@ -1,7 +1,7 @@
 defmodule AptamerWeb.PredictStructureOptionsController do
   use AptamerWeb, :controller
 
-  alias Aptamer.PredictStructureOptions
+  alias Aptamer.Jobs.PredictStructureOptions
   alias JaSerializer.Params
 
   plug JaSerializer.ContentTypeNegotiation when action in [:create,:update]

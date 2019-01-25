@@ -1,5 +1,6 @@
-defmodule Aptamer.Registration do
-  use AptamerWeb, :model
+defmodule Aptamer.Auth.Registration do
+  use Ecto.Schema
+  import Ecto.Changeset
 
   schema "registration" do
     field :email, :string

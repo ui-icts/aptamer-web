@@ -1,9 +1,9 @@
-defmodule Aptamer.JobControllerTest do
+defmodule AptamerWeb.JobControllerTest do
   use AptamerWeb.ConnCase
 
   import Aptamer.Factory
 
-  alias Aptamer.Job
+  alias Aptamer.Jobs.Job
   alias Aptamer.Repo
 
   @valid_attrs %{status: "some content"}
@@ -37,7 +37,7 @@ defmodule Aptamer.JobControllerTest do
     }
   end
 
-  defp relationships(%Aptamer.CreateGraphOptions{} = options) do
+  defp relationships(%Aptamer.Jobs.CreateGraphOptions{} = options) do
     %{
       "create-graph-options" => %{
         "data" => %{

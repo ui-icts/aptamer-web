@@ -1,7 +1,8 @@
-defmodule Aptamer.User do
-  use AptamerWeb, :model
+defmodule Aptamer.Auth.User do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  alias Aptamer.{Registration,User}
+  alias Aptamer.Auth.{Registration,User}
 
   schema "users" do
     field :name, :string
