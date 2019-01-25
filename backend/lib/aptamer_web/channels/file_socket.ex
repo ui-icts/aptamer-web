@@ -1,7 +1,8 @@
 defmodule AptamerWeb.FileChannel do
   use Phoenix.Channel
   alias Porcelain.Process, as: Proc
-  alias Aptamer.{File,Repo}
+  alias Aptamer.Repo
+  alias Aptamer.Jobs.File
 
   def join("file:contents" <> file_id, _message, socket) do
     {:ok, "Joined the file contents channel", socket}
