@@ -4,7 +4,7 @@ defmodule AptamerWeb.JobsChannel do
 
   ###### Client Calls ###########
   def broadcast_job_status(job) do
-    json = JaSerializer.format( Aptamer.JobView, job )
+    json = JaSerializer.format( AptamerWeb.JobView, job )
     #I think usually these channel objects aren't meant
     #to have a client interface that is called from other
     #parts of the code ... but this is the place we wanted
@@ -20,7 +20,7 @@ defmodule AptamerWeb.JobsChannel do
   end
 
   def broadcast_file_added(file) do
-    json = JaSerializer.format( Aptamer.FileView, file )
+    json = JaSerializer.format( AptamerWeb.FileView, file )
     AptamerWeb.Endpoint.broadcast("jobs:status", "file_added", json)
   end
 

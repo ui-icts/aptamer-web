@@ -116,9 +116,6 @@ defmodule AptamerWeb.FileControllerTest do
           "file-type" => "fasta"
         },
       }} |> Poison.encode!
-      # Aptamer.FileView
-      # |> JaSerializer.format(change_attrs, conn)
-      # |> Poison.encode!
 
     conn = put conn, file_path(conn, :update, file), post_params
 

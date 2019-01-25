@@ -53,7 +53,7 @@ defmodule Aptamer.JobControl do
   def on_broadcast(job) do
     receive do
       {:broadcast, {:begin, step_name}} ->
-        cs = Aptamer.Job.changeset(job, %{status: to_string(step_name)})
+        cs = Aptamer.Jobs.Job.changeset(job, %{status: to_string(step_name)})
         {:ok, job} = Repo.update cs
         broadcast_status(job)
         on_broadcast(job)
@@ -68,8 +68,8 @@ defmodule Aptamer.JobControl do
   def task_finished({:ok, {:ok, script_job}}, job_id) do
 
     # Update job to mark as finished
-    job = Repo.get!(Aptamer.Job,job_id)
-    cs = Aptamer.Job.changeset(job, %{status: "finished", output: script_job.output})
+    job = Repo.get!(Aptamer.Jobs.Job,job_id)
+    cs = Aptamer.Jobs.Job.changeset(job, %{status: "finished", output: script_job.output})
     {:ok, job} = Repo.update cs
     AptamerWeb.Email.send_job_complete(job)
     broadcast_status(job)
@@ -86,8 +86,8 @@ defmodule Aptamer.JobControl do
     IO.puts "-----------------------------------------"
     IO.inspect error
 
-    job = Repo.get!(Aptamer.Job,job_id)
-    cs = Aptamer.Job.changeset(job, %{status: "error"})
+    job = Repo.get!(Aptamer.Jobs.Job,job_id)
+    cs = Aptamer.Jobs.Job.changeset(job, %{status: "error"})
     {:ok, job} = Repo.update cs
     AptamerWeb.Email.send_job_complete(job)
     broadcast_status(job)
@@ -99,7 +99,7 @@ defmodule Aptamer.JobControl do
       %RunningJob{output: x} -> Enum.join(x, "\n")
       nil -> nil
     end
-    cs = Aptamer.Job.changeset(job, %{status: status, output: output})
+    cs = Aptamer.Jobs.Job.changeset(job, %{status: status, output: output})
 
     {:ok, job} = Repo.update cs
     job

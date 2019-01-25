@@ -13,7 +13,7 @@ defmodule AptamerWeb.CreateGraphOptionsController do
 
       %{"filter" => %{"forFile" => file_id}} ->
 
-        query = from j in Aptamer.Job,
+        query = from j in Aptamer.Jobs.Job,
                   where: j.file_id == ^file_id and not is_nil(j.create_graph_options_id),
                   order_by: [desc: j.inserted_at]
 
