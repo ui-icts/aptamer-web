@@ -28,7 +28,8 @@ defmodule AptamerWeb.SessionController do
           Logger.warn "User " <> username <> " failed login"
           conn
           |> put_status(401)
-          |> render(AptamerWeb.ErrorView, "401.json")
+          |> put_view(AptamerWeb.ErrorView)
+          |> render("401.json")
 
       end
     rescue
@@ -37,14 +38,16 @@ defmodule AptamerWeb.SessionController do
         Logger.warn "User " <> username <> " not found"
         conn
         |> put_status(401)
-        |> render(AptamerWeb.ErrorView, "401.json")
+        |> put_view(AptamerWeb.ErrorView)
+        |> render("401.json")
 
       e ->
         IO.inspect e
         Logger.error "Error logging in user"
         conn
         |> put_status(401)
-        |> render(AptamerWeb.ErrorView, "401.json")
+        |> put_view(AptamerWeb.ErrorView)
+        |> render("401.json")
     end
   end
 
@@ -54,6 +57,8 @@ defmodule AptamerWeb.SessionController do
 
   def show(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
-    render(conn, AptamerWeb.UserView, "show.json-api", %{data: current_user})
+    conn
+    |> put_view(AptamerWeb.UserView)
+    |> render("show.json-api", %{data: current_user})
   end
 end
