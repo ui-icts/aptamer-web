@@ -4,7 +4,7 @@ defmodule Aptamer.Mixfile do
   def project do
     [app: :aptamer,
      version: "0.0.1",
-     elixir: "~> 1.2",
+     elixir: "~> 1.7",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -17,7 +17,9 @@ defmodule Aptamer.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Aptamer, []},
+    [
+      mod: {Aptamer.Application, []},
+      extra_applications: [:logger, :runtime_tools],
     ]
   end
 
@@ -29,19 +31,20 @@ defmodule Aptamer.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0"},
+    [{:phoenix, "~> 1.4.0"},
      {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.0"},
+     {:ecto_sql, "~> 3.0"},
+     {:phoenix_ecto, "~> 4.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:phoenix_live_reload, "~> 1.2", only: :dev},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"},
-     {:ecto_enum, "~> 1.0"},
+     {:plug_cowboy, "~> 2.0"},
+     {:plug, "~> 1.7"},
+     {:jason, "~> 1.0"},
      {:timex, "~> 3.0"},
-     {:timex_ecto, "~> 3.0"},
      {:jsonapi, git: "https://github.com/jeregrine/jsonapi"},
-     {:ex_machina, "~> 2.0", only: :test},
+     {:ex_machina, "~> 2.2.2", only: :test},
      {:proper_case, "~> 1.2.0"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:fs, "~> 0.9", override: true},
@@ -49,9 +52,9 @@ defmodule Aptamer.Mixfile do
      {:porcelain, "~> 2.0"},
      {:temp, "~> 0.4"},
      {:distillery, "~> 1.5", runtime: false},
-     {:comeonin, "~> 3.0"},
-     {:comeonin_ecto_password, "~> 2.0"},
-     {:guardian, "~> 0.14"},
+     {:comeonin, "~> 4.0"},
+     {:bcrypt_elixir, "~> 1.1"},
+     {:guardian, "~> 1.0"},
      {:wormhole, git: "https://github.com/renderedtext/wormhole"},
      {:bamboo, "~> 0.8"},
      {:bamboo_smtp, "~> 1.4.0"}

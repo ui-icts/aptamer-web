@@ -24,24 +24,17 @@ defmodule AptamerWeb.ConnCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-
+      import Aptamer.Guardian
       import AptamerWeb.Router.Helpers
 
       # The default endpoint for testing
       @endpoint AptamerWeb.Endpoint
 
       def guardian_login(conn, user) do
-        jwt =
-          conn
-          |> bypass_through(AptamerWeb.Router, [:browser])
-          |> get("/")
-          |> Guardian.Plug.api_sign_in(user)
-          |> Guardian.Plug.current_token()
-
+        {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
         conn =
           conn
-          |> put_req_header( "authorization", "Bearer " <> jwt)
-
+          |> put_req_header("authorization", "bearer: " <> token)
 
         conn
       end

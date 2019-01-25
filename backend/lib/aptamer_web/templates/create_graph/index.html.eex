@@ -12,13 +12,13 @@
     <tr>
 
       <td class="text-right">
-        <%= link "Show", to: create_graph_path(@conn, :show, create_graph), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: create_graph_path(@conn, :edit, create_graph), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: create_graph_path(@conn, :delete, create_graph), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: Routes.create_graph_path(@conn, :show, create_graph), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: Routes.create_graph_path(@conn, :edit, create_graph), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: Routes.create_graph_path(@conn, :delete, create_graph), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New create graph", to: create_graph_path(@conn, :new) %>
+<%= link "New create graph", to: Routes.create_graph_path(@conn, :new) %>

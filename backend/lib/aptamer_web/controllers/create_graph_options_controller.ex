@@ -37,7 +37,7 @@ defmodule AptamerWeb.CreateGraphOptionsController do
       {:ok, create_graph_options} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", create_graph_options_path(conn, :show, create_graph_options))
+        |> put_resp_header("location", Routes.create_graph_options_path(conn, :show, create_graph_options))
         |> render("show.json-api", data: create_graph_options)
       {:error, changeset} ->
         conn

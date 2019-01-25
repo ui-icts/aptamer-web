@@ -37,7 +37,7 @@ defmodule AptamerWeb do
       import Ecto
       import Ecto.Query
 
-      import AptamerWeb.Router.Helpers
+      alias AptamerWeb.Router.Helpers, as: Routes
       import AptamerWeb.Gettext
     end
   end
@@ -52,7 +52,7 @@ defmodule AptamerWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import AptamerWeb.Router.Helpers
+      alias AptamerWeb.Router.Helpers, as: Routes
       import AptamerWeb.ErrorHelpers
       import AptamerWeb.Gettext
     end

@@ -32,7 +32,7 @@ defmodule AptamerWeb.JobController do
 
         conn
         |> put_status(:created)
-        |> put_resp_header("location", job_path(conn, :show, job))
+        |> put_resp_header("location", Routes.job_path(conn, :show, job))
         |> render("show.json-api", data: job)
 
       {:error, changeset} ->

@@ -4,5 +4,5 @@
 
 </ul>
 
-<%= link "Edit", to: create_graph_path(@conn, :edit, @create_graph) %>
-<%= link "Back", to: create_graph_path(@conn, :index) %>
+<%= link "Edit", to: Routes.create_graph_path(@conn, :edit, @create_graph) %>
+<%= link "Back", to: Routes.create_graph_path(@conn, :index) %>

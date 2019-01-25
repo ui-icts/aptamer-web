@@ -17,8 +17,8 @@ defmodule AptamerWeb.SessionController do
       cond do
         checkpw(password, user.password) ->
           Logger.info "User " <> username <> " logged in"
-          conn = Guardian.Plug.api_sign_in(conn, user)
-          jwt = Guardian.Plug.current_token(conn)
+          conn = Aptamer.Guardian.Plug.sign_in(conn, user)
+          jwt = Aptamer.Guardian.Plug.current_token(conn)
 
           conn
           |> put_status(:created)

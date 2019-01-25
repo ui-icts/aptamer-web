@@ -15,9 +15,7 @@ defmodule AptamerWeb.Router do
 
   pipeline :api_auth do
     plug :accepts, ["html","json","json-api"]
-    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
-    plug Guardian.Plug.LoadResource
-    plug Guardian.Plug.EnsureAuthenticated
+    plug Aptamer.AuthAccessPipeline
   end
 
   scope "/" do

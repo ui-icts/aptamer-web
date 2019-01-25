@@ -37,7 +37,7 @@ defmodule AptamerWeb.PredictStructureOptionsController do
       {:ok, predict_structure_options} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", predict_structure_options_path(conn, :show, predict_structure_options))
+        |> put_resp_header("location", Routes.predict_structure_options_path(conn, :show, predict_structure_options))
         |> render("show.json-api", data: predict_structure_options)
       {:error, changeset} ->
         conn
