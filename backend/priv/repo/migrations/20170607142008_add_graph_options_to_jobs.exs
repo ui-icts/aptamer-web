@@ -3,8 +3,10 @@ defmodule Aptamer.Repo.Migrations.AddGraphOptionsToJobs do
 
   def change do
     alter table(:jobs) do
-      add :create_graph_options_id, references(:create_graph_options, on_delete: :nothing, type: :binary_id)
+      add(
+        :create_graph_options_id,
+        references(:create_graph_options, on_delete: :nothing, type: :binary_id)
+      )
     end
-
   end
 end

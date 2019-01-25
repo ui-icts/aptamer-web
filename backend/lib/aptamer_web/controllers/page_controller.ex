@@ -6,33 +6,37 @@ defmodule AptamerWeb.PageController do
 
   def index(conn, _params) do
     conn
-      |> put_layout(false)
-      |> render("index.html")
+    |> put_layout(false)
+    |> render("index.html")
   end
 
-  def download_file(conn, params ) do
+  def download_file(conn, params) do
+    {file_name, file_content} =
+      case params do
+        %{"file_id" => file_id} ->
+          file = Repo.get!(AptamerFile, file_id)
+          {file.file_name, file.data}
 
-    {file_name, file_content} = case params do
-      %{"file_id" => file_id} ->
-        file = Repo.get!(AptamerFile, file_id)
-        {file.file_name, file.data}
-      %{"job_id" => job_id} ->
-        query = from result in Aptamer.Jobs.Result,
-                  where: result.job_id == ^job_id
-        result = Repo.one!(query)
-        {"results.zip", result.archive}
-    end
+        %{"job_id" => job_id} ->
+          query =
+            from(result in Aptamer.Jobs.Result,
+              where: result.job_id == ^job_id
+            )
 
-    {:ok, temp_path} = Temp.mkdir "downloads"
+          result = Repo.one!(query)
+          {"results.zip", result.archive}
+      end
+
+    {:ok, temp_path} = Temp.mkdir("downloads")
     input_file = Path.join(temp_path, file_name)
-    File.write input_file, file_content
+    File.write(input_file, file_content)
 
     conn =
       conn
       |> put_resp_header("content-disposition", ~s(attachment; filename="#{file_name}"))
       |> send_file(200, input_file)
 
-    File.rm input_file
+    File.rm(input_file)
 
     conn
   end

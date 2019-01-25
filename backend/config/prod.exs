@@ -16,7 +16,7 @@ config :aptamer, AptamerWeb.Endpoint,
   url: [host: "localhost", port: 4000],
   server: true,
   root: ".",
-  version: Mix.Project.config[:version]
+  version: Mix.Project.config()[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info

@@ -5,18 +5,16 @@ defmodule AptamerWeb.SessionController do
   import Comeonin.Bcrypt
   import Logger
 
-  def create(conn, %{"grant_type" => "password",
-        "username" => username,
-        "password" => password}) do
-
+  def create(conn, %{"grant_type" => "password", "username" => username, "password" => password}) do
     try do
       user =
         Aptamer.Auth.User
         |> where(email: ^username)
-        |> Repo.one!
+        |> Repo.one!()
+
       cond do
         checkpw(password, user.password) ->
-          Logger.info "User " <> username <> " logged in"
+          Logger.info("User " <> username <> " logged in")
           conn = Aptamer.Guardian.Plug.sign_in(conn, user)
           jwt = Aptamer.Guardian.Plug.current_token(conn)
 
@@ -25,25 +23,27 @@ defmodule AptamerWeb.SessionController do
           |> json(%{access_token: jwt})
 
         true ->
-          Logger.warn "User " <> username <> " failed login"
+          Logger.warn("User " <> username <> " failed login")
+
           conn
           |> put_status(401)
           |> put_view(AptamerWeb.ErrorView)
           |> render("401.json")
-
       end
     rescue
       e in Ecto.NoResultsError ->
         dummy_checkpw()
-        Logger.warn "User " <> username <> " not found"
+        Logger.warn("User " <> username <> " not found")
+
         conn
         |> put_status(401)
         |> put_view(AptamerWeb.ErrorView)
         |> render("401.json")
 
       e ->
-        IO.inspect e
-        Logger.error "Error logging in user"
+        IO.inspect(e)
+        Logger.error("Error logging in user")
+
         conn
         |> put_status(401)
         |> put_view(AptamerWeb.ErrorView)
@@ -52,11 +52,12 @@ defmodule AptamerWeb.SessionController do
   end
 
   def create(conn, %{"grant_type" => _}) do
-    throw "Unsupported grant_type"
+    throw("Unsupported grant_type")
   end
 
   def show(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
+
     conn
     |> put_view(AptamerWeb.UserView)
     |> render("show.json-api", %{data: current_user})

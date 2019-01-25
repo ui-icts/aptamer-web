@@ -10,11 +10,11 @@ defmodule AptamerWeb.Router do
   end
 
   pipeline :api do
-    plug :accepts, ["html","json","json-api"]
+    plug :accepts, ["html", "json", "json-api"]
   end
 
   pipeline :api_auth do
-    plug :accepts, ["html","json","json-api"]
+    plug :accepts, ["html", "json", "json-api"]
     plug Aptamer.AuthAccessPipeline
   end
 
@@ -24,7 +24,7 @@ defmodule AptamerWeb.Router do
 
   scope "/", AptamerWeb do
     pipe_through :api
-    #protected routes here
+    # protected routes here
     resources "/register", RegistrationController, only: [:create]
 
     post "/token", SessionController, :create, as: :login
@@ -40,11 +40,11 @@ defmodule AptamerWeb.Router do
   end
 
   scope "/", AptamerWeb do
-    pipe_through :browser # Use the default browser stack
+    # Use the default browser stack
+    pipe_through :browser
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
     get "/", PageController, :index
-    #Public routes here
+    # Public routes here
   end
-
 end

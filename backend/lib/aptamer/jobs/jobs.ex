@@ -7,5 +7,4 @@ defmodule Aptamer.Jobs do
   alias Aptamer.Repo
 
   alias Aptamer.Jobs.File
-
 end

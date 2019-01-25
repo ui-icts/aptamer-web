@@ -4,8 +4,8 @@ defmodule Aptamer.Jobs.Result do
   import Ecto.Changeset
 
   schema "results" do
-    field :archive, :binary
-    belongs_to :job, Aptamer.Jobs.Job
+    field(:archive, :binary)
+    belongs_to(:job, Aptamer.Jobs.Job)
 
     timestamps()
   end

@@ -14,16 +14,26 @@ defmodule AptamerWeb.EmailTest do
   # reading that mocking is bad...hmm
   test "constructs valid email" do
     user = build(:user, email: "user@example.com") |> insert
-    file = build(:file, file_name: "Kenobi", owner: user)
-           |> as_structure
-           |> insert
+
+    file =
+      build(:file, file_name: "Kenobi", owner: user)
+      |> as_structure
+      |> insert
 
     ps_opts = build(:predict_structure_options) |> insert
     job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
 
-    assert %Bamboo.Email{assigns: %{}, bcc: [], cc: [], from: {"Aptamer Notifier", "ICTS-aptamer-mailer@uiowa.edu"}, headers: %{},
-      html_body: _, private: %{}, subject: "Job complete",
-      text_body: nil, to: [nil: "user@example.com"]} = Email.send_job_complete(job)
-
+    assert %Bamboo.Email{
+             assigns: %{},
+             bcc: [],
+             cc: [],
+             from: {"Aptamer Notifier", "ICTS-aptamer-mailer@uiowa.edu"},
+             headers: %{},
+             html_body: _,
+             private: %{},
+             subject: "Job complete",
+             text_body: nil,
+             to: [nil: "user@example.com"]
+           } = Email.send_job_complete(job)
   end
 end

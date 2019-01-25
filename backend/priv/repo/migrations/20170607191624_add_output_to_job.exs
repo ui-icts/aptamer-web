@@ -3,7 +3,7 @@ defmodule Aptamer.Repo.Migrations.AddOutputToJob do
 
   def change do
     alter table(:jobs) do
-      add :output, :text
+      add(:output, :text)
     end
   end
 end

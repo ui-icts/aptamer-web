@@ -3,17 +3,17 @@ defmodule Aptamer.Jobs.Job do
   use Aptamer.BinaryIdColums
   import Ecto.Changeset
   alias Aptamer.Repo
-  alias Aptamer.Jobs.{File,Job}
+  alias Aptamer.Jobs.{File, Job}
 
   @primary_key {:id, :binary_id, autogenerate: false}
 
   schema "jobs" do
-    field :status, :string
-    field :output, :string
-    belongs_to :file, Aptamer.Jobs.File
-    belongs_to :create_graph_options, Aptamer.Jobs.CreateGraphOptions
-    belongs_to :predict_structure_options, Aptamer.Jobs.PredictStructureOptions
-    has_one :results, Aptamer.Jobs.Result
+    field(:status, :string)
+    field(:output, :string)
+    belongs_to(:file, Aptamer.Jobs.File)
+    belongs_to(:create_graph_options, Aptamer.Jobs.CreateGraphOptions)
+    belongs_to(:predict_structure_options, Aptamer.Jobs.PredictStructureOptions)
+    has_one(:results, Aptamer.Jobs.Result)
     timestamps()
   end
 
@@ -22,7 +22,13 @@ defmodule Aptamer.Jobs.Job do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:status, :output, :file_id, :create_graph_options_id, :predict_structure_options_id])
+    |> cast(params, [
+      :status,
+      :output,
+      :file_id,
+      :create_graph_options_id,
+      :predict_structure_options_id
+    ])
     |> validate_required([:status, :file_id])
   end
 

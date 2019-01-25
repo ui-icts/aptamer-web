@@ -11,6 +11,7 @@ defmodule Aptamer.Factory do
 
   def user_factory do
     {:ok, password} = Comeonin.Ecto.Password.cast("welcome")
+
     %Aptamer.Auth.User{
       name: sequence(:user, &"User #{&1}"),
       email: sequence(:user, &"user#{&1}@example.com"),
@@ -50,11 +51,11 @@ defmodule Aptamer.Factory do
   end
 
   def create_graph_options_factory do
-    %Aptamer.Jobs.CreateGraphOptions {
+    %Aptamer.Jobs.CreateGraphOptions{
       edge_type: "tree",
       seed: true,
       max_edit_distance: 3,
-      max_tree_distance: 4,
+      max_tree_distance: 4
     }
   end
 
@@ -67,5 +68,4 @@ defmodule Aptamer.Factory do
       pass_options: "-foo -bar"
     }
   end
-
 end

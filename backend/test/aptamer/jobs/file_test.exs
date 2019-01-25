@@ -4,11 +4,15 @@ defmodule Aptamer.Jobs.FileTest do
   import Aptamer.Factory
   alias Aptamer.Jobs.File
 
-  @valid_attrs %{file_name: "some content", file_type: "some content", uploaded_on: ~N[2000-01-01 23:00:07]}
+  @valid_attrs %{
+    file_name: "some content",
+    file_type: "some content",
+    uploaded_on: ~N[2000-01-01 23:00:07]
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    valid_attrs = Map.put(@valid_attrs, :owner_id, insert(:user).id )
+    valid_attrs = Map.put(@valid_attrs, :owner_id, insert(:user).id)
     changeset = File.changeset(%File{}, valid_attrs)
     assert changeset.valid?
   end
@@ -23,10 +27,12 @@ defmodule Aptamer.Jobs.FileTest do
     cg_opts = build(:create_graph_options) |> insert
     ps_opts = build(:predict_structure_options) |> insert
 
-    job = insert(:job,
-                 file: file,
-                 predict_structure_options: ps_opts,
-                 create_graph_options: cg_opts)
+    job =
+      insert(:job,
+        file: file,
+        predict_structure_options: ps_opts,
+        create_graph_options: cg_opts
+      )
 
     multi = File.delete(file)
 
@@ -48,7 +54,6 @@ defmodule Aptamer.Jobs.FileTest do
   end
 
   test "delete a file with no jobs" do
-
     # This winds up a special case because if the options aren't
     # linked to a job then we might not find them dependening on
     # how the delete gets implemented, so just a case to make
@@ -57,7 +62,7 @@ defmodule Aptamer.Jobs.FileTest do
 
     multi = File.delete(file)
 
-    IO.inspect Ecto.Multi.to_list(multi)
+    IO.inspect(Ecto.Multi.to_list(multi))
 
     {:ok, _} = Repo.transaction(multi)
 

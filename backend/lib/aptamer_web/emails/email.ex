@@ -1,7 +1,7 @@
 defmodule AptamerWeb.Email do
   import Bamboo.Email
   require Logger
-  alias Aptamer.{Repo,Mailer}
+  alias Aptamer.{Repo, Mailer}
   alias Aptamer.Jobs.Job
   alias AptamerWeb.Endpoint
 
@@ -13,12 +13,11 @@ defmodule AptamerWeb.Email do
     {:error, error}
   end
 
-
   def send_job_complete(job) do
     IO.puts("Sending completion email..")
 
     aptamer_job_email(job)
-    |> Mailer.deliver_later
+    |> Mailer.deliver_later()
   end
 
   def aptamer_job_email(job) do
@@ -28,23 +27,32 @@ defmodule AptamerWeb.Email do
     |> to(user.email)
     |> from({"Aptamer Notifier", "ICTS-aptamer-mailer@uiowa.edu"})
     |> subject("Job complete")
-    |> html_body("<i>This email was automatically sent to notify you that a job was completed. Please do not reply to this address</i><hr><br>")
+    |> html_body(
+      "<i>This email was automatically sent to notify you that a job was completed. Please do not reply to this address</i><hr><br>"
+    )
     |> html_body(job_email_text(job))
   end
 
   defp job_email_text(job) do
-    success_message = "Your job " <> Job.description(job) <> " has completed <strong>successfully</strong>! "
-    home_url = html_link("View Job", Endpoint.url)
-    generated_file = job.output # can't do this in the guard itself
+    success_message =
+      "Your job " <> Job.description(job) <> " has completed <strong>successfully</strong>! "
 
-    case (job.status) do
+    home_url = html_link("View Job", Endpoint.url())
+    # can't do this in the guard itself
+    generated_file = job.output
+
+    case job.status do
       finished when is_nil(generated_file) ->
         success_message <> home_url
+
       finished ->
-        download_url = Endpoint.url <> "/results/" <> job.id
+        download_url = Endpoint.url() <> "/results/" <> job.id
         success_message <> html_link("Download the results here!", download_url)
+
       error ->
-        "Your job " <> Job.description(job) <> " has errored out and <strong>failed</strong>. " <> home_url
+        "Your job " <>
+          Job.description(job) <> " has errored out and <strong>failed</strong>. " <> home_url
+
       _ ->
         raise "unhandled job status passed. job.status: " <> job.status
     end
@@ -55,8 +63,9 @@ defmodule AptamerWeb.Email do
   end
 
   defp job_author(job) do
-    job = job
-          |> Repo.preload([file: :owner])
+    job =
+      job
+      |> Repo.preload(file: :owner)
 
     {:ok, job.file.owner}
   end

@@ -4,9 +4,9 @@ defmodule Aptamer.Auth.Registration do
   import Ecto.Changeset
 
   schema "registration" do
-    field :email, :string
-    field :name, :string
-    field :password, :string
+    field(:email, :string)
+    field(:name, :string)
+    field(:password, :string)
   end
 
   @doc """
@@ -17,5 +17,4 @@ defmodule Aptamer.Auth.Registration do
     |> cast(params, [:email, :name, :password])
     |> validate_required([:email, :name, :password])
   end
-
 end

@@ -12,6 +12,7 @@ defmodule Aptamer.Jobs.JobTest do
     valid_attrs = Map.put(@valid_attrs, :file_id, file.id)
     {:ok, valid_attrs: valid_attrs}
   end
+
   test "changeset with valid attributes", %{valid_attrs: valid_attrs} do
     changeset = Job.changeset(%Job{}, valid_attrs)
     assert changeset.valid?
@@ -31,8 +32,7 @@ defmodule Aptamer.Jobs.JobTest do
     assert "predict structures for file 1 quarter portion" == Job.description(job)
 
     job = insert(:job, file: file, predict_structure_options: nil, create_graph_options: cg_opts)
-    
+
     assert "create graph for file 1 quarter portion" == Job.description(job)
   end
-
 end

@@ -15,5 +15,4 @@ defmodule Aptamer.Auth.RegistrationTest do
     changeset = Registration.changeset(%Registration{}, @invalid_attrs)
     refute changeset.valid?
   end
-
 end

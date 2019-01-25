@@ -1,5 +1,4 @@
 defmodule Aptamer.BinaryIdColums do
-
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """

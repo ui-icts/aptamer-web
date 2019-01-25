@@ -4,7 +4,7 @@ defmodule AptamerWeb.JobController do
   alias Aptamer.Jobs.Job
   alias JaSerializer.Params
 
-  plug JaSerializer.ContentTypeNegotiation when action in [:create,:update]
+  plug JaSerializer.ContentTypeNegotiation when action in [:create, :update]
   plug :accepts, ["json-api"]
   plug :scrub_params, "data" when action in [:create, :update]
 
@@ -19,7 +19,6 @@ defmodule AptamerWeb.JobController do
 
     case Repo.insert(changeset) do
       {:ok, job} ->
-
         job =
           job
           |> Repo.preload(:create_graph_options)
@@ -47,7 +46,10 @@ defmodule AptamerWeb.JobController do
     render(conn, "show.json-api", data: job)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "jobs", "attributes" => _job_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "jobs", "attributes" => _job_params}
+      }) do
     job = Repo.get!(Job, id)
     changeset_params = Params.to_attributes(data)
     changeset = Job.changeset(job, changeset_params)
@@ -55,6 +57,7 @@ defmodule AptamerWeb.JobController do
     case Repo.update(changeset) do
       {:ok, job} ->
         render(conn, "show.json-api", data: job)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -71,5 +74,4 @@ defmodule AptamerWeb.JobController do
 
     send_resp(conn, :no_content, "")
   end
-
 end

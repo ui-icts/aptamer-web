@@ -8,7 +8,6 @@ defmodule AptamerWeb.RegistrationControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn = post conn, registration_path(conn, :create), registration: @valid_attrs
     response = json_response(conn, 201)
@@ -19,5 +18,4 @@ defmodule AptamerWeb.RegistrationControllerTest do
     conn = post conn, registration_path(conn, :create), registration: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
-
 end

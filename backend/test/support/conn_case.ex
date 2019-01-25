@@ -32,6 +32,7 @@ defmodule AptamerWeb.ConnCase do
 
       def guardian_login(conn, user) do
         {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
+
         conn =
           conn
           |> put_req_header("authorization", "bearer: " <> token)

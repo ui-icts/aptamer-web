@@ -3,13 +3,13 @@ defmodule Aptamer.Auth.User do
   use Aptamer.BinaryIdColums
   import Ecto.Changeset
 
-  alias Aptamer.Auth.{Registration,User}
+  alias Aptamer.Auth.{Registration, User}
 
   schema "users" do
-    field :name, :string
-    field :email, :string
-    field :password, Comeonin.Ecto.Password
-    has_many :files, Aptamer.Jobs.File, foreign_key: "owner_id"
+    field(:name, :string)
+    field(:email, :string)
+    field(:password, Comeonin.Ecto.Password)
+    has_many(:files, Aptamer.Jobs.File, foreign_key: "owner_id")
 
     timestamps()
   end
@@ -24,7 +24,7 @@ defmodule Aptamer.Auth.User do
   end
 
   def register(%Registration{} = reg) do
-    %User{name: reg.name,email: reg.email}
+    %User{name: reg.name, email: reg.email}
     |> changeset(%{password: reg.password})
   end
 end

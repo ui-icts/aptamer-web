@@ -11,7 +11,7 @@ defmodule Aptamer.Application do
       # Start the Ecto repository
       Aptamer.Repo,
       # Start the endpoint when the application starts
-      AptamerWeb.Endpoint,
+      AptamerWeb.Endpoint
       # Start your own worker by calling: Aptamer.Worker.start_link(arg1, arg2, arg3)
       # worker(Aptamer.Worker, [arg1, arg2, arg3]),
     ]

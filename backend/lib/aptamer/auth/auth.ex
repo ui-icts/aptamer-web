@@ -7,5 +7,4 @@ defmodule Aptamer.Auth do
   alias Aptamer.Repo
 
   alias Aptamer.Auth.User
-
 end

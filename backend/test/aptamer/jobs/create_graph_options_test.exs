@@ -4,7 +4,12 @@ defmodule Aptamer.Jobs.CreateGraphOptionsTest do
   alias Aptamer.Jobs.CreateGraphOptions
   doctest Aptamer.Jobs.CreateGraphOptions
 
-  @valid_attrs %{edge_type: "some content", max_edit_distance: 42, max_tree_distance: 42, seed: true}
+  @valid_attrs %{
+    edge_type: "some content",
+    max_edit_distance: 42,
+    max_tree_distance: 42,
+    seed: true
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

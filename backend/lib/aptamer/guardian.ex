@@ -13,6 +13,7 @@ defmodule Aptamer.Guardian do
     sub = "#{resource.id}"
     {:ok, sub}
   end
+
   def subject_for_token(_, _) do
     {:error, :reason_for_error}
   end
@@ -23,7 +24,7 @@ defmodule Aptamer.Guardian do
     # the resource id so here we'll rely on that to look it up.
     id = claims["sub"]
     resource = Repo.get(User, id)
-    {:ok,  resource}
+    {:ok, resource}
   end
 
   def resource_from_claims(_claims) do
