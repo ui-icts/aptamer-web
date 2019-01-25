@@ -34,7 +34,6 @@
       </main>
 
       <h2>
-        <%= Aptamer.Coherence.ViewHelpers.signout_link(@conn) %>
       </h2>
     </div> <!-- /container -->
     <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
