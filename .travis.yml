@@ -2,6 +2,10 @@ language: elixir
 elixir: 1.7.4
 otp_release: '21.0'
 sudo: required
+env:
+  - TRAVIS_NODE_VERSION="8.12.0"
+  global:
+    secure: URJJ27QxU9rBZs9xPb5MCtuDMXiKw4B6Y4DP0sPq2W4hMQV0uVPh7lVVDQk4D4GX6rlUwtbC+oYNaq2keDB3D117MToDLEoJe5yuPSOLyXK9ZmZCFxLH8b76VGUGpqiwRGT6uxx1Gox5dcb3PwkhMWvpZj+NKaYoCIpLL9sU/aGgn6xfccSvErlDCV+neXKYzQT1xB6rX7Jjx+Ml4G9/LrukiEB8GDVay2e+xkGXHyduJ0PAEohWOBf/IIPHgHR0MkZ8fDUBgjR/bmyddD9j1d99tga90Zei/pAIRrl+SvhPe4q8Ch8+qakicbGwS5q6sYrfnN5MTgySlur3whuhNmObsETeYF6KKvC6WTeSSClAjbxBjlHzegFaNhhhpThSF5+DVCphNNSAErKBkeJnG+udgk9brrM/yDYMRT4lFA1TfFc5267BaMkF8Z4NsM/Lo/9MED/NVqE2Nyh6JKjHHCSYW72RI3VDJ+ywCbf6KON0/Eslay0pNxXM98v5PxXqq+lU93oel0b/T+Pbpfu+6+xV2JqGXbHJ4651J/W8Tkv0uzhNmyt/6xLAMs2eEon/6LHVqfz/XCtVLS2W83yYv1l0F8182vOak58FWMsZ0zGyaCCMwHDis3ih7fPvNmVUuA3H7TYhQujmbknLijMpi2m5+o1p7L8EQOTu9Y2F41o=
 addons:
   postgresql: '9.6'
   apt:
@@ -25,6 +29,7 @@ install:
   - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
   - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
   - export PATH=$PWD/travis-phantomjs:$PATH
+  - nvm use $TRAVIS_NODE_VERSION
   - yarn install
 before_script:
   - export DISPLAY=:99.0
@@ -52,6 +57,3 @@ deploy:
   on:
     repo: ui-icts/aptamer-web
     branch: master
-env:
-  global:
-    secure: URJJ27QxU9rBZs9xPb5MCtuDMXiKw4B6Y4DP0sPq2W4hMQV0uVPh7lVVDQk4D4GX6rlUwtbC+oYNaq2keDB3D117MToDLEoJe5yuPSOLyXK9ZmZCFxLH8b76VGUGpqiwRGT6uxx1Gox5dcb3PwkhMWvpZj+NKaYoCIpLL9sU/aGgn6xfccSvErlDCV+neXKYzQT1xB6rX7Jjx+Ml4G9/LrukiEB8GDVay2e+xkGXHyduJ0PAEohWOBf/IIPHgHR0MkZ8fDUBgjR/bmyddD9j1d99tga90Zei/pAIRrl+SvhPe4q8Ch8+qakicbGwS5q6sYrfnN5MTgySlur3whuhNmObsETeYF6KKvC6WTeSSClAjbxBjlHzegFaNhhhpThSF5+DVCphNNSAErKBkeJnG+udgk9brrM/yDYMRT4lFA1TfFc5267BaMkF8Z4NsM/Lo/9MED/NVqE2Nyh6JKjHHCSYW72RI3VDJ+ywCbf6KON0/Eslay0pNxXM98v5PxXqq+lU93oel0b/T+Pbpfu+6+xV2JqGXbHJ4651J/W8Tkv0uzhNmyt/6xLAMs2eEon/6LHVqfz/XCtVLS2W83yYv1l0F8182vOak58FWMsZ0zGyaCCMwHDis3ih7fPvNmVUuA3H7TYhQujmbknLijMpi2m5+o1p7L8EQOTu9Y2F41o=
