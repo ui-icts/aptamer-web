@@ -1,7 +1,8 @@
-defmodule Aptamer.File do
-  use AptamerWeb, :model
+defmodule Aptamer.Jobs.File do
+  use Ecto.Schema
   alias Ecto.Multi
   alias Aptamer.Repo
+  alias Aptamer.Jobs.{File,CreateGraphOptions,PredictStructureOptions}
 
   schema "files" do
     field :file_name, :string
@@ -10,7 +11,7 @@ defmodule Aptamer.File do
     field :data, :binary
 
     belongs_to :owner, Aptamer.User
-    has_many :jobs, Aptamer.Job
+    has_many :jobs, Aptamer.Jobs.Job
 
     timestamps()
   end
@@ -40,9 +41,9 @@ defmodule Aptamer.File do
     create_graph_ids = unique_id_list(jobs, :create_graph_options_id)
     predict_structure_ids = unique_id_list(jobs, :predict_structure_options_id)
     
-    create_graph_query = from cgo in Aptamer.CreateGraphOptions,
+    create_graph_query = from cgo in CreateGraphOptions,
       where: cgo.id in ^create_graph_ids
-    predict_structure_query = from pso in Aptamer.PredictStructureOptions,
+    predict_structure_query = from pso in PredictStructureOptions,
       where: pso.id in ^predict_structure_ids
 
     multi

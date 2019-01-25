@@ -1,16 +1,18 @@
-defmodule Aptamer.Job do
-  use AptamerWeb, :model
-  alias Aptamer.{Repo,File}
+defmodule Aptamer.Jobs.Job do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias Aptamer.Repo
+  alias Aptamer.Jobs.{File,Job}
 
   @primary_key {:id, :binary_id, autogenerate: false}
 
   schema "jobs" do
     field :status, :string
     field :output, :string
-    belongs_to :file, Aptamer.File
-    belongs_to :create_graph_options, Aptamer.CreateGraphOptions
-    belongs_to :predict_structure_options, Aptamer.PredictStructureOptions
-    has_one :results, Aptamer.Result
+    belongs_to :file, Aptamer.Jobs.File
+    belongs_to :create_graph_options, Aptamer.Jobs.CreateGraphOptions
+    belongs_to :predict_structure_options, Aptamer.Jobs.PredictStructureOptions
+    has_one :results, Aptamer.Jobs.Result
     timestamps()
   end
 
@@ -24,7 +26,7 @@ defmodule Aptamer.Job do
   end
 
   def description(job) when not is_nil(job) do
-    file_name = Repo.get!(File, job.file_id).file_name
+    file_name = Repo.get!(Aptamer.Jobs.File, job.file_id).file_name
 
     cond do
       job.create_graph_options_id != nil -> "create graph for file " <> file_name

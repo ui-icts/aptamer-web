@@ -1,5 +1,6 @@
-defmodule Aptamer.Result do
-  use AptamerWeb, :model
+defmodule Aptamer.Jobs.Result do
+  use Ecto.Schema
+  import Ecto.Changeset
 
   schema "results" do
     field :archive, :binary

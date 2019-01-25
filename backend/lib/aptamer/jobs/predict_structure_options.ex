@@ -1,5 +1,7 @@
-defmodule Aptamer.PredictStructureOptions do
-  use AptamerWeb, :model
+defmodule Aptamer.Jobs.PredictStructureOptions do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias Aptamer.Jobs.PredictStructureOptions
 
   schema "predict_structure_options" do
     field :run_mfold, :boolean, default: false

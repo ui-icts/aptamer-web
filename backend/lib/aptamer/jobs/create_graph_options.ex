@@ -1,5 +1,7 @@
-defmodule Aptamer.CreateGraphOptions do
-  use AptamerWeb, :model
+defmodule Aptamer.Jobs.CreateGraphOptions do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias Aptamer.Jobs.CreateGraphOptions
 
   schema "create_graph_options" do
     field :edge_type, :string
