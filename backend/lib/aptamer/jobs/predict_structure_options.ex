@@ -32,7 +32,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
     ["-v", "2", "--prefix", "PP", "--suffix", "SS"]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-foo -bar"})
-    ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options","-foo -bar"]
+    ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options",~s("-foo -bar")]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS"]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
@@ -45,7 +45,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
       if missing?(options.pass_options) do
         []
       else
-        ["--pass_options", options.pass_options]
+        ["--pass_options", ~s("#{options.pass_options}")]
       end
 
     prefix_args = ix_args("prefix", options.prefix)
