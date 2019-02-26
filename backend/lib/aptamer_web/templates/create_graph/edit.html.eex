@@ -1,0 +1,6 @@
+<h2>Edit create graph</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: Routes.create_graph_path(@conn, :update, @create_graph) %>
+
+<%= link "Back", to: Routes.create_graph_path(@conn, :index) %>

@@ -1,16 +1,16 @@
-import Ember from 'ember';
-import {uuid} from 'ember-cli-uuid';
+import Route from '@ember/routing/route';
+import { uuid } from 'ember-cli-uuid';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Route.extend(AuthenticatedRouteMixin, {
 
   model() {
-    return this.get('store').findAll('file', {include: 'jobs,createGraphOptions'});
+    return this.store.findAll('file', {include: 'jobs,createGraphOptions'});
   },
 
   actions: {
     fileUploaded(uploadResponse) {
-      this.get('store').pushPayload(uploadResponse);
+      this.store.pushPayload(uploadResponse);
       this.refresh();
     },
 
@@ -22,7 +22,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
       function retry(retries) {
         return file.save().catch(function(_reason) {
-          console.log("Retries left: " + retries)
 
           if(retries-- > 0) {
             return retry(retries)
@@ -46,7 +45,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     async startProcessFile(file, options) {
 
-      let job = this.get('store').createRecord('job', {
+      let job = this.store.createRecord('job', {
         id: uuid(),
         file: file,
         status: 'ready'

@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
 
   model() {
-    return this.get('store').query('file', {
+    return this.store.query('file', {
       filter: {
         filePurpose: 'predict-structures-input'
       }
@@ -12,7 +12,7 @@ export default Ember.Route.extend({
 
   actions: {
     fileUploaded(_file, uploadResponse, _evt) {
-      this.get('store').pushPayload(uploadResponse);
+      this.store.pushPayload(uploadResponse);
       this.refresh();
     }
 

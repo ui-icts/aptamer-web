@@ -8,7 +8,7 @@ use Mix.Config
 # file or create a script for recreating it, since it's
 # kept out of version control and might be hard to recover
 # or recreate for your teammates (or you later on).
-config :aptamer, Aptamer.Endpoint,
+config :aptamer, AptamerWeb.Endpoint,
   secret_key_base: "01BgHAmJr7VcdaWMw1XqbLJNAl9tqzEEvHxYRjjvc8TticZ5p6yOd/HgrzBVb8T2"
 
 # Configure your database

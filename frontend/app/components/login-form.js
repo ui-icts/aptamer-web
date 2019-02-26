@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   actions: {
     submitForm() {
 
-      this.get('onSubmit')(this.getProperties('username', 'password'));
+      this.onSubmit(this.getProperties('username', 'password'));
     }
   }
 });

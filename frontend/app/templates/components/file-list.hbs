@@ -1,11 +1,11 @@
 {{#if hasBlock}}
 
   <div class="ui relaxed divided list">
-  {{#each filesByUploadDate as |file|}}
-    {{yield file}}
-  {{else}}
+    {{#each filesByUploadDate as |file|}}
+      {{yield file}}
+    {{else}}
       Upload some files to get started
-  {{/each}}
+    {{/each}}
   </div>
 
 {{else}}

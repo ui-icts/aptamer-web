@@ -10,7 +10,7 @@
         <i class="dropdown icon"></i>
         <div class="menu">
           {{#each predictionTools as |tool|}}
-            <div class="item" data-value="{{tool}}">
+            <div class="item" data-value={{tool}}>
               {{tool}}
             </div>
           {{/each}}
@@ -20,31 +20,25 @@
 
     {{#unless optionsObject.runMfold}}
       <label>Version: 2</label>
-      {{!-- <div class="field">
-        {{ui-radio name="viennaVersion" label="1" value="1" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
-      </div>
-      <div class="field">
-        {{ui-radio name="viennaVersion" label="2" value="2" current=optionsObject.viennaVersion onChange=(action (mut optionsObject.viennaVersion))}}
-      </div> --}}
-     {{/unless}}
-    <a {{action "toggleHelp"}}>Help</a>
+    {{/unless}}
+    <a role="button" {{action "toggleHelp"}}>Help</a>
   </div>
 
 
   <div class="inline fields">
     <div class="field">
       <label>Prefix</label>
-      {{input type='text' value=optionsObject.prefix}}
+      {{input type="text" value=optionsObject.prefix}}
     </div>
     <div class="field">
       <label>Suffix</label>
-      {{input type='text' value=optionsObject.suffix}}
+      {{input type="text" value=optionsObject.suffix}}
     </div>
   </div>
 
   <div class="field">
     <label>Additional Options</label>
-    {{input type='text' value=optionsObject.passOptions}}
+    {{input type="text" value=optionsObject.passOptions}}
   </div>
 </form>
 
@@ -52,42 +46,42 @@
   <div class="ui list">
 
     <div class="item">
-        <div class="header">
-          Prediction Tool
-        </div>
-        Allows you to choose which tool will be used to predict
-        RNA structures. Note: If you select mFold,
-        some graph attributes will be omitted.
-        <code>--run_mfold</code>
+      <div class="header">
+        Prediction Tool
+      </div>
+      Allows you to choose which tool will be used to predict
+      RNA structures. Note: If you select mFold,
+      some graph attributes will be omitted.
+      <code>--run_mfold</code>
     </div>
 
     <div class="item">
-        <div class="header">
-          Vienna Version
-        </div>
-        ViennaRNA package version 2 is used
+      <div class="header">
+        Vienna Version
+      </div>
+      ViennaRNA package version 2 is used
     </div>
 
     <div class="item">
-        <div class="header">
-          Prefix
-        </div>
-        Sequence to prepend to RNA sequences during structure
-        prediction. (Default: --NO PRIMER-- previously used
-        GGGAGGACGAUGCG)
-        <code>--prefix</code>
+      <div class="header">
+        Prefix
+      </div>
+      Sequence to prepend to RNA sequences during structure
+      prediction. (Default: --NO PRIMER-- previously used
+      GGGAGGACGAUGCG)
+      <code>--prefix</code>
 
     </div>
 
     <div class="item">
-        <div class="header">
-          Suffix
-        </div>
-        Sequence to append to RNA sequences during structure
-        prediction. (Default: --NO PRIMER-- previously used
-        CAGACGACUCGCCCGA)
+      <div class="header">
+        Suffix
+      </div>
+      Sequence to append to RNA sequences during structure
+      prediction. (Default: --NO PRIMER-- previously used
+      CAGACGACUCGCCCGA)
 
-        <code>--suffix</code>
+      <code>--suffix</code>
 
     </div>
 
@@ -112,7 +106,8 @@
     <code>
       python predict_structures.py {{fileName}} {{optionsObject.commandLinePreview}}
     </code>
-    <!-- negative margin otherwise it lays outside the segment box -->
+    {{!-- negative margin otherwise it lays outside the segment box --}}
+    {{! template-lint-disable no-inline-styles }}
     <button class="ui right floated primary button" style="margin-top: -10px" {{action fileRunCommand}}>
       <i class="play icon"></i>
       Run

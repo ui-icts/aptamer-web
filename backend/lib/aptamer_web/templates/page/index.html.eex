@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Aptamer</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+<meta name="aptamer/config/environment" content="%7B%22modulePrefix%22%3A%22aptamer%22%2C%22environment%22%3A%22production%22%2C%22rootURL%22%3A%22/%22%2C%22locationType%22%3A%22auto%22%2C%22ember-cli-uuid%22%3A%7B%22defaultUUID%22%3Afalse%7D%2C%22ember-simple-auth%22%3A%7B%22authenticationRoute%22%3A%22login%22%2C%22routeIfAlreadyAuthenticated%22%3A%22files%22%2C%22routeAfterAuthentication%22%3A%22files%22%7D%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%2C%22EXTEND_PROTOTYPES%22%3A%7B%22Date%22%3Afalse%7D%7D%2C%22APP%22%3A%7B%22name%22%3A%22aptamer%22%2C%22version%22%3A%220.0.0+123999e4%22%7D%2C%22ember-cli-mirage%22%3A%7B%22usingProxy%22%3Afalse%2C%22useDefaultPassthroughs%22%3Atrue%7D%2C%22exportApplicationGlobal%22%3Afalse%2C%22SEMANTIC_UI_VERSION%22%3A%222.2%22%7D" />
+
+    <link integrity="" rel="stylesheet" href="/assets/vendor-3edf37abe7c9c4b77e777e4d81470dab.css">
+    <link integrity="" rel="stylesheet" href="/assets/aptamer-ee8af913a9b46ae730296ee22afaf7d2.css">
+
+    
+  </head>
+  <body>
+    
+
+    <script src="/assets/vendor-f203afd85302ba238fe294d5083f01d7.js" integrity="sha256-gB/VpJqzXuFgXuFdiouqWoCY3VLbBS1LwGe+43u5zkg= sha512-xYEO+WLI0sa6O0i64oy/QE/+3GGid8cLFUsWqfL1jqHaugRzHJLwYQPaw5ROqjQhNt68EwX3hsMLXKMoQe1mqg==" ></script>
+    <script src="/assets/aptamer-73b82bf68878aed19ebc8a751efe085e.js" integrity="sha256-2mi+DI/6MSuD+UgWB14Ra1IAq49WUxTP3lSwyJ5sy5U= sha512-Q6i9L0uOOhfE6W86f5vNcbkfcbtHYtDz/jWRpgcS/fFW6O79Al4+T7Br42mTy8h4udAaI13paSBPeCVBHpTELQ==" ></script>
+
+    
+  </body>
+</html>

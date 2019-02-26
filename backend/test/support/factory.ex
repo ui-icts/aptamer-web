@@ -2,7 +2,7 @@ defmodule Aptamer.Factory do
   use ExMachina.Ecto, repo: Aptamer.Repo
 
   def registration_factory do
-    %Aptamer.Registration{
+    %Aptamer.Auth.Registration{
       name: sequence(:user, &"User #{&1}"),
       email: sequence(:user, &"user#{&1}@example.com"),
       password: "welcome"
@@ -11,7 +11,8 @@ defmodule Aptamer.Factory do
 
   def user_factory do
     {:ok, password} = Comeonin.Ecto.Password.cast("welcome")
-    %Aptamer.User{
+
+    %Aptamer.Auth.User{
       name: sequence(:user, &"User #{&1}"),
       email: sequence(:user, &"user#{&1}@example.com"),
       password: password
@@ -19,7 +20,7 @@ defmodule Aptamer.Factory do
   end
 
   def file_factory do
-    %Aptamer.File{
+    %Aptamer.Jobs.File{
       file_name: "test.txt",
       uploaded_on: "2016-12-05T10:00:00.000000Z",
       file_type: "UNKNOWN",
@@ -40,7 +41,7 @@ defmodule Aptamer.Factory do
   end
 
   def job_factory do
-    %Aptamer.Job{
+    %Aptamer.Jobs.Job{
       id: Ecto.UUID.generate(),
       status: "not-started",
       file: build(:file),
@@ -50,16 +51,16 @@ defmodule Aptamer.Factory do
   end
 
   def create_graph_options_factory do
-    %Aptamer.CreateGraphOptions {
+    %Aptamer.Jobs.CreateGraphOptions{
       edge_type: "tree",
       seed: true,
       max_edit_distance: 3,
-      max_tree_distance: 4,
+      max_tree_distance: 4
     }
   end
 
   def predict_structure_options_factory do
-    %Aptamer.PredictStructureOptions{
+    %Aptamer.Jobs.PredictStructureOptions{
       run_mfold: false,
       vienna_version: 2,
       prefix: "PP",
@@ -67,5 +68,4 @@ defmodule Aptamer.Factory do
       pass_options: "-foo -bar"
     }
   end
-
 end

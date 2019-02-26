@@ -1,18 +1,19 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['item'],
-  store: Ember.inject.service(),
+  store: service(),
   showMore: false,
 
   init() {
     this._super(...arguments);
-    this.set('optionsObject', this.get('store').createRecord('create-graph-options'));
+    this.set('optionsObject', this.store.createRecord('create-graph-options'));
   },
 
   processTask: task(function * (file) {
-    let result = this.get('store').createRecord('result', {
+    let result = this.store.createRecord('result', {
       file: file,
       status: 'Not Started'
     });

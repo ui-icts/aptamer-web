@@ -1,29 +1,33 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { run, schedule } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import ENV from 'aptamer/config/environment';
-import PhoenixSocket from 'phoenix/services/phoenix-socket';
+import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
 
-const JobOutput = Ember.Object.extend({
+const JobOutput = EmberObject.extend({
   channel: null,
   jobId: null,
-  messages: [],
 
   init() {
-    this.get('channel').on("job_output", (payload) => this._onJobOutput(payload) );
+    this._super(...arguments);
+
+    this.channel.on("job_output", (payload) => this._onJobOutput(payload) );
+    this.messages =  [];
   },
 
   start() {
-    this.get('channel').join();
+    this.channel.join();
   },
 
   stop() {
-    this.get('channel').leave();
-    this.get('messages').clear();
+    this.channel.leave();
+    this.messages.clear();
   },
 
   _onJobOutput(payload) {
-    Ember.run(() => {
-      Ember.run.schedule('sync', () => {
-        let messages = this.get('messages');
+    run(() => {
+      schedule('sync', () => {
+        let messages = this.messages;
         messages.pushObjects(payload.lines);
       });
     });
@@ -31,10 +35,11 @@ const JobOutput = Ember.Object.extend({
 });
 
 export default PhoenixSocket.extend({
-  store: Ember.inject.service(),
+  store: service(),
   currentOutputChannel: null,
 
   init() {
+    this._super(...arguments);
     this.on('open', () => {
 
       /* eslint-disable */
@@ -51,7 +56,7 @@ export default PhoenixSocket.extend({
 
   connect() {
 
-    if ( this.get('isHealthy') === true ) {
+    if ( this.isHealthy === true ) {
       return;
     }
 
@@ -83,7 +88,7 @@ export default PhoenixSocket.extend({
 
     this.stopCurrentCapture();
 
-    let channel = this.get('socket').channel(`jobs:${jobId}`,{messagePosition: 0});
+    let channel = this.socket.channel(`jobs:${jobId}`,{messagePosition: 0});
 
     let output = JobOutput.create({
       channel,
@@ -98,22 +103,22 @@ export default PhoenixSocket.extend({
   },
 
   stopCurrentCapture() {
-    let currentOutput = this.get('currentOutputChannel');
+    let currentOutput = this.currentOutputChannel;
     if ( currentOutput != null ) {
       currentOutput.stop();
     }
   },
 
   _onStatusChange(payload) {
-    this.get('store').pushPayload(payload);
+    this.store.pushPayload(payload);
   },
 
   _onFileAdded(payload) {
-    this.get('store').pushPayload(payload);
+    this.store.pushPayload(payload);
   },
 
   reset() {
-    let channel = this.get('statusChannel');
+    let channel = this.statusChannel;
     if ( channel ) {
       channel.leave();
     }

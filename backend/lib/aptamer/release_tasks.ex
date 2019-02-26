@@ -1,5 +1,4 @@
 defmodule Aptamer.ReleaseTasks do
-
   @start_apps [
     :postgrex,
     :ecto
@@ -18,12 +17,11 @@ defmodule Aptamer.ReleaseTasks do
   end
 
   def bootstrap do
+    IO.puts("Loading Aptamer..")
 
-    IO.puts "Loading Aptamer.."
-    case Application.load(:aptamer) do
+    case Aptamer.Application.load(:aptamer) do
       :ok -> :ok
       {:error, {:already_loaded, :aptamer}} -> :ok
-
     end
 
     context = %Context{}
@@ -31,29 +29,29 @@ defmodule Aptamer.ReleaseTasks do
     with {:ok, context} <- create_db(context),
          {:ok, context} <- migrate(context),
          {:ok, context} <- seed(context),
-         {:ok, context} <- cleanup(context)
-    do
-      IO.puts "Database ready to go"
+         {:ok, context} <- cleanup(context) do
+      IO.puts("Database ready to go")
     else
-      {:error, reason} -> IO.puts reason
-     end
+      {:error, reason} -> IO.puts(reason)
+    end
   end
 
   def create_db(context) do
-    IO.puts "Checking if aptamer database needs to be created..."
+    IO.puts("Checking if aptamer database needs to be created...")
 
     repo = Aptamer.Repo
     config = get_repo_config(repo)
 
-    IO.puts "Database Configuration"
-    IO.inspect config
+    IO.puts("Database Configuration")
+    IO.inspect(config)
 
     case repo.__adapter__.storage_up(config) do
       :ok ->
-        IO.puts "Database created"
+        IO.puts("Database created")
         {:ok, %{context | run_seeds: true}}
+
       {:error, :already_up} ->
-        IO.puts "Database already exists"
+        IO.puts("Database already exists")
         {:ok, %{context | run_seeds: false}}
 
       {:error, "ERROR 42501" <> msg} ->
@@ -62,30 +60,32 @@ defmodule Aptamer.ReleaseTasks do
         # In this case we're going to pretend that it is there and and if it isn't then
         # migrations will not run.
         # We also disable seeds just in case
-        IO.puts "User #{config[:username]} does not have permission to create databases. Database MIGHT NOT EXIST. ERROR 42501 #{msg}"
+        IO.puts(
+          "User #{config[:username]} does not have permission to create databases. Database MIGHT NOT EXIST. ERROR 42501 #{
+            msg
+          }"
+        )
+
         {:ok, %{context | run_seeds: false}}
 
       {:error, term} when is_binary(term) ->
-        IO.puts "The database for #{inspect repo} couldn't be created: #{term}"
+        IO.puts("The database for #{inspect(repo)} couldn't be created: #{term}")
         {:ok, %{context | run_seeds: false}}
 
       {:error, term} ->
-        IO.puts "The database for #{inspect repo} couldn't be created: #{inspect term}"
+        IO.puts("The database for #{inspect(repo)} couldn't be created: #{inspect(term)}")
         {:ok, %{context | run_seeds: false}}
-
     end
-
   end
 
   def migrate(context) do
-
-    IO.puts "Starting dependencies.."
+    IO.puts("Starting dependencies..")
     # Start apps necessary for executing migrations
-    Enum.each(@start_apps, &Application.ensure_all_started/1)
+    Enum.each(@start_apps, &Aptamer.Application.ensure_all_started/1)
 
     # Start the Repo(s) for myapp
-    IO.puts "Starting repos.."
-    Enum.each(@repos, &(&1.start_link(pool_size: 1)))
+    IO.puts("Starting repos..")
+    Enum.each(@repos, & &1.start_link(pool_size: 1))
 
     # Run migrations
     Enum.each(@myapps, &run_migrations_for/1)
@@ -98,14 +98,15 @@ defmodule Aptamer.ReleaseTasks do
     seed_script = Path.join([priv_dir(:aptamer), "repo", "seeds.exs"])
 
     if File.exists?(seed_script) do
-      IO.puts "Running seed script.."
+      IO.puts("Running seed script..")
       Code.eval_file(seed_script)
     end
+
     {:ok, context}
   end
 
   def seed(context) do
-    IO.puts "Not loading seeds"
+    IO.puts("Not loading seeds")
     {:ok, context}
   end
 
@@ -115,7 +116,8 @@ defmodule Aptamer.ReleaseTasks do
 
   def priv_dir(app), do: "#{:code.priv_dir(app)}"
 
-  defp run_migrations_for(app) do IO.puts "Running migrations for #{app}"
+  defp run_migrations_for(app) do
+    IO.puts("Running migrations for #{app}")
     Ecto.Migrator.run(Aptamer.Repo, migrations_path(app), :up, all: true)
   end
 
@@ -123,12 +125,12 @@ defmodule Aptamer.ReleaseTasks do
   defp seed_path(app), do: Path.join([priv_dir(app), "repo", "seeds.exs"])
 
   defp get_repo_config(repo) do
-
-     case {System.get_env("DB_SUPERUSER"), System.get_env("DB_SUPERPASS")} do
-      {user,pass} when is_binary(user) and is_binary(pass) ->
+    case {System.get_env("DB_SUPERUSER"), System.get_env("DB_SUPERPASS")} do
+      {user, pass} when is_binary(user) and is_binary(pass) ->
         repo.config
-        |> List.keyreplace(:username,0,{:username, user})
-        |> List.keyreplace(:password,0,{:password, pass})
+        |> List.keyreplace(:username, 0, {:username, user})
+        |> List.keyreplace(:password, 0, {:password, pass})
+
       _ ->
         repo.config
     end

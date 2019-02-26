@@ -1,7 +1,9 @@
-import Ember from 'ember';
-const { isBlank } = Ember;
+import Component from '@ember/component';
+import { isBlank } from '@ember/utils';
 
-export default Ember.Component.extend({
+export default Component.extend({
+
+  name: '',
 
   invalid: false,
 
@@ -42,11 +44,11 @@ export default Ember.Component.extend({
         this.set('invalid', true);
       }
 
-      if ( this.get('invalid') ) {
+      if ( this.invalid ) {
         this.set('errorMessage', 'Please fill out all required fields');
 
       } else {
-        this.get('createAccount')(params);
+        this.createAccount(params);
       }
     },
   }

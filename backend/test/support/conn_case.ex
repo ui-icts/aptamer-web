@@ -1,4 +1,4 @@
-defmodule Aptamer.ConnCase do
+defmodule AptamerWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -24,24 +24,18 @@ defmodule Aptamer.ConnCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-
-      import Aptamer.Router.Helpers
+      import Aptamer.Guardian
+      import AptamerWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Aptamer.Endpoint
+      @endpoint AptamerWeb.Endpoint
 
       def guardian_login(conn, user) do
-        jwt =
-          conn
-          |> bypass_through(Aptamer.Router, [:browser])
-          |> get("/")
-          |> Guardian.Plug.api_sign_in(user)
-          |> Guardian.Plug.current_token()
+        {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
 
         conn =
           conn
-          |> put_req_header( "authorization", "Bearer " <> jwt)
-
+          |> put_req_header("authorization", "bearer: " <> token)
 
         conn
       end

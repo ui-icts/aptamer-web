@@ -1,78 +1,85 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import {
+  fillIn,
+  click,
+  render,
+  find,
+  settled
+} from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import { assertionInjector } from '../../assertions';
+import {
+  assertionInjector,
+  assertionCleanup
+} from '../../assertions';
 
-function _fillInput(placeholder, value) {
-  let input = this.$(`input[placeholder="${placeholder}"]`);
-  input.val(value);
-  input.trigger('keyup');
+async function _fillInput(placeholder, value) {
+  let input = this.element.querySelector(`input[placeholder="${placeholder}"]`);
+  await fillIn(input, value)
 }
 
-function _clickButton(text) {
-  let btn = this.$(`button:contains("${text}")`);
-  return btn.click();
-}
+module('Integration | Component | signup form', function(hooks) {
+  setupRenderingTest(hooks);
 
-moduleForComponent('signup-form', 'Integration | Component | signup form', {
-  integration: true,
-
-  beforeEach() {
+  hooks.beforeEach(function() {
     this.fillInput = _fillInput.bind(this);
-    this.submit = _clickButton.bind(this);
     assertionInjector(this);
-  },
-
-
-});
-
-test('it renders', function(assert) {
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{signup-form}}`);
-
-  assert.notEqual(this.$().text().trim(), '');
-
-});
-
-
-
-test('invokes action with new account params', function(assert) {
-
-
-  assert.expect(3);
-
-  this.set('createCallback', function(params) {
-    assert.equal(params.name, 'Bob');
-    assert.equal(params.email, 'bob@example.com');
-    assert.equal(params.password, 'welcome');
   });
 
-  this.render(hbs`{{signup-form createAccount=(action createCallback)}}`);
-
-  this.fillInput('Name','Bob');
-  this.fillInput('Email','bob@example.com');
-  this.fillInput('Password','welcome');
-  this.fillInput('Confirm Password','welcome');
-
-  this.submit("Create Account");
-
-});
-
-test('validates sign up params', function(assert) {
-  let called = false;
-  this.set('callback', function() {
-    called = true;
+  hooks.afterEach(function() {
+    assertionCleanup(this);
   });
 
-  this.render(hbs`{{signup-form createAccount=(action callback)}}`);
-  this.submit('Create Account');
+  test('it renders', async function(assert) {
 
-  assert.fieldError('Name');
-  assert.fieldError('Email');
-  assert.fieldError('Password');
-  assert.fieldError('Confirm Password');
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  assert.equal(false, called, 'Callback invoked');
+    await render(hbs`{{signup-form}}`);
+
+    assert.notEqual(find('*').textContent.trim(), '');
+
+  });
+
+
+
+  test('invokes action with new account params', async function(assert) {
+
+
+    assert.expect(3);
+
+    this.set('createCallback', function(params) {
+      assert.equal(params.name, 'Bob');
+      assert.equal(params.email, 'bob@example.com');
+      assert.equal(params.password, 'welcome');
+    });
+
+    await render(hbs`{{signup-form createAccount=(action createCallback)}}`);
+
+    await this.fillInput('Name','Bob');
+    await this.fillInput('Email','bob@example.com');
+    await this.fillInput('Password','welcome');
+    await this.fillInput('Confirm Password','welcome');
+
+    await settled;
+    await click('#createAccount');
+
+  });
+
+  test('validates sign up params', async function(assert) {
+    let called = false;
+    this.set('callback', function() {
+      called = true;
+    });
+
+    await render(hbs`{{signup-form createAccount=(action callback)}}`);
+    await click('#createAccount');
+
+    assert.fieldError('Name');
+    assert.fieldError('Email');
+    assert.fieldError('Password');
+    assert.fieldError('Confirm Password');
+
+    assert.equal(false, called, 'Callback invoked');
+  });
 });

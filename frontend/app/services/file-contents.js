@@ -1,29 +1,32 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { run, schedule } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import ENV from 'aptamer/config/environment';
-import PhoenixSocket from 'phoenix/services/phoenix-socket';
+import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
 
-const FileContents = Ember.Object.extend({
+const FileContents = EmberObject.extend({
   channel: null,
   fileId: null,
-  messages: [],
 
   init() {
-    this.get('channel').on("file_contents", (payload) => this._onFileContents(payload) );
+    this._super(...arguments);
+    this.channel.on("file_contents", (payload) => this._onFileContents(payload) );
+    this.messages = [];
   },
 
   start() {
-    this.get('channel').join();
+    this.channel.join();
   },
 
   stop() {
-    this.get('channel').leave();
-    this.get('messages').clear();
+    this.channel.leave();
+    this.messages.clear();
   },
 
   _onFileContents(payload) {
-    Ember.run(() => {
-      Ember.run.schedule('sync', () => {
-        let messages = this.get('messages');
+    run(() => {
+      schedule('sync', () => {
+        let messages = this.messages;
         messages.pushObjects(payload.lines);
       });
     });
@@ -31,10 +34,11 @@ const FileContents = Ember.Object.extend({
 });
 
 export default PhoenixSocket.extend({
-  store: Ember.inject.service(),
+  store: service(),
   currentContentsChannel: null,
 
   init() {
+    this._super(...arguments);
     this.on('open', () => {
 
       /* eslint-disable */
@@ -51,7 +55,7 @@ export default PhoenixSocket.extend({
 
   connect() {
 
-    if ( this.get('isHealthy') === true ) {
+    if ( this.isHealthy === true ) {
       return;
     }
 
@@ -80,7 +84,7 @@ export default PhoenixSocket.extend({
   captureContents(fileId, onComplete) {
     this.stopCurrentCapture();
 
-    let channel = this.get('socket').channel(`file:contents:${fileId}`);
+    let channel = this.socket.channel(`file:contents:${fileId}`);
     let contents = FileContents.create({
       channel,
       fileId,
@@ -100,14 +104,14 @@ export default PhoenixSocket.extend({
   },
 
   stopCurrentCapture() {
-    let currentChannel = this.get('currentContentsChannel');
+    let currentChannel = this.currentContentsChannel;
     if ( currentChannel != null ) {
       currentChannel.stop();
     }
   },
 
   reset() {
-    let channel = this.get('contentsChannel');
+    let channel = this.contentsChannel;
     if ( channel ) {
       channel.leave();
     }

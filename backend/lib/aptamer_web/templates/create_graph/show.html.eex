@@ -1,0 +1,8 @@
+<h2>Show create graph</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: Routes.create_graph_path(@conn, :edit, @create_graph) %>
+<%= link "Back", to: Routes.create_graph_path(@conn, :index) %>

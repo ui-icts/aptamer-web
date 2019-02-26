@@ -1,20 +1,22 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import Controller from '@ember/controller';
 import ENV from 'aptamer/config/environment';
 
-Ember.Controller.reopen({
+Controller.reopen({
     rootURL: ENV.rootURL,
 });
 
-Ember.Component.reopen({
+Component.reopen({
     rootURL: ENV.rootURL,
 });
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session'),
+export default Controller.extend({
+  session: service('session'),
 
   actions: {
     invalidateSession() {
-      this.get('session').invalidate();
+      this.session.invalidate();
     }
   }
 })

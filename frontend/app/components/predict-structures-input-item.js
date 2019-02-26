@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { task } from 'ember-concurrency';
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['item'],
-  store: Ember.inject.service(),
+  store: service(),
 
   processTask: task( function * (file) {
-    let result = this.get('store').createRecord('result', {
+    let result = this.store.createRecord('result', {
       file: file,
       status: 'Not Started'
     });
@@ -15,7 +16,7 @@ export default Ember.Component.extend({
 
     result = yield result.save();
 
-    let childFile = this.get('store').createRecord('file', {
+    let childFile = this.store.createRecord('file', {
       generatedBy: result,
       fileName: file.get('fileName') + '.struct',
       filePurpose: 'create-graph-input'

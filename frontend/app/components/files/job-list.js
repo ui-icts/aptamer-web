@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 import _ from 'lodash';
 import ENV from 'aptamer/config/environment';
 
@@ -22,9 +23,9 @@ function momentSort(field) {
   }
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
 
-  downloadHost: Ember.computed(function() {
+  downloadHost: computed(function() {
     if ( ENV['aptamer-results-host'] ) {
       return ENV['aptamer-results-host'];
     } else {
@@ -32,8 +33,8 @@ export default Ember.Component.extend({
     }
   }),
 
-  orderedJobs: Ember.computed('jobs.[]', function() {
-    let jobs = this.get('jobs').toArray();
+  orderedJobs: computed('jobs.[]', function() {
+    let jobs = this.jobs.toArray();
     return _(jobs)
       .sort(momentSort('insertedAt'))
       .value();

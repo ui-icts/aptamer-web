@@ -31,7 +31,7 @@ pkg_build_deps=(
   core/make
   core/gcc
   core/yarn
-  core/node6
+  core/node8
   core/elixir
 )
 
@@ -82,12 +82,11 @@ do_build() {
 
   cd frontend
   yarn install
-  node_modules/bower/bin/bower install --allow-root
 
   node_modules/ember-cli/bin/ember build --prod --output-path=../backend/priv/static/
 
   cd ../backend
-  cat priv/static/index.html > web/templates/page/index.html.eex
+  cat priv/static/index.html > lib/aptamer_web/templates/page/index.html.eex
 
   mix local.hex --force
   mix local.rebar --force

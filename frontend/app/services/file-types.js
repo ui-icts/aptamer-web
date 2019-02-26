@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import EmberObject from '@ember/object';
 
-const FileType = Ember.Object.extend({
+const FileType = EmberObject.extend({
   key: '',
   title: ''
 });
@@ -26,7 +27,7 @@ const fileTypes = {
   })
 };
 
-export default Ember.Service.extend({
+export default Service.extend({
 
   list() {
     return [

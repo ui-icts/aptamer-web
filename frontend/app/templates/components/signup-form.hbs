@@ -1,29 +1,28 @@
-
 <form class="ui {{if invalid "error"}} form">
   <div class="ui error message">
     {{errorMessage}}
   </div>
   <div class="ui stacked segment">
-    <div class="field {{if nameError 'error'}}">
-    <label class="sr-only">Name</label>
-    {{input type="text" placeholder="Name" value=name}}
-  </div>
+    <div class="field {{if this.nameError "error"}}">
+      <label class="sr-only">Name</label>
+      {{input type="text" placeholder="Name" value=this.name}}
+    </div>
 
-  <div class="field {{if emailError 'error'}}">
-    <label class="sr-only">Email</label>
-    {{input type="text" placeholder="Email" value=email}}
-  </div>
+    <div class="field {{if this.emailError "error"}}">
+      <label class="sr-only">Email</label>
+      {{input type="text" placeholder="Email" value=email}}
+    </div>
 
-  <div class="field {{if passwordError 'error'}}">
-    <label class="sr-only">Password</label>
-    {{input type="password" placeholder="Password" value=password}}
-  </div>
+    <div class="field {{if this.passwordError "error"}}">
+      <label class="sr-only">Password</label>
+      {{input type="password" placeholder="Password" value=password}}
+    </div>
 
-  <div class="field {{if confirmPasswordError 'error'}}">
-    <label class="sr-only">Confirm Password</label>
-    {{input type="password" placeholder="Confirm Password" value=confirmPassword}}
-  </div>
-  <button id="createAccount" class="ui fluid large submit button" {{action "createAccountClick"}}>Create Account</button>
+    <div class="field {{if this.confirmPasswordError "error"}}">
+      <label class="sr-only">Confirm Password</label>
+      {{input type="password" placeholder="Confirm Password" value=confirmPassword}}
+    </div>
+    <button id="createAccount" class="ui fluid large submit button" {{action "createAccountClick"}}>Create Account</button>
   </div>
 </form>
 {{yield}}

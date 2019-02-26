@@ -1,24 +1,31 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import EmberObject from '@ember/object';
 import $ from 'jquery';
 
-const UploadJob = Ember.Object.extend({ });
+const UploadJob = EmberObject.extend({ });
 
 function fileId(file) {
   return `${file.name}-${file.lastModified}-${file.size}`;
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
 
-  uploadJobs: [],
-  session: Ember.inject.service(),
+  session: service(),
 
   init() {
     this._super(...arguments);
-    this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
-      let obj = {};
-      obj[headerName] = headerValue;
-      this.set('dropzoneHeaders', obj);
-    });
+    this.uploadJobs = [];
+    
+    //TODO: This header name here might be wrong
+    //OR ... I might need to add Bearer in front of the token
+    //https://github.com/simplabs/ember-simple-auth/blob/master/addon/authorizers/oauth2-bearer.js
+    let { access_token } = this.get('session.data.authenticated');
+    let obj = {
+      "Authorization": `Bearer ${access_token}`
+    };
+    this.set('dropzoneHeaders', obj);
+
   },
 
   actions: {
@@ -29,7 +36,7 @@ export default Ember.Component.extend({
         percentComplete: 0
       });
 
-      this.get('uploadJobs').pushObject(fileObj);
+      this.uploadJobs.pushObject(fileObj);
     },
 
     successFile(_file,responseText,_evt) {
@@ -39,18 +46,18 @@ export default Ember.Component.extend({
 
       if ( typeof responseText === 'string' ) {
         let json = $.parseJSON(responseText);
-        this.get('onUpload')(json);
+        this.onUpload(json);
       } else {
-        this.get('onUpload')(responseText);
+        this.onUpload(responseText);
       }
     },
 
     completeFile(file) {
       let id = fileId(file);
 
-      let fileObj = this.get('uploadJobs').findBy('id', id);
+      let fileObj = this.uploadJobs.findBy('id', id);
       if (fileObj) {
-        this.get('uploadJobs').removeObject(fileObj);
+        this.uploadJobs.removeObject(fileObj);
       }
 
     },
@@ -61,7 +68,7 @@ export default Ember.Component.extend({
     progressFile(file, percent) {
       let id = fileId(file);
 
-      let fileObj = this.get('uploadJobs').findBy('id', id);
+      let fileObj = this.uploadJobs.findBy('id', id);
       if (fileObj) {
         fileObj.set('percentComplete', percent);
       }

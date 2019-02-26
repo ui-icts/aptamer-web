@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -9,20 +9,20 @@ export default DS.Model.extend({
 
   file: DS.belongsTo(),
 
-  commandLinePreview: Ember.computed('edgeType','seed','maxEditDistance','maxTreeDistance', function() {
-    let args = ["-t", this.get('edgeType')];
+  commandLinePreview: computed('edgeType','seed','maxEditDistance','maxTreeDistance', function() {
+    let args = ["-t", this.edgeType];
 
-    if ( this.get('maxEditDistance') < 11 ) {
+    if ( this.maxEditDistance < 11 ) {
       args.push("-e");
-      args.push(this.get('maxEditDistance'));
+      args.push(this.maxEditDistance);
     }
 
-    if ( this.get('maxTreeDistance') < 11 ) {
+    if ( this.maxTreeDistance < 11 ) {
       args.push("-d");
-      args.push(this.get('maxTreeDistance'));
+      args.push(this.maxTreeDistance);
     }
 
-    if ( this.get('seed') ) {
+    if ( this.seed ) {
       args.push("--seed");
     }
 

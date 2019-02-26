@@ -3,7 +3,10 @@ defmodule Aptamer.Repo.Migrations.AddPredictStructureOptionsToJobs do
 
   def change do
     alter table(:jobs) do
-      add :predict_structure_options_id, references(:predict_structure_options, on_delete: :nothing, type: :binary_id)
+      add(
+        :predict_structure_options_id,
+        references(:predict_structure_options, on_delete: :nothing, type: :binary_id)
+      )
     end
   end
 end
