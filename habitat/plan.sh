@@ -24,6 +24,7 @@ pkg_shasum="TODO"
 pkg_bin_dirs=(bin)
 pkg_deps=(
   core/busybox
+  core/elixir
 )
 pkg_build_deps=(
   core/coreutils
@@ -32,7 +33,6 @@ pkg_build_deps=(
   core/gcc
   core/yarn
   core/node8
-  core/elixir
 )
 
 pkg_binds_optional=(
