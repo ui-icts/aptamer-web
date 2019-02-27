@@ -19,7 +19,6 @@ config :aptamer, Aptamer.Repo,
   password: "",
   database: "aptamer_test",
   hostname: "localhost",
-  port: 5433,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :comeonin, :bcrypt_log_rounds, 4
