@@ -12,10 +12,10 @@ addons:
   postgresql: '10'
   apt:
     sources:
-      - postgresql-10
-      - postgresql-client-10
       - google-chrome
     packages:
+      - postgresql-10
+      - postgresql-client-10
       - google-chrome-stable
 branches:
   except:
