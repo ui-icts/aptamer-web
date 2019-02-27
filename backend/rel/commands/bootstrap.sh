@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/aptamer command Elixir.Aptamer.ReleaseTasks bootstrap
+release_ctl eval --mfa "Aptamer.ReleaseTasks.bootstrap/0" --argv -- "$@"

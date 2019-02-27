@@ -1,16 +1,15 @@
 defmodule Aptamer.ReleaseTasks do
   @start_apps [
     :postgrex,
-    :ecto
+    :ecto,
+    :ecto_sql
   ]
 
   @myapps [
     :aptamer
   ]
 
-  @repos [
-    Aptamer.Repo
-  ]
+  @repos Application.get_env(:aptamer, :ecto_repos, [])
 
   defmodule Context do
     defstruct run_seeds: false
@@ -19,7 +18,7 @@ defmodule Aptamer.ReleaseTasks do
   def bootstrap do
     IO.puts("Loading Aptamer..")
 
-    case Aptamer.Application.load(:aptamer) do
+    case Application.load(:aptamer) do
       :ok -> :ok
       {:error, {:already_loaded, :aptamer}} -> :ok
     end
@@ -80,12 +79,16 @@ defmodule Aptamer.ReleaseTasks do
 
   def migrate(context) do
     IO.puts("Starting dependencies..")
+    case Application.load(:aptamer) do
+      :ok -> :ok
+      {:error, {:already_loaded, :aptamer}} -> :ok
+    end
     # Start apps necessary for executing migrations
-    Enum.each(@start_apps, &Aptamer.Application.ensure_all_started/1)
+    Enum.each(@start_apps, &Application.ensure_all_started/1)
 
     # Start the Repo(s) for myapp
     IO.puts("Starting repos..")
-    Enum.each(@repos, & &1.start_link(pool_size: 1))
+    Enum.each(@repos, & &1.start_link(pool_size: 2))
 
     # Run migrations
     Enum.each(@myapps, &run_migrations_for/1)
