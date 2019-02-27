@@ -23,16 +23,17 @@ pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="TODO"
 pkg_bin_dirs=(bin)
 pkg_deps=(
+  core/bash
+  core/coreutils
   core/busybox
-  core/elixir
 )
 pkg_build_deps=(
-  core/coreutils
   core/git
   core/make
   core/gcc
   core/yarn
   core/node8
+  core/elixir
 )
 
 pkg_binds_optional=(
@@ -122,6 +123,12 @@ do_install() {
   cd backend
   mix release --env=habitat
   cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
+  build_line "Updating shell script shebangs"
+  grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
+    sed -e "s#\#\!/bin/sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+    sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+    sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
+  done
   cd ..
 }
 

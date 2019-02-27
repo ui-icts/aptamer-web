@@ -4,7 +4,7 @@ defmodule Aptamer.Mixfile do
   def project do
     [
       app: :aptamer,
-      version: "0.0.1",
+      version: File.read!("../version.txt") |> String.trim,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
