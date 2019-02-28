@@ -16,5 +16,5 @@ export HOME={{pkg.svc_var_path}}
 export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
 #export PATH={{pkgPathFor "core/erlang"}}/bin:$PATH
 
-bin/aptamer bootstrap
+{{pkg.path}}/bin/aptamer bootstrap
 
