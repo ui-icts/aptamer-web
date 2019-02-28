@@ -26,6 +26,7 @@ pkg_deps=(
   core/bash
   core/coreutils
   core/busybox
+  core/elixir
 )
 pkg_build_deps=(
   core/git
@@ -33,7 +34,6 @@ pkg_build_deps=(
   core/gcc
   core/yarn
   core/node8
-  core/elixir
 )
 
 pkg_binds_optional=(
@@ -90,7 +90,7 @@ do_build() {
   cat priv/static/index.html > lib/aptamer_web/templates/page/index.html.eex
 
   mix local.hex --force
-  mix local.rebar --force
+  # mix local.rebar --force
 
   mix deps.get --only prod
   mix compile
@@ -120,16 +120,21 @@ do_check() {
 # your package.
 do_install() {
 
-  cd backend
-  mix release --env=habitat
-  cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
-  build_line "Updating shell script shebangs"
-  grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
-    sed -e "s#\#\!/bin/sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
-    sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
-    sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
-  done
-  cd ..
+  mkdir -p ${pkg_prefix}/app
+  cp -a backend/* ${pkg_prefix}/app
+  
+  rm -rfv ${pkg_prefix}/app/config/prod.secret.exs
+  ln -sfv ${pkg_svc_config_path}/prod.secret.exs ${pkg_prefix}/app/config/prod.secret.exs
+  # cd backend
+  # mix release --env=habitat
+  # cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
+  # build_line "Updating shell script shebangs"
+  # grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
+  #   sed -e "s#\#\!/bin/sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+  #   sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+  #   sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
+  # done
+  # cd ..
 }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their

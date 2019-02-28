@@ -13,8 +13,9 @@ set -e
 
 export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export HOME={{pkg.svc_var_path}}
-export RELEASE_MUTABLE_DIR={{pkg.svc_var_path}}
-#export PATH={{pkgPathFor "core/erlang"}}/bin:$PATH
 
-{{pkg.path}}/bin/aptamer bootstrap
+cd {{pkg.path}}/app
+
+MIX_ENV=prod mix db:create
+MIX_ENV=prod mix db:migrate
 
