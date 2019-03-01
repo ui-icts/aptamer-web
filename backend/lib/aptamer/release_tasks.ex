@@ -79,10 +79,12 @@ defmodule Aptamer.ReleaseTasks do
 
   def migrate(context) do
     IO.puts("Starting dependencies..")
+
     case Application.load(:aptamer) do
       :ok -> :ok
       {:error, {:already_loaded, :aptamer}} -> :ok
     end
+
     # Start apps necessary for executing migrations
     Enum.each(@start_apps, &Application.ensure_all_started/1)
 

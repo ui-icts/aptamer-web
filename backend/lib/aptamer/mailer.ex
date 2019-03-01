@@ -13,7 +13,7 @@ defmodule Aptamer.Mailer do
     Bamboo.Mailer.deliver_later(config.adapter, email, config)
   end
 
-  defp build_config() do 
+  defp build_config() do
     opts = Bamboo.Mailer.build_config(__MODULE__, :aptamer)
     Aptamer.EnvConfig.override_smtp_config(System.get_env(), opts)
   end

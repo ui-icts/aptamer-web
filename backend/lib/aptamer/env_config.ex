@@ -1,5 +1,4 @@
 defmodule Aptamer.EnvConfig do
-
   def override_endpoint_config(env_vars, endpoint_opts) do
     endpoint_opts = apply_config(:port, env_vars["PORT"], endpoint_opts)
     endpoint_opts = apply_config(:web_host, env_vars["WEB_HOST"], endpoint_opts)
@@ -23,13 +22,13 @@ defmodule Aptamer.EnvConfig do
   end
 
   def apply_config(any, nil, endpoint_opts), do: endpoint_opts
-  def apply_config(:port, value, endpoint_opts) when is_binary(value) do
 
+  def apply_config(:port, value, endpoint_opts) when is_binary(value) do
     port = String.to_integer(value)
 
     endpoint_opts
-    |> Keyword.put_new(:http,[])
-    |> put_in([:http,:port], port)
+    |> Keyword.put_new(:http, [])
+    |> put_in([:http, :port], port)
   end
 
   def apply_config(:web_host, value, endpoint_opts) when is_binary(value) do
@@ -43,4 +42,3 @@ defmodule Aptamer.EnvConfig do
     put_in(opts, [any], value)
   end
 end
-
