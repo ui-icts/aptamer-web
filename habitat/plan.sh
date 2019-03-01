@@ -123,7 +123,7 @@ do_install() {
   # mkdir -p ${pkg_prefix}/app
   # cp -a version.txt ${pkg_prefix}/version.txt
   # cp -a backend/* ${pkg_prefix}/app
-
+  
   cd backend
   mix release --env=habitat
   cp -a _build/prod/rel/aptamer/* ${pkg_prefix}

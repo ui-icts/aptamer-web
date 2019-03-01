@@ -54,6 +54,8 @@ config :mime, :types, %{
 config :ja_serializer,
   pluralize_types: true
 
+config :tzdata, :autoupdate, :disabled
+
 config :aptamer, Aptamer.Guardian,
   allowed_algos: ["HS512"],
   verify_module: Guardian.JWT,
