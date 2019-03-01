@@ -2,7 +2,5 @@
 
 . {{pkg.svc_config_path}}/dotenv
 
-cd {{pkg.path}}/app
-
 exec 2>&1
 exec aptamer foreground
