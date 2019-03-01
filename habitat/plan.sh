@@ -28,12 +28,12 @@ pkg_deps=(
   core/busybox
 )
 pkg_build_deps=(
-  core/elixir
   core/git
   core/make
   core/gcc
   core/yarn
   core/node8
+  core/elixir
 )
 
 pkg_binds_optional=(

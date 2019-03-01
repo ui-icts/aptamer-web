@@ -17,7 +17,7 @@ echo "Installing habitat"
 curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh | sudo bash
 
 echo "Building package"
-hab studio -r /hab/studio/travis build -R habitat
+hab pkg build habitat
 source results/last_build.env
 
 echo "Uploading package"
