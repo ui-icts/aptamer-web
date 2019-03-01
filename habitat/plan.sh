@@ -81,6 +81,7 @@ do_prepare() {
 
 do_build() {
 
+  build_line "Building frontend application"
   cd frontend
   yarn install
 
@@ -89,9 +90,11 @@ do_build() {
   cd ../backend
   cat priv/static/index.html > lib/aptamer_web/templates/page/index.html.eex
 
+  build_line "Installing mix tools"
   mix local.hex --force
   mix local.rebar --force
 
+  build_line "Building backend application"
   mix deps.get --only prod
   mix compile
 
@@ -125,6 +128,7 @@ do_install() {
   # cp -a backend/* ${pkg_prefix}/app
   
   cd backend
+  build_line "Assembling release"
   mix release --env=habitat
   cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
   build_line "Updating shell script shebangs"
