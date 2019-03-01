@@ -61,4 +61,16 @@ defmodule EnvConfigTest do
     new_opts = override_smtp_config(%{"SMTP_PASSWORD" => "email_passworder"}, existing_opts)
     assert "email_passworder" == new_opts[:password]
   end
+
+  @doc """
+  This is equivalent to 
+  export FOO=
+  In elixir it will be empty string in env var map
+  """
+  test "blank env vars wipe settings" do
+
+    existing_opts = Application.get_env(:aptamer, Aptamer.Mailer)
+    new_opts = override_smtp_config(%{"SMTP_PASSWORD" => ""}, existing_opts)
+    assert "" == new_opts[:password]
+  end
 end
