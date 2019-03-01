@@ -41,4 +41,8 @@ defmodule AptamerWeb.Endpoint do
     signing_salt: "Lge7Tfm3"
 
   plug AptamerWeb.Router
+
+  def init(:supervisor, opts) do
+    {:ok, Aptamer.EnvConfig.override_endpoint_config(System.get_env(), opts)}
+  end
 end

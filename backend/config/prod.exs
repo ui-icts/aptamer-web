@@ -14,8 +14,8 @@ use Mix.Config
 config :aptamer, AptamerWeb.Endpoint,
   http: [port: 4000],
   url: [host: "localhost", port: 4000],
-  server: true,
   root: ".",
+  secret_key_base: "01BgHAmJr7VcdaWMw1XqbLJNAl9tqzEEvHxYRjjvc8TticZ5p6yOd/HgrzBVb8T2",
   version: Mix.Project.config()[:version]
 
 # Do not print debug messages in production
@@ -46,7 +46,6 @@ config :logger, level: :info
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
 config :aptamer, Aptamer.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
   database: "aptamer_prod",
