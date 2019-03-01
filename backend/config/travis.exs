@@ -14,7 +14,6 @@ config :logger, level: :warn
 
 # Configure your database
 config :aptamer, Aptamer.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "",
   database: "aptamer_test",
