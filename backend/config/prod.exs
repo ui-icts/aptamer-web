@@ -14,6 +14,7 @@ use Mix.Config
 config :aptamer, AptamerWeb.Endpoint,
   http: [port: 4000],
   url: [host: "localhost", port: 4000],
+  server: true,
   root: ".",
   secret_key_base: "01BgHAmJr7VcdaWMw1XqbLJNAl9tqzEEvHxYRjjvc8TticZ5p6yOd/HgrzBVb8T2",
   version: Mix.Project.config()[:version]
