@@ -122,9 +122,6 @@ do_install() {
 
   mkdir -p ${pkg_prefix}/app
   cp -a backend/* ${pkg_prefix}/app
-  
-  rm -rfv ${pkg_prefix}/app/config/prod.secret.exs
-  ln -sfv ${pkg_svc_config_path}/prod.secret.exs ${pkg_prefix}/app/config/prod.secret.exs
   # cd backend
   # mix release --env=habitat
   # cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
