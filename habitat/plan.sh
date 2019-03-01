@@ -26,9 +26,9 @@ pkg_deps=(
   core/bash
   core/coreutils
   core/busybox
-  core/elixir
 )
 pkg_build_deps=(
+  core/elixir
   core/git
   core/make
   core/gcc
@@ -120,19 +120,20 @@ do_check() {
 # your package.
 do_install() {
 
-  mkdir -p ${pkg_prefix}/app
-  cp -a version.txt ${pkg_prefix}/version.txt
-  cp -a backend/* ${pkg_prefix}/app
-  # cd backend
-  # mix release --env=habitat
-  # cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
-  # build_line "Updating shell script shebangs"
-  # grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
-  #   sed -e "s#\#\!/bin/sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
-  #   sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
-  #   sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
-  # done
-  # cd ..
+  # mkdir -p ${pkg_prefix}/app
+  # cp -a version.txt ${pkg_prefix}/version.txt
+  # cp -a backend/* ${pkg_prefix}/app
+
+  cd backend
+  mix release --env=habitat
+  cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
+  build_line "Updating shell script shebangs"
+  grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
+    sed -e "s#\#\!/bin/sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+    sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
+    sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
+  done
+  cd ..
 }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their

@@ -5,9 +5,7 @@ set -e
 
 . {{pkg.svc_config_path}}/dotenv
 
-cd {{pkg.path}}/app
+cd {{pkg.path}}
 
-DATABASE_USER=${DB_SUPERUSER-$DATABASE_USER} \
-  DATABASE_PASSWORD=${DB_SUPERPASS-$DATABASE_PASSWORD} \
-  mix do db:create, db:migrate
+bin/aptamer bootstrap
 

@@ -5,4 +5,4 @@
 cd {{pkg.path}}/app
 
 exec 2>&1
-exec mix phx.server
+exec aptamer foreground
