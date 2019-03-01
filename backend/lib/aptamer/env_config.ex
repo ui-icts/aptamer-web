@@ -28,15 +28,14 @@ defmodule Aptamer.EnvConfig do
     port = String.to_integer(value)
 
     endpoint_opts
-    |> Keyword.put_new(:url, [])
     |> Keyword.put_new(:http,[])
-    |> put_in([:url,:port], port)
     |> put_in([:http,:port], port)
   end
 
   def apply_config(:web_host, value, endpoint_opts) when is_binary(value) do
     endpoint_opts
     |> Keyword.put_new(:url, [])
+    |> put_in([:url, :port], 80)
     |> put_in([:url, :host], value)
   end
 

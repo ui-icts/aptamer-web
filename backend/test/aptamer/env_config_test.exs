@@ -4,7 +4,7 @@ defmodule EnvConfigTest do
   import Aptamer.EnvConfig
 
   test "Updates both http and url keys" do
-    assert [http: [port: 80], url: [port: 80]] == apply_config(:port, "80", [])
+    assert [http: [port: 8080] ] == apply_config(:port, "8080", [])
   end
 
   test "replaces existing value" do
@@ -12,15 +12,15 @@ defmodule EnvConfigTest do
     # in the list I pass as an argument to the function
     # Order is not significant though, so don't take that as something required
     # I just don't have a better way to assert the keyword list
-    assert [url: [port: 80],http: [port: 80] ] = apply_config(:port, "80", [http: [port: 1]])
+    assert [http: [port: 8080] ] = apply_config(:port, "8080", [http: [port: 1]])
   end
 
   test "doesnt nuke existing options" do
-    assert [url: [port: 80],http: [host: "example.com", port: 80] ] = apply_config(:port, "80", [http: [host: "example.com", port: 1]])
+    assert [http: [blah: "meh", port: 8080] ] = apply_config(:port, "8080", [http: [blah: "meh", port: 1]])
   end
 
   test "adds webhost to url list" do
-    assert [url: [host: "example.com"]] == apply_config(:web_host, "example.com", [])
+    assert [url: [host: "example.com", port: 80]] == apply_config(:web_host, "example.com", [])
   end
 
   test "applying a nil value gives existing options back" do
@@ -33,7 +33,7 @@ defmodule EnvConfigTest do
     new_opts = override_endpoint_config(System.get_env(), existing_opts)
 
     assert "example.com" == get_in(new_opts, [:url,:host])
-    assert 8080 == get_in(new_opts, [:url, :port])
+    assert 80 == get_in(new_opts, [:url, :port])
     assert 8080 == get_in(new_opts, [:http, :port])
     assert "XXXOOO" == get_in(new_opts, [:secret_key_base])
   end
