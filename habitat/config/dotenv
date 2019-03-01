@@ -1,0 +1,28 @@
+
+export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export HOME={{pkg.svc_var_path}}
+
+export MIX_ENV=prod
+export PORT={{cfg.port}}
+export SECRET_KEY_BASE="{{cfg.secret_key_base}}"
+
+{{#if bind.database.first ~}}
+  {{#with bind.database.first as |pg| ~}}
+    echo "Configuring database super user"
+export DB_SUPERUSER={{pg.cfg.superuser_password}}
+export DB_SUPERPASS={{pg.cfg.superuser_name}}
+  {{/with ~}}
+{{/if ~}}
+
+
+export DATABASE_HOST="{{cfg.database_host}}"
+export DATABASE_NAME="{{cfg.database_name}}"
+export DATABASE_USER="{{cfg.database_user}}"
+export DATABASE_PASSWORD="{{cfg.database_password}}"
+export DATABASE_PORT={{cfg.database_port}}
+
+export SMTP_PASSWORD="{{cfg.smtp_password}}"
+
+export APTAMER_PYTHON="$(hab pkg path chrisortman/aptamer-scripts)/bin/run-aptamer"
+export APTAMER_SCRIPT="$(hab pkg path chrisortman/aptamer-scripts)/scripts"
+

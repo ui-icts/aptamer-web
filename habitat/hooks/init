@@ -3,19 +3,10 @@
 set -o nounset
 set -e
 
-{{#if bind.database.first}}
-  {{#with bind.database.first as |pg| }}
-    echo "Configuring database super user"
-    DB_SUPERUSER={{pg.cfg.superuser_password}}
-    DB_SUPERPASS={{pg.cfg.superuser_name}}
-  {{/with}}
-{{/if}}
-
-export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-export HOME={{pkg.svc_var_path}}
+. {{pkg.svc_config_path}}/dotenv
 
 cd {{pkg.path}}/app
 
-MIX_ENV=prod mix db:create
-MIX_ENV=prod mix db:migrate
+mix db:create
+mix db:migrate
 

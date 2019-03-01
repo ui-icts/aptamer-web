@@ -5,12 +5,12 @@
 
 port = 4002
 host_url = "localhost"
-log_level = "info"
-
+secret_key_base = "vPYZIo0QH58bm184m4vMKKE3NOhY41RI8OC+/U/jozdFCZQuz1LLLNuouf/hdE1X"
 database_host = "localhost"
 database_name = "aptamer2"
 database_user = "aptamer"
 database_password = "NOTSET"
 database_port = 5432
 database_usessl = false
+
 smtp_password = "NOTSET"
