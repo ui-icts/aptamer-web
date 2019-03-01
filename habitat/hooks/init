@@ -7,6 +7,7 @@ set -e
 
 cd {{pkg.path}}/app
 
-mix db:create
-mix db:migrate
+DATABASE_USER=${DB_SUPERUSER-$DATABASE_USER} \
+  DATABASE_PASSWORD=${DB_SUPERPASS-$DATABASE_PASSWORD} \
+  mix do db:create, db:migrate
 
