@@ -216,11 +216,12 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     case Elixir.File.read(structure_file) do
       {:ok, file_data} ->
-        file_cs = Aptamer.Jobs.File.new_structure_file_changeset({
+        
+        file_cs = Aptamer.Jobs.File.new_structure_file_changeset(
           new_file_name,
           file_data,
           file_owner_id
-        })
+        )
 
         Repo.insert(file_cs)
 
