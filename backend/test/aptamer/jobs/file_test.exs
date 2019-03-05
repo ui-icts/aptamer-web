@@ -62,8 +62,6 @@ defmodule Aptamer.Jobs.FileTest do
 
     multi = File.delete(file)
 
-    IO.inspect(Ecto.Multi.to_list(multi))
-
     {:ok, _} = Repo.transaction(multi)
 
     assert Repo.get(File, file.id) == nil
@@ -80,5 +78,12 @@ defmodule Aptamer.Jobs.FileTest do
 
     assert [4, 8, 0] = File.unique_id_list(jobs1, :create_graph_options_id)
     assert [-2, 0, 83] = File.unique_id_list(jobs1, :predict_structure_options_id)
+  end
+
+  test "creates new structure file" do
+    owner = insert(:user)
+    cs = File.new_structure_file_changeset("test_file","XXXX", owner.id)
+    assert cs.valid?
+    assert {:ok, _} = Repo.insert(cs)
   end
 end

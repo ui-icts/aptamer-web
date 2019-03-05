@@ -216,15 +216,13 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     case Elixir.File.read(structure_file) do
       {:ok, file_data} ->
-        file_struct = %Aptamer.Jobs.File{
-          file_name: new_file_name,
-          uploaded_on: DateTime.utc_now(),
-          file_type: "structure",
-          data: file_data,
-          owner_id: file_owner_id
-        }
+        file_cs = Aptamer.Jobs.File.new_structure_file_changeset({
+          new_file_name,
+          file_data,
+          file_owner_id
+        })
 
-        Repo.insert(file_struct)
+        Repo.insert(file_cs)
 
       {:error, e} ->
         Logger.error("Unable to read generated structure file. #{inspect(e)}")
