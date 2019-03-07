@@ -36,8 +36,6 @@ defmodule AptamerWeb.PageController do
       |> put_resp_header("content-disposition", ~s(attachment; filename="#{file_name}"))
       |> send_file(200, input_file)
 
-    File.rm(input_file)
-
     conn
   end
 end
