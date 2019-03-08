@@ -82,7 +82,7 @@ defmodule Aptamer.Jobs.FileTest do
 
   test "creates new structure file" do
     owner = insert(:user)
-    cs = File.new_structure_file_changeset("test_file","XXXX", owner.id)
+    cs = File.new_structure_file_changeset("test_file", "XXXX", owner.id)
     assert cs.valid?
     assert {:ok, _} = Repo.insert(cs)
   end

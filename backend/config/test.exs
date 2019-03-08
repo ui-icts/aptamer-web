@@ -22,5 +22,4 @@ config :aptamer, Aptamer.Repo,
 
 config :comeonin, :bcrypt_log_rounds, 4
 
-config :aptamer, Aptamer.Mailer,
-  adapter: Bamboo.TestAdapter
+config :aptamer, Aptamer.Mailer, adapter: Bamboo.TestAdapter

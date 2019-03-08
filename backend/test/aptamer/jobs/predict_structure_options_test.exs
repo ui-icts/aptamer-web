@@ -30,7 +30,7 @@ defmodule Aptamer.Jobs.PredictStructureOptionsTest do
       suffix: "",
       run_mfold: false,
       vienna_version: 2,
-      pass_options: "-T 37" 
+      pass_options: "-T 37"
     }
 
     args = PredictStructureOptions.args(example)

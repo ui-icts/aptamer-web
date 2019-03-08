@@ -64,6 +64,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
 
   defp ensure_dash_p(pass_options) do
     parts = String.split(pass_options)
+
     if "-p" not in parts do
       pass_options <> " -p"
     else

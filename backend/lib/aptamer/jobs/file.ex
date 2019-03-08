@@ -71,6 +71,4 @@ defmodule Aptamer.Jobs.File do
     |> Enum.filter(fn id -> id != nil end)
     |> Enum.uniq()
   end
-
-
 end
