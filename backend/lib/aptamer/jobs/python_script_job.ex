@@ -88,17 +88,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     {:ok, %{state | working_dir: temp_path, input_file_path: path, input_file_contents: contents}}
   end
 
-  def path(type) do
-    case type do
-      :python ->
-        System.get_env("APTAMER_PYTHON") ||
-          "#{System.user_home()}/.virtualenvs/aptamer-runtime/bin/python"
-
-      :script ->
-        System.get_env("APTAMER_SCRIPT") || "#{System.user_home()}/icts/aptamer/scripts"
-    end
-  end
-
   def step(:run_script, state) do
     python_path = path(:python)
     script_path = path(:script)
@@ -126,7 +115,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       case collector do
         %Aptamer.JobControl.RunningJob{output: x} -> x
         %IO.Stream{} -> []
-        [h | t] = lines -> lines
+        [_h | _t] = lines -> lines
         _ -> []
       end
       |> Enum.join("\n")
@@ -174,7 +163,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     remove_extraneous_files(state.working_dir)
 
-    {:ok, zip_struct} =
+    {:ok, _} =
       zip_outputs(
         state.working_dir,
         state.job_id,
@@ -182,6 +171,23 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       )
 
     {:ok, state}
+  end
+
+  def step(:cleanup, state) do
+    File.rmdir(state.working_dir)
+
+    {:ok, state}
+  end
+
+  def path(type) do
+    case type do
+      :python ->
+        System.get_env("APTAMER_PYTHON") ||
+          "#{System.user_home()}/.virtualenvs/aptamer-runtime/bin/python"
+
+      :script ->
+        System.get_env("APTAMER_SCRIPT") || "#{System.user_home()}/icts/aptamer/scripts"
+    end
   end
 
   def zip_outputs(output_directory, job_id, zip_file_name) do
@@ -228,11 +234,5 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       {:error, e} ->
         Logger.error("Unable to read generated structure file. #{inspect(e)}")
     end
-  end
-
-  def step(:cleanup, state) do
-    File.rmdir(state.working_dir)
-
-    {:ok, state}
   end
 end

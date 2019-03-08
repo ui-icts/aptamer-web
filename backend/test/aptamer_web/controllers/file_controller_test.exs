@@ -17,11 +17,11 @@ defmodule AptamerWeb.FileControllerTest do
 
   test "gets all the structure files", %{conn: conn, current_user: current_user} do
     someone_else = insert(:user)
-    someone_elses_file = insert(:file, owner: someone_else)
+    _someone_elses_file = insert(:file, owner: someone_else)
 
     fasta_file = insert(:file, file_name: "fasta.txt", file_type: "fasta", owner: current_user)
 
-    structure_file =
+    _structure_file =
       insert(:file,
         file_name: "structure.txt",
         file_type: "structure",

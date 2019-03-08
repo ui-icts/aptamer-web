@@ -2,7 +2,6 @@ defmodule AptamerWeb.SecurityTest do
   use AptamerWeb.ConnCase
 
   import Aptamer.Factory
-  alias Aptamer.Jobs.File
 
   setup %{conn: conn} do
     conn =
@@ -11,7 +10,7 @@ defmodule AptamerWeb.SecurityTest do
       |> put_req_header("content-type", "application/vnd.api+json")
 
     user = insert(:user)
-    files = insert_list(3, :file, owner: user)
+    _files = insert_list(3, :file, owner: user)
     {:ok, conn: conn}
   end
 

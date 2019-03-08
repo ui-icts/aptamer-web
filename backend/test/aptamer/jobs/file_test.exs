@@ -27,7 +27,7 @@ defmodule Aptamer.Jobs.FileTest do
     cg_opts = build(:create_graph_options) |> insert
     ps_opts = build(:predict_structure_options) |> insert
 
-    job =
+    _job =
       insert(:job,
         file: file,
         predict_structure_options: ps_opts,
@@ -44,7 +44,7 @@ defmodule Aptamer.Jobs.FileTest do
   test "delete a file with some associations" do
     file = build(:file) |> as_structure |> insert
     ps_opts = build(:predict_structure_options) |> insert
-    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
+    _job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
 
     multi = File.delete(file)
 

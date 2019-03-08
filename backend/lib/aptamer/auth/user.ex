@@ -16,8 +16,7 @@ defmodule Aptamer.Auth.User do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, [:name, :email])
-    |> cast(params, ~w(password))
+    |> cast(params, [:name, :email, :password])
     |> validate_required([:name, :email])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
