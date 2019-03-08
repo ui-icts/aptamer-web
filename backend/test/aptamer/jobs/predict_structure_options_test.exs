@@ -23,4 +23,17 @@ defmodule Aptamer.Jobs.PredictStructureOptionsTest do
     changeset = PredictStructureOptions.changeset(%PredictStructureOptions{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "Adds the -p with pass_options if it is not specified" do
+    example = %PredictStructureOptions{
+      prefix: "",
+      suffix: "",
+      run_mfold: false,
+      vienna_version: 2,
+      pass_options: "-T 37" 
+    }
+
+    args = PredictStructureOptions.args(example)
+    assert " -T 37 -p" == List.last(args)
+  end
 end

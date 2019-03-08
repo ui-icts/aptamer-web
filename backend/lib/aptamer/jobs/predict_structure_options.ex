@@ -31,8 +31,8 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
 
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
     ["-v", "2", "--prefix", "PP", "--suffix", "SS"]
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-foo -bar"})
-    ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options",~s("-foo -bar")]
+    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-T 37 -p"})
+    ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options",~s( -T 37 -p)]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS"]
     iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
@@ -45,7 +45,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
       if missing?(options.pass_options) do
         []
       else
-        ["--pass_options", ~s("#{options.pass_options}")]
+        ["--pass_options", " " <> ensure_dash_p(options.pass_options)]
       end
 
     prefix_args = ix_args("prefix", options.prefix)
@@ -60,6 +60,15 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
       end
 
     tool_args ++ common_args ++ pass_args
+  end
+
+  defp ensure_dash_p(pass_options) do
+    parts = String.split(pass_options)
+    if "-p" not in parts do
+      pass_options <> " -p"
+    else
+      pass_options
+    end
   end
 
   defp ix_args(which, value) do
