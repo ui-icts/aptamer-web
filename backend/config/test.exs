@@ -21,3 +21,6 @@ config :aptamer, Aptamer.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :comeonin, :bcrypt_log_rounds, 4
+
+config :aptamer, Aptamer.Mailer,
+  adapter: Bamboo.TestAdapter
