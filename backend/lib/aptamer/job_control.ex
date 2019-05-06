@@ -1,30 +1,10 @@
 defmodule Aptamer.JobControl do
-  # use GenServer
+  use GenServer
 
   alias Aptamer.Repo
   alias Aptamer.Jobs.{PredictStructureOptions, CreateGraphOptions}
 
-  defmodule RunningJob do
-    defstruct job_id: "UNSET", output: []
-
-    defimpl Collectable do
-      def into(job) do
-        {job.output,
-         fn
-           list, {:cont, output} ->
-             AptamerWeb.JobsChannel.broadcast_job_output(job, output)
-
-             [output | list]
-
-           list, :done ->
-             %{job | output: Enum.reverse(list)}
-
-           _, :halt ->
-             :ok
-         end}
-      end
-    end
-  end
+  @server_name __MODULE__
 
   def start_job(%Aptamer.Jobs.Job{} = job) do
     Task.start(fn ->
@@ -109,7 +89,7 @@ defmodule Aptamer.JobControl do
   defp set_status(job, status, output \\ nil) do
     output =
       case output do
-        %RunningJob{output: x} -> Enum.join(x, "\n")
+        %Aptamer.JobControl.RunningJob{output: x} -> Enum.join(x, "\n")
         nil -> nil
       end
 
@@ -126,7 +106,13 @@ defmodule Aptamer.JobControl do
   ##
   # Client
   #
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, [], name: @server_name)
+  end
 
+  def submit_job(job) do
+    GenServer.cast @server_name, {:submit, job} 
+  end
   # def start_link(opts \\ []) do
   #   GenServer.start_link(__MODULE__,:ok,opts)
   # end
@@ -138,7 +124,10 @@ defmodule Aptamer.JobControl do
   ##
   # Server
   #
-
+  def handle_cast({:submit, job}, state) do
+    Aptamer.JobControl.start_job(job)
+    {:noreply, state}
+  end
   # def init(:ok) do
   #   {:ok, []}
   # end

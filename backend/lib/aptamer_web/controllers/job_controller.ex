@@ -26,7 +26,7 @@ defmodule AptamerWeb.JobController do
           |> Repo.preload(:file)
 
         if Application.get_env(:aptamer, :start_jobs) == true do
-          Aptamer.JobControl.start_job(job)
+          Aptamer.JobControl.submit_job(job)
         end
 
         conn
