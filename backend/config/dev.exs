@@ -45,3 +45,6 @@ config :aptamer, Aptamer.Repo,
   database: "aptamer_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :aptamer,
+  start_jobs: false

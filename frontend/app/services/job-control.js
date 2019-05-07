@@ -52,6 +52,7 @@ export default PhoenixSocket.extend({
       console.log('Closing socket...');
       /* eslint-enable */
     });
+    this.workers = [];
   },
 
   connect() {
@@ -61,18 +62,18 @@ export default PhoenixSocket.extend({
     }
 
     this._super(`${ENV.rootURL}socket`, {
-      // logger: ((kind, msg, data) => {
-      //   #<{(| eslint-disable |)}>#
-      //   console.log(`${kind}: ${msg}`, data);
-      //   #<{(| eslint-enable |)}>#
-      // })
+      logger: ((kind, msg, data) => {
+        console.log(`${kind}: ${msg}`, data);
+      })
     });
 
     let channel = this.joinChannel("jobs:status", {});
 
-    channel.on("job_output", (payload) => this._onJobOutput(payload) );
     channel.on("status_change", (payload) => this._onStatusChange(payload) );
     channel.on("file_added", (payload) => this._onFileAdded(payload) );
+    channel.on("worker_entered", (worker) => this._onWorkerAdded(worker) );
+    channel.on("worker_left", (worker) => this._onWorkerLeft(worker) );
+    channel.on("worker_reset", (worker) => this._onWorkerReset(worker) );
 
     channel.onError( _e => {
       /* eslint-disable */
@@ -115,6 +116,22 @@ export default PhoenixSocket.extend({
 
   _onFileAdded(payload) {
     this.store.pushPayload(payload);
+  },
+
+  _onWorkerAdded(worker) {
+    this.workers.pushObject(worker);
+  },
+
+  _onWorkerLeft(worker) {
+    const entry = this.workers.findBy('node_name', worker.node_name);
+    if ( entry ) {
+      this.workers.removeObject(entry);
+    }
+  },
+
+  _onWorkerReset(workers) {
+    this.workers.clear();
+    this.workers.pushObjects(workers);
   },
 
   reset() {

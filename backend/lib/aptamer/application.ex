@@ -10,6 +10,7 @@ defmodule Aptamer.Application do
     children = [
       # Start the Ecto repository
       Aptamer.Repo,
+      {Task.Supervisor, name: Aptamer.JobControl.TaskSupervisor, restart: :transient},
       Aptamer.JobControl,
       # Start the endpoint when the application starts
       AptamerWeb.Endpoint

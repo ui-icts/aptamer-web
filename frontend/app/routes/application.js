@@ -5,6 +5,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 export default Route.extend(ApplicationRouteMixin, {
 
   session: service('session'),
+  jobControl: service('job-control'),
   currentUser: service(),
 
   beforeModel() {
@@ -19,6 +20,7 @@ export default Route.extend(ApplicationRouteMixin, {
   setupController(controller) {
     controller.set('session', this.session );
     controller.set('currentUser', this.currentUser );
+    controller.set('jobControl', this.jobControl );
   },
 
   _loadCurrentUser() {

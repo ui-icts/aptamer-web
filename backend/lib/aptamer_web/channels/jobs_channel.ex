@@ -27,6 +27,18 @@ defmodule AptamerWeb.JobsChannel do
     AptamerWeb.Endpoint.broadcast("jobs:status", "file_added", json)
   end
 
+  def broadcast_worker_entered(node_name) do
+    AptamerWeb.Endpoint.broadcast("jobs:status","worker_entered", %{node_name: node_name})
+  end
+
+  def broadcast_worker_left(node_name) do
+    AptamerWeb.Endpoint.broadcast("jobs:status","worker_left", %{node_name: node_name})
+  end
+
+  def broadcast_worker_reset(worker_list) do
+    workers = Enum.map(worker_list, fn x -> %{node_name: x} end)
+    AptamerWeb.Endpoint.broadcast("jobs:status","worker_reset", workers)
+  end
   ###############################
 
   def join("jobs:status", _message, socket) do

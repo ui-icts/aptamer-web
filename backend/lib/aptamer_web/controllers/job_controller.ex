@@ -27,6 +27,8 @@ defmodule AptamerWeb.JobController do
 
         if Application.get_env(:aptamer, :start_jobs) == true do
           Aptamer.JobControl.submit_job(job)
+        else
+          Aptamer.JobControl.check_for_worker()
         end
 
         conn
