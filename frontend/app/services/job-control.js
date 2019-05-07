@@ -63,7 +63,9 @@ export default PhoenixSocket.extend({
 
     this._super(`${ENV.rootURL}socket`, {
       logger: ((kind, msg, data) => {
+        /* eslint-disable */
         console.log(`${kind}: ${msg}`, data);
+        /* eslint-enable */
       })
     });
 
