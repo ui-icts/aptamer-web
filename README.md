@@ -5,7 +5,7 @@
 ### macOS
 
 ```
-brew install elixir node@6 yarn postgresql
+brew install elixir node@10 yarn postgresql
 npm install -g ember-cli
 ```
 
