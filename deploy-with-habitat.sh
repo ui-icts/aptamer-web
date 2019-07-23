@@ -14,7 +14,7 @@ cp chrisortman-20160618040827.pub ${HOME}/.hab/cache/keys
 cp chrisortman-20160618040827.sig.key ${HOME}/.hab/cache/keys
 
 echo "Installing habitat"
-curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh | sudo bash -s -- -v 0.74.0
+curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh | sudo bash -s -- -v 0.79.2
 
 echo "Building package"
 hab pkg build habitat
