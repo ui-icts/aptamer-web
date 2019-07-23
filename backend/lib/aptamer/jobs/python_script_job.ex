@@ -183,10 +183,10 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     case type do
       :python ->
         System.get_env("APTAMER_PYTHON") ||
-          "#{System.user_home()}/.virtualenvs/aptamer-runtime/bin/python"
+          "#{System.user_home()}/.virtualenvs/aptamer-runtime-3/bin/python"
 
       :script ->
-        System.get_env("APTAMER_SCRIPT") || "#{System.user_home()}/icts/aptamer/scripts"
+        System.get_env("APTAMER_SCRIPT") || "#{System.user_home()}/icts/aptamer/scripts/aptamer"
     end
   end
 
