@@ -1,5 +1,8 @@
 <p>
-  {{upload-with-progress url=(concat rootURL "files") onUpload=(route-action "fileUploaded")}}
+  {{upload-with-progress 
+    url=(concat rootURL "files") 
+    onUpload=(action "fileUploaded")
+  }}
 </p>
 
 <br>
@@ -14,10 +17,10 @@
         uploadedOn=f.uploadedOn
         jobs=f.jobs
         processButtonText="Run"
-        onFileTypeChange=(route-action "changeFileType" f)
-        fileRunCommand=(route-action "startProcessFile" f)
-        onDelete=(route-action "deleteFile" f)
-        onErrorViewed=(route-action "clearError" f)
+        onFileTypeChange=(action "changeFileType" f)
+        fileRunCommand=(action "startProcessFile" f)
+        onDelete=(action "deleteFile" f)
+        onErrorViewed=(action "clearError" f)
       }}
 
       {{#files/options-provider file=f as |options|}}
@@ -25,13 +28,13 @@
 
           {{predict-structure-options-form
             optionsObject=options.forPredictStructure
-            fileRunCommand=(route-action "startProcessFile" f options.forPredictStructure)}}
+            fileRunCommand=(action "startProcessFile" f options.forPredictStructure)}}
 
         {{else if (eq f.fileType "structure")}}
 
           {{graph-options-form
               optionsObject=options.forCreateGraph
-              fileRunCommand=(route-action "startProcessFile" f options.forCreateGraph)}}
+              fileRunCommand=(action "startProcessFile" f options.forCreateGraph)}}
 
         {{else}}
           Please select a command to configure options
