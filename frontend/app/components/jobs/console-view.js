@@ -1,5 +1,5 @@
 import { throttle } from '@ember/runloop';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import _ from 'lodash';
 
@@ -12,8 +12,13 @@ export default Component.extend({
   rows: 20,
   cols: 120,
 
-  didInsertElement() {
+  messageView: computed('messages.[]', function() {
+    let messages = this.messages;
+    throttle(this,'scrollToBottom', 500);
+    return _(messages).takeRight(50).join("\n");
+  }),
 
+  didInsertElement() {
 
     /* eslint-disable */
     let psconsole = this.$();
@@ -23,18 +28,10 @@ export default Component.extend({
     /* eslint-enable */
   },
 
-  messageView: computed('messages.[]', function() {
-    let messages = this.messages;
+  didRender() {
+    this._super(...arguments);
     throttle(this,'scrollToBottom', 500);
-    return _(messages).takeRight(50).join("\n");
-  }),
-
-  messagesChanged: observer('messages.[]',function() {
-
-    throttle(this,'scrollToBottom', 500);
-    // Ember.run.scheduleOnce('afterRender', this, 'scrollToBottom');
-
-  }),
+  },
 
   scrollToBottom() {
     /* eslint-disable */
