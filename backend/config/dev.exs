@@ -47,4 +47,4 @@ config :aptamer, Aptamer.Repo,
   pool_size: 10
 
 config :aptamer,
-  start_jobs: true
+  start_jobs: false

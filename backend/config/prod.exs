@@ -51,3 +51,6 @@ config :aptamer, Aptamer.Repo,
   password: "postgres",
   database: "aptamer_prod",
   pool_size: 20
+
+config :aptamer,
+  start_jobs: false
