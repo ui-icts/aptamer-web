@@ -5,26 +5,12 @@ export default Controller.extend({
   actions: {
     fileUploaded(uploadResponse) {
       this.store.pushPayload(uploadResponse);
-      this.refresh();
     },
 
     deleteFile(file) {
       file.deleteRecord();
-      return file.save().catch(
-        retry(3)
-      );
+      return file.save();
 
-      function retry(retries) {
-        return file.save().catch(function(_reason) {
-
-          if(retries-- > 0) {
-            return retry(retries)
-          }
-          //Failed too many times; set status to error = true to show user
-          file.set('status.error', true)
-          return file.set('status.errorMessage', "Failed to delete file")
-        })
-      }
     },
 
     clearError(file) {
