@@ -38,7 +38,7 @@ defmodule Comeonin.Ecto.Password do
   def dump(x) when is_binary(x), do: {:ok, x}
   def dump(_), do: :error
 
-  defp crypt, do: Application.get_env(:comeonin, Ecto.Password, Comeonin.Pbkdf2)
+  defp crypt, do: Application.get_env(:comeonin, Ecto.Password, Comeonin.Bcrypt)
 
   defp hash_password(plain_password) do
     crypt().hashpwsalt(plain_password)
