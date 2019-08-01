@@ -55,7 +55,9 @@ defmodule Aptamer.Factory do
       edge_type: "tree",
       seed: true,
       max_edit_distance: 3,
-      max_tree_distance: 4
+      max_tree_distance: 4,
+      batch_size: 10_000,
+      spawn: true
     }
   end
 

@@ -36,6 +36,16 @@
     <a role="button" {{action "toggleHelp"}}>Help</a>
   </div>
 
+  <div class="inline fields">
+    <div class="field">
+      <label>Batch Size</label>
+      {{input type="text" value=optionsObject.batchSize}}
+    </div>
+    <div class="field">
+      {{ui-checkbox label="Spawn" checked=(get optionsObject "spawn") onChange=(action (mut (get optionsObject "spawn"))) }}
+    </div>
+
+  </div>
 </form>
 {{#if showHelp}}
   <div class="ui list">
@@ -74,6 +84,42 @@
       Maximum tree distance allowed for an edge to be created
       in output graph.
       Assumes <code>--edge_type</code> is "tree" or "both". (Default: 0)
+    </div>
+    <div class="item">
+      <div class="header">
+        Batch Size
+      </div>
+
+      <p>
+        Controls how many sequence pairs are computed at at time.
+        This affects both the overall memory consummption and CPU utilization
+        of the server.
+      </p>
+
+      <p>
+        If this number is too large then each CPU core will consume
+        too much memory. If it is too small things will be slower
+      </p>
+    </div>
+    <div class="item">
+      <div class="header">
+        Spawn
+      </div>
+
+      <p>
+        Controls how RNAdistance is invoked.
+      </p>
+      <p>
+        When this is set RNAdistance will be spawned as a
+        separate program for each batch of pairs. If it is
+        not checked, then RNAdistance will be used in process
+      </p>
+
+      <p>
+        Spawning separate process seems to allow smaller servers
+        to handle larger sequence files because the memory consumption
+        is more consistent. If you have a larger server with more memory then not spawning will process faster.
+      </p>
     </div>
   </div>
 {{/if}}

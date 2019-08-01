@@ -10,7 +10,9 @@ defmodule AptamerWeb.CreateGraphOptionsControllerTest do
     edge_type: "some content",
     max_edit_distance: 42,
     max_tree_distance: 42,
-    seed: true
+    seed: true,
+    batch_size: 10,
+    spawn: false
   }
   @invalid_attrs %{}
 
@@ -53,6 +55,8 @@ defmodule AptamerWeb.CreateGraphOptionsControllerTest do
     assert data["attributes"]["seed"] == create_graph_options.seed
     assert data["attributes"]["max-edit-distance"] == create_graph_options.max_edit_distance
     assert data["attributes"]["max-tree-distance"] == create_graph_options.max_tree_distance
+    assert data["attributes"]["batch-size"] == create_graph_options.batch_size
+    assert data["attributes"]["spawn"] == create_graph_options.spawn
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -72,7 +76,9 @@ defmodule AptamerWeb.CreateGraphOptionsControllerTest do
             "edge-type" => attrs.edge_type,
             "max_edit_distance" => attrs.max_edit_distance,
             "max_tree_distance" => attrs.max_tree_distance,
-            "seed" => attrs.seed
+            "seed" => attrs.seed,
+            "batch-size" => attrs.batch_size,
+            "spawn" => attrs.spawn
           },
           "relationships" => relationships()
         }
@@ -88,7 +94,9 @@ defmodule AptamerWeb.CreateGraphOptionsControllerTest do
         edge_type: attrs.edge_type,
         seed: attrs.seed,
         max_edit_distance: attrs.max_edit_distance,
-        max_tree_distance: attrs.max_tree_distance
+        max_tree_distance: attrs.max_tree_distance,
+        batch_size: attrs.batch_size,
+        spawn: attrs.spawn
       })
 
     assert created != nil

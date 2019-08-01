@@ -8,6 +8,8 @@ defmodule Aptamer.Jobs.CreateGraphOptionsTest do
     edge_type: "some content",
     max_edit_distance: 42,
     max_tree_distance: 42,
+    batch_size: 10000,
+    spawn: true,
     seed: true
   }
   @invalid_attrs %{}

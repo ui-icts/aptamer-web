@@ -34,6 +34,7 @@ defmodule Aptamer.Jobs.FileTest do
         create_graph_options: cg_opts
       )
 
+    file = Repo.get!(File, file.id)
     multi = File.delete(file)
 
     {:ok, _} = Repo.transaction(multi)
