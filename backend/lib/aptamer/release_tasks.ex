@@ -15,7 +15,7 @@ defmodule Aptamer.ReleaseTasks do
     defstruct run_seeds: false
   end
 
-  def bootstrap do
+  def bootstrap(args \\ []) do
     IO.puts("Loading Aptamer..")
 
     case Application.load(:aptamer) do

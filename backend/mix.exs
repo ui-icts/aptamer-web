@@ -5,12 +5,13 @@ defmodule Aptamer.Mixfile do
     [
       app: :aptamer,
       version: File.read!("../version.txt") |> String.trim(),
-      elixir: "~> 1.7",
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      releases: releases(),
       deps: deps()
     ]
   end
@@ -54,7 +55,6 @@ defmodule Aptamer.Mixfile do
       {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"},
       {:porcelain, "~> 2.0"},
       {:temp, "~> 0.4"},
-      {:distillery, "~> 2.1", runtime: false},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.1"},
       {:guardian, "~> 1.0"},
@@ -64,6 +64,11 @@ defmodule Aptamer.Mixfile do
     ]
   end
 
+  def releases() do
+    [
+      aptamer: []
+    ]
+  end
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to create, migrate and run the seeds file at once:
   #

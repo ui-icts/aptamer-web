@@ -129,7 +129,7 @@ do_install() {
   
   cd backend
   build_line "Assembling release"
-  mix release --env=habitat
+  mix release
   cp -a _build/prod/rel/aptamer/* ${pkg_prefix}
   build_line "Updating shell script shebangs"
   grep -nrlI '^\#\!/usr/bin/env' "$pkg_prefix" | while read -r target; do
