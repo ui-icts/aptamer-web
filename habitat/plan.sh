@@ -138,6 +138,8 @@ do_install() {
     sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
   done
   chmod +x ${pkg_prefix}/bin/aptamer
+  chmod +x ${pkg_prefix}/releases/${pkg_version}/elixir
+  chmod +x ${pkg_prefix}/releases/${pkg_version}/../../erts-*/bin/erl
   cd ..
 }
 
