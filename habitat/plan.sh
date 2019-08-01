@@ -32,7 +32,7 @@ pkg_build_deps=(
   core/make
   core/gcc
   core/yarn
-  core/node8
+  core/node10
   core/elixir
 )
 
