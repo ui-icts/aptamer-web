@@ -137,6 +137,7 @@ do_install() {
     sed -e "s#\#\!/usr/bin/env sh#\#\!$(pkg_path_for bash)/bin/sh#" -i "$target"
     sed -e "s#\#\!/usr/bin/env bash#\#\!$(pkg_path_for bash)/bin/bash#" -i "$target"
   done
+  chmod +x ${pkg_prefix}/bin/aptamer
   cd ..
 }
 
