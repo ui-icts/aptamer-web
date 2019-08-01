@@ -1,6 +1,6 @@
 language: elixir
-elixir: 1.8
-otp_release: '20.0'
+elixir: 1.9
+otp_release: '22.0'
 sudo: required
 env:
   matrix:
@@ -8,7 +8,7 @@ env:
   global:
   - secure: qOj52EvuYxs00aqpCtoWWQX4HuViv+LylxpbXzjxL1RzsAA183CLGOY9xiSwlDM6LoctaAzBdOq2UqmuzBmzQZE5Cd/Wgw1pgF+3P9/eaxvmQhwy3RmzDrjFUo8RC9KXKutjTdNyA+bI21OxgkrujF4BtMGttp+lnHqpKm2NnHqEYIA4BtpSsXV/0k1kVxrDMQsev8bvLEDfR66Mk2XUKJf3oKeNFX0/oGqdkUr2utyrI4WlQcEk8VHVgnfh+cUl2i9RtImVzAxwtOgU1MyvoCQnUNu5m/Sis46mi7kcLW622Xg/Q1+x+8VWuq7kXTL9RiIjb/tsrpDHKm+/lyesYON0kvkA4HE2JD2YXGH0LAKP3mWNIEY7AeDkEDXA30EnLfaOoXc740PZvZZILAbLSTzMk7DLbeVhbspBOioNOQqQPnlwrhj/AMm1uHZweWCvXjSwO/z9Gg5ieFxBUOWNYFe0/UbUtVKc4ktcT5zsGkCI2Ahsj1dorTrz1KWcuo8Q9g3rZOHCyhExFsoSXtn0gK9L9JDMAmqo4Sd/JCUBm2Dnk8HE/8rat6FuXyLJde/lAAWczB93+34HoTsUMFrKaWoaXseS33lv02wYHjp++xufJouZQ5N+uJunS1iOhE5WYelI+nLWPzlQ9+C850jFXgsLpraPA0XqZ6O/v2DVK5M=
 addons:
-  postgresql: '9.6'
+  postgresql: '10'
   apt:
     sources:
       - google-chrome
