@@ -26,5 +26,5 @@ export DATABASE_PORT={{cfg.database_port}}
 export SMTP_PASSWORD="{{cfg.smtp_password}}"
 
 export APTAMER_PYTHON="$(hab pkg path chrisortman/aptamer-scripts)/bin/run-aptamer"
-export APTAMER_SCRIPT="$(hab pkg path chrisortman/aptamer-scripts)/scripts"
+export APTAMER_SCRIPT="$(hab pkg path chrisortman/aptamer-scripts)/lib/aptamer"
 
