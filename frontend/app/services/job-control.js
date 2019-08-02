@@ -26,7 +26,7 @@ const JobOutput = EmberObject.extend({
 
   _onJobOutput(payload) {
     run(() => {
-      schedule('sync', () => {
+      schedule('actions', () => {
         let messages = this.messages;
         messages.pushObjects(payload.lines);
       });

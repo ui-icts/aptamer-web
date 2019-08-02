@@ -25,7 +25,7 @@ const FileContents = EmberObject.extend({
 
   _onFileContents(payload) {
     run(() => {
-      schedule('sync', () => {
+      schedule('actions', () => {
         let messages = this.messages;
         messages.pushObjects(payload.lines);
       });
