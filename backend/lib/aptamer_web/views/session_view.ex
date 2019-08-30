@@ -1,5 +1,6 @@
 defmodule AptamerWeb.SessionView do
   use AptamerWeb, :view
+  import AptamerWeb.InputHelpers
 
   def render("index.json", %{sessions: sessions}) do
     %{data: render_many(sessions, AptamerWeb.SessionView, "session.json")}
@@ -12,4 +13,5 @@ defmodule AptamerWeb.SessionView do
   def render("session.json", %{session: session}) do
     %{id: session.id}
   end
+
 end

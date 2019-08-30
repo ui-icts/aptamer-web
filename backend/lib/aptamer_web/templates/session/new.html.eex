@@ -1,0 +1,48 @@
+<div class="ui grid">
+  <div class="one wide column">
+  </div>
+  <div class="five wide column">
+    <%= if get_flash(@conn, :login_error) do %>
+      <div class="ui error message">
+        <i class="close icon" role="button"></i>
+        <%= get_flash(@conn, :login_error) %>
+      </div>
+    <% end %>
+
+    <%= semantic_form_for @login_cs, Routes.session_path(@conn, :create), fn  f -> %>
+      <div class="ui stacked segment">
+        <%= input f, :email %>
+        <%= input f, :password %>
+        <%= large_submit_button "Log In" %>
+      </div>
+    <% end %>
+
+  </div>
+  <div class="four wide column">
+    <div class="ui center aligned basic segment">
+      <h1>or</h1>
+    </div>
+  </div>
+  <div class="five wide column">
+    <%= if get_flash(@conn, :signup_error) do %>
+      <div class="ui error message">
+        <%= get_flash(@conn, :signup_error) %>
+      </div>
+    <% end %>
+
+    <%= semantic_form_for @register_cs, Routes.session_path(@conn, :create), fn f -> %>
+      <div class="ui error message">
+      </div>
+      <div class="ui stacked segment">
+        <%= input f, :name %>
+        <%= input f, :email %>
+        <%= input f, :password %>
+        <%= input f, :password_confirmation %>
+        <%= large_submit_button "Create Account" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="one wide column">
+  </div>
+</div>
+<hr>

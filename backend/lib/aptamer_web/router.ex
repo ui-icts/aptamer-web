@@ -18,8 +18,9 @@ defmodule AptamerWeb.Router do
     plug Aptamer.AuthAccessPipeline
   end
 
-  scope "/" do
+  scope "/", AptamerWeb do
     pipe_through :browser
+    resources "/sessions", SessionController
   end
 
   scope "/", AptamerWeb do
@@ -37,6 +38,7 @@ defmodule AptamerWeb.Router do
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
     get "/users/me", SessionController, :show
+    
   end
 
   scope "/", AptamerWeb do
@@ -44,7 +46,7 @@ defmodule AptamerWeb.Router do
     pipe_through :browser
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
-    get "/", PageController, :index
+    get "/spa", PageController, :index
     # Public routes here
   end
 end

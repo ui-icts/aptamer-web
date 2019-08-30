@@ -7,35 +7,37 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Aptamer!</title>
+    <title>Aptamer</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
 
-      <%= if get_flash(@conn, :info) do %>
-        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <% end %>
-      <%= if get_flash(@conn, :error) do %>
-        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <% end %>
+    <div class="ui large top fixed menu">
+      <div class="header item">
+        <i class="lab icon"></i>
+        Aptamer
+      </div>
+      <div class="right menu">
+        <%= if is_authenticated?(@conn) do %>
+          <a class="ui item" role="button" href="/logout">
+            <%= current_user_name(@conn) %> (Logout)
+          </a>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+        <% else %>
+          <%= link "Login", to: "/login", class: "ui item" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="ui container" style="padding-top:55px">
 
-      <h2>
-      </h2>
-    </div> <!-- /container -->
+      <%= render @view_module, @view_template, assigns %>
+
+
+    </div>
+    <h2>
+    </h2>
+    <!-- /container -->
     <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

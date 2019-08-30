@@ -9,6 +9,8 @@ defmodule Aptamer.Auth.Registration do
     field(:password, :string)
   end
 
+  def blank(), do: changeset(__MODULE__.__struct__)
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
@@ -16,5 +18,12 @@ defmodule Aptamer.Auth.Registration do
     struct
     |> cast(params, [:email, :name, :password])
     |> validate_required([:email, :name, :password])
+  end
+
+  def new_user(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:email, :name, :password])
+    |> validate_required([:email, :name, :password])
+    |> validate_confirmation(:password, required: true, message: "does not match password")
   end
 end

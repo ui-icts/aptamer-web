@@ -5,6 +5,109 @@ defmodule AptamerWeb.SessionController do
   import Comeonin.Bcrypt
   import Logger
 
+  alias Aptamer.Auth.Registration
+
+  defmodule LoginFormParams do
+    use Ecto.Schema
+    import Ecto.Changeset
+
+    schema "" do
+      field(:email, :string)
+      field(:password, :string)
+    end
+
+    def blank(), do: changeset(__MODULE__.__struct__)
+
+    def validate(params \\ %{}) do
+      %LoginFormParams{}
+      |> changeset(params)
+      |> apply_action(:insert)
+    end
+
+    def changeset(struct, params \\ %{}) do
+      struct
+      |> cast(params, [:email, :password])
+      |> validate_required([:email, :password])
+    end
+  end
+
+  def new(conn, _params) do
+    login_cs = LoginFormParams.blank()
+    register_cs = Registration.blank()
+    render(conn, :new, login_cs: login_cs, register_cs: register_cs)
+  end
+
+  def create(conn, %{"login_form_params" => form}) do
+    case LoginFormParams.validate(form) do
+      {:ok, login_form} ->
+
+        try do
+          user =
+            Aptamer.Auth.User
+            |> where(email: ^login_form.email)
+            |> Repo.one!()
+
+          cond do
+            checkpw(login_form.password, user.password) ->
+              Logger.info("User " <> user.email <> " logged in")
+              conn = Aptamer.Guardian.Plug.sign_in(conn, user)
+              jwt = Aptamer.Guardian.Plug.current_token(conn)
+
+              conn
+              |> redirect(to: "/")
+
+            true ->
+              Logger.warn("User " <> user.email <> " failed login")
+
+              conn
+              |> put_flash(:login_error, "Invalid username or password")
+              |> redirect(to: "/sessions/new")
+          end
+        rescue
+          e in Ecto.NoResultsError ->
+            dummy_checkpw()
+            Logger.warn("User " <> login_form.email<> " not found")
+
+            conn
+            |> put_flash(:login_error, "Invalid username or password")
+            |> redirect(to: "/sessions/new")
+
+          e ->
+            Logger.error("Error logging in user")
+            Logger.error(inspect(e))
+            conn
+            |> put_flash(:login_error, "Invalid username or password")
+            |> redirect(to: "/sessions/new")
+
+        end
+
+      {:error, cs} ->
+        conn
+        |> put_flash(:login_error, "Could not login")
+        |> render(:new, login_cs: cs, register_cs: Registration.blank())
+    end
+  end
+
+  def create(conn, %{"registration" => form}) do
+    reg = Registration.new_user(%Registration{}, form)
+
+    if reg.valid? do
+      {:ok, user} = 
+        reg
+        |> Ecto.Changeset.apply_changes
+        |> User.register
+        |> Repo.insert
+
+      conn
+      |> render(:new, login_cs: LoginFormParams.blnk(), register_cs: Registration.blank())
+
+    else
+      {:error, reg} = Ecto.Changeset.apply_action(reg, :insert)
+      conn 
+      |> render(:new, login_cs: LoginFormParams.blank(), register_cs: reg)
+    end
+  end
+
   def create(conn, %{"grant_type" => "password", "username" => username, "password" => password}) do
     try do
       user =
@@ -41,7 +144,6 @@ defmodule AptamerWeb.SessionController do
         |> render("401.json")
 
       e ->
-        IO.inspect(e)
         Logger.error("Error logging in user")
 
         conn
