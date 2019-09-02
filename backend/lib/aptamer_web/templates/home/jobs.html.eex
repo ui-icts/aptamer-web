@@ -1,0 +1,12 @@
+<%= for {job,index} <- Enum.with_index(@jobs) do %>
+  <%= if is_running?(job) do %>
+    <p>
+      <%= link "Job #{job_number(index)} #{job.status}", to: "#" %>
+    </p>
+  <% else %>
+    <p>
+      <%= job_description(job,index) %>
+      <%= link "Download Results", to: "/results/#{job.id}" %>
+    </p>
+  <% end %>
+<% end %>

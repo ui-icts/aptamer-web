@@ -8,8 +8,9 @@ defmodule AptamerWeb.HomeController do
     current_user = Guardian.Plug.current_resource(conn)
 
     if current_user do
-      files = Jobs.list_files(current_user)
-      render(conn, "index.html", user_files: files)
+      live_render(conn, AptamerWeb.HomeLive, session: %{
+        current_user_id: current_user.id
+      })
     else
       redirect(conn, to: "/sessions/new")
     end

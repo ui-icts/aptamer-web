@@ -15,6 +15,10 @@ defmodule Aptamer.Auth do
     end)
   end
 
+  def get_user(id) do
+    Repo.get(User, id)
+  end
+
   def change_password(email_address, new_password) do
 
     user =
