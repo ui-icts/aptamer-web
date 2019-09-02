@@ -3,6 +3,7 @@ defmodule AptamerWeb.FileController do
 
   alias Aptamer.Repo
   alias Aptamer.Jobs.File
+  alias Aptamer.Jobs.Jobs
   alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
 
@@ -12,15 +13,7 @@ defmodule AptamerWeb.FileController do
   def index(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
 
-    query =
-      from(file in File,
-        left_join: jobs in assoc(file, :jobs),
-        where: file.owner_id == ^current_user.id,
-        order_by: :uploaded_on,
-        preload: [jobs: jobs]
-      )
-
-    files = Repo.all(query)
+    files = Jobs.list_files(current_user)
 
     # TODO: Seems like have to make sure that include option has
     # no spaces

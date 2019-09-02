@@ -5,6 +5,7 @@ defmodule AptamerWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
+    plug Aptamer.BrowserAuthPipeline
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -47,6 +48,7 @@ defmodule AptamerWeb.Router do
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
     get "/spa", PageController, :index
+    get "/", HomeController, :index
     # Public routes here
   end
 end
