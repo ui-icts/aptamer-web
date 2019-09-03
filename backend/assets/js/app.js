@@ -13,7 +13,37 @@ import "./vendor/semantic-ui";
 import "phoenix_html"
 
 import LiveSocket from "phoenix_live_view";
-let liveSocket = new LiveSocket("/live");
+import $ from 'jquery';
+
+let Hooks = {};
+Hooks.SemanticUiDropdown = {
+  mounted() {
+    $(this.el).dropdown({
+      action: 'activate'
+    });
+  },
+
+  destroyed() {
+  },
+
+  updated() {
+    let fieldVal = $('input:hidden:first', this.el).val()
+    $(this.el).dropdown('set selected', fieldVal);
+  }
+}
+
+Hooks.SemanticUiCheckbox = {
+  mounted() {
+    $(this.el).checkbox();
+  },
+
+  updated() {
+    let fieldVal = $('input:checkbox:first', this.el).val()
+    console.log("UPDATED", fieldVal);
+  }
+}
+
+let liveSocket = new LiveSocket("/live", {hooks: Hooks});
 liveSocket.connect();
 
 // Import local files

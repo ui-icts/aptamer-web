@@ -14,6 +14,11 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
     timestamps()
   end
 
+  def default() do
+    %Aptamer.Jobs.PredictStructureOptions{
+      vienna_version: 2,
+    }
+  end
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """

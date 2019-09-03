@@ -1,0 +1,35 @@
+<div class="ui right floated content">
+  <button class="small ui icon button" phx-click="toggle_show_more" phx-value="<%= @file.id %>">
+    <i class="options icon"></i>
+    Configure
+  </button>
+  <a class="small ui button" href="{{downloadHost}}/download/{{routeObject.id}}">
+    <i class="download icon"></i>
+    Download
+  </a>
+  <button class="small red ui icon button" {{action "toggleConfirmModal"}}>
+    <i class="trash icon"></i>
+  </button>
+</div>
+
+<i class="large middle aligned file text icon"></i>
+
+<div class="content">
+  <%= link @file.file_name, to: Routes.file_path(@socket, :show, @file.id) %>
+  <div class="description">Uploaded <%= Timex.from_now(@file.uploaded_on) %></div>
+  <div class="extra">
+    <%= render "jobs.html", jobs: @file.jobs %>
+  </div>
+</div>
+
+<%= if false do %> <!-- Confirming delete -->
+  <%= render "confirm_delete.html", file: @file %>
+<% end %>
+
+<%= if @show_more do %> <!-- Show more -->
+  <%= render "show_more.html", assigns %>
+<% end %>
+
+<%= if false do %>
+  <%= render "generic_error.html" %>
+<% end %>

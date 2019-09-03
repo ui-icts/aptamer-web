@@ -14,6 +14,15 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
     timestamps()
   end
 
+  def default() do
+    %CreateGraphOptions{
+      edge_type: "both",
+      max_edit_distance: 1,
+      max_tree_distance: 3,
+      batch_size: 10_000,
+      spawn: true
+    }
+  end
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """

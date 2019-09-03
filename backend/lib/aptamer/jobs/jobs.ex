@@ -20,4 +20,14 @@ defmodule Aptamer.Jobs do
 
     files = Repo.all(query)
   end
+
+  def view_file(file_id) do
+    query =
+      from(file in File,
+        left_join: jobs in assoc(file, :jobs),
+        preload: [jobs: jobs]
+      )
+
+    Repo.get(query, file_id)
+  end
 end

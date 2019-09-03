@@ -10,6 +10,7 @@ defmodule Aptamer.Jobs.File do
   schema "files" do
     field(:file_name, :string)
     field(:uploaded_on, :naive_datetime)
+    # structure or fasta
     field(:file_type, :string)
     field(:data, :binary)
 

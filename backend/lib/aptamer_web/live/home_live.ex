@@ -19,7 +19,6 @@ defmodule AptamerWeb.HomeLive do
       socket =
         socket
         |> assign(:user_files, files)
-        |> assign(:show_more, [])
 
       {:ok, socket}
     else
@@ -27,19 +26,6 @@ defmodule AptamerWeb.HomeLive do
       {:ok, live_redirect(socket, to: "/sessions/new")}
     end
 
-  end
-
-  def handle_event("toggle_show_more", file_id, socket) do
-    IO.puts "TOGGLE SHOW MORE"
-    ids = socket.assigns.show_more
-    new_ids = if file_id in ids do
-      List.delete(ids, file_id)
-    else
-      [file_id | ids]
-    end
-
-    socket = assign(socket, :show_more, new_ids)
-    {:noreply, socket}
   end
 
 end

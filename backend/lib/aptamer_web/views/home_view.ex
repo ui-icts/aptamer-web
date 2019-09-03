@@ -1,6 +1,5 @@
 defmodule AptamerWeb.HomeView do
   use AptamerWeb, :view
-  import AptamerWeb.JobHelpers
 
   def active_class(maybe_truthy) do
     if maybe_truthy do
