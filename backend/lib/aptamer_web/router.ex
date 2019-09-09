@@ -21,16 +21,11 @@ defmodule AptamerWeb.Router do
   end
 
   scope "/", AptamerWeb do
-    pipe_through :browser
-    resources "/sessions", SessionController
-  end
-
-  scope "/", AptamerWeb do
     pipe_through :api
     # protected routes here
     resources "/register", RegistrationController, only: [:create]
-
     post "/token", SessionController, :create, as: :login
+
   end
 
   scope "/", AptamerWeb do
@@ -40,7 +35,7 @@ defmodule AptamerWeb.Router do
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
     get "/users/me", SessionController, :show
-    
+
   end
 
   scope "/", AptamerWeb do
@@ -49,6 +44,7 @@ defmodule AptamerWeb.Router do
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
     get "/spa", PageController, :index
+    resources "/sessions", SessionController
     get "/", HomeController, :index
     # Public routes here
   end

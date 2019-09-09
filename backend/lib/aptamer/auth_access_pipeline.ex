@@ -16,6 +16,6 @@ defmodule Aptamer.BrowserAuthPipeline do
     error_handler: Aptamer.Guardian.AuthErrorHandler
 
   plug Guardian.Plug.VerifySession
-  plug Guardian.Plug.EnsureAuthenticated
+  # plug Guardian.Plug.EnsureAuthenticated
   plug Guardian.Plug.LoadResource, allow_blank: true
 end
