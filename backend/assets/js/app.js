@@ -15,6 +15,8 @@ import "phoenix_html"
 import LiveSocket from "phoenix_live_view";
 import $ from 'jquery';
 
+import Dropzone from "dropzone";
+
 let Hooks = {};
 Hooks.SemanticUiDropdown = {
   mounted() {
@@ -43,6 +45,51 @@ Hooks.SemanticUiCheckbox = {
   }
 }
 
+Hooks.ShowModal = {
+  mounted() {
+    let modalId = $(this.el).data('modal-id');
+    let fileId = $(this.el).data('file-id');
+    let fileName = $(this.el).data('file-name');
+    let modalSelector = `#${modalId}.ui.modal`;
+    
+    $(this.el).on('click', function() {
+      $(modalSelector)
+        .data('file-id', fileId)
+        .data('file-name',fileName)
+        .modal('show');
+    });
+  }
+}
+
+Hooks.SemanticModalDialog = {
+  mounted() {
+
+    console.log("What gives buddy");
+    let $domElement = $(this.el);
+    let pushEvent = this.pushEvent.bind(this); 
+
+    $(this.el).modal({
+      onShow: function() {
+        $('span.file-name', $domElement).text( $domElement.data('file-name') );
+      },
+
+      onApprove: function(btn) {
+        let fileId = $domElement.data('file-id');
+        pushEvent('delete_file', {file_id: fileId});
+      }
+    });
+  },
+
+  destroyed() {
+    console.log("MODAL DESTROY");
+  },
+
+  updated() {
+    console.log("MODAL UPDATE");
+  }
+
+
+}
 let liveSocket = new LiveSocket("/live", {hooks: Hooks});
 liveSocket.connect();
 
@@ -69,4 +116,5 @@ $(function() {
   $('div.error.message i.close.icon').on('click', function() {
     $(this).closest('.error.message').remove();
   })
+
 });

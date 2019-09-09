@@ -22,6 +22,7 @@ defmodule AptamerWeb.FileLive do
       |> assign(:show_more, false)
       |> assign(:show_help, false)
       |> assign(:show_command_preview, true)
+      |> assign(:confirm_delete, false)
       |> assign(:options_form, options_by_file_type(file.file_type))
       |> assign(:predict_structure_options, Aptamer.Jobs.PredictStructureOptions.default())
       |> assign(:create_graph_options, graph_options)
@@ -63,4 +64,5 @@ defmodule AptamerWeb.FileLive do
     socket = assign(socket, :create_graph_options, cs)
     {:noreply, socket}
   end
+
 end

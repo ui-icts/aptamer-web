@@ -7,12 +7,20 @@
     <i class="download icon"></i>
     Download
   </a>
-  <button class="small red ui icon button" {{action "toggleConfirmModal"}}>
+  <button class="small red ui icon button" 
+          phx-hook="ShowModal" 
+          data-modal-id="confirm_file_delete" 
+          data-file-id="<%= @file.id %>"
+          data-file-name="<%= @file.file_name %>">
     <i class="trash icon"></i>
   </button>
+
+  <%= if @confirm_delete do %> <!-- Confirming delete -->
+  <% end %>
 </div>
 
 <i class="large middle aligned file text icon"></i>
+
 
 <div class="content">
   <%= link @file.file_name, to: Routes.file_path(@socket, :show, @file.id) %>
@@ -21,10 +29,6 @@
     <%= render "jobs.html", jobs: @file.jobs %>
   </div>
 </div>
-
-<%= if false do %> <!-- Confirming delete -->
-  <%= render "confirm_delete.html", file: @file %>
-<% end %>
 
 <%= if @show_more do %> <!-- Show more -->
   <%= render "show_more.html", assigns %>

@@ -2,7 +2,7 @@ defmodule AptamerWeb.Router do
   use AptamerWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html","json"]
     plug :fetch_session
     plug :fetch_flash
     plug Phoenix.LiveView.Flash
@@ -30,7 +30,6 @@ defmodule AptamerWeb.Router do
 
   scope "/", AptamerWeb do
     pipe_through :api_auth
-    resources "/files", FileController
     resources "/jobs", JobController
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
@@ -41,6 +40,7 @@ defmodule AptamerWeb.Router do
   scope "/", AptamerWeb do
     # Use the default browser stack
     pipe_through :browser
+    resources "/files", FileController
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
     get "/spa", PageController, :index

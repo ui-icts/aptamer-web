@@ -3,7 +3,7 @@ defmodule AptamerWeb.FileController do
 
   alias Aptamer.Repo
   alias Aptamer.Jobs.File
-  alias Aptamer.Jobs.Jobs
+  alias Aptamer.Jobs
   alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
 
@@ -15,14 +15,9 @@ defmodule AptamerWeb.FileController do
 
     files = Jobs.list_files(current_user)
 
-    # TODO: Seems like have to make sure that include option has
-    # no spaces
-    render(conn, "index.json-api", %{
-      data: files,
-      conn: conn,
-      params: params,
-      opts: [include: "jobs,create_graph_options"]
-    })
+    json(conn,Enum.map(files, fn f ->
+      Map.from_struct(f) |> Map.take([:id,:file_name])
+    end))
   end
 
   def create(conn, params) do
@@ -44,7 +39,8 @@ defmodule AptamerWeb.FileController do
 
     file = Repo.preload(file, :jobs)
 
-    render(conn, "show.json-api", data: file)
+    file_created(current_user, file)
+    send_resp(conn, 200, "created")
   end
 
   def show(conn, %{"id" => id}) do
@@ -87,5 +83,9 @@ defmodule AptamerWeb.FileController do
     Repo.transaction(File.delete(file))
 
     send_resp(conn, :no_content, "")
+  end
+
+  defp file_created(user,file) do
+    Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "user:" <> user.id <> ":files", {:file_uploaded, file})
   end
 end
