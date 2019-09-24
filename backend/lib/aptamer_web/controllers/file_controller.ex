@@ -53,7 +53,8 @@ defmodule AptamerWeb.FileController do
 
     file = Repo.one!(query)
 
-    render(conn, "show.json-api", data: file)
+    render(conn, "view.html", file: file)
+#    render(conn, "show.json-api", data: file)
   end
 
   def update(conn, %{

@@ -11,7 +11,6 @@ defmodule AptamerWeb.FileLive do
 
     IO.inspect(file_id)
     file = Aptamer.Jobs.view_file(file_id)
-
     graph_options =
       Aptamer.Jobs.CreateGraphOptions.default()
       |> Aptamer.Jobs.CreateGraphOptions.changeset()

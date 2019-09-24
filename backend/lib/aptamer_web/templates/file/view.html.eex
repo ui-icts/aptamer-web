@@ -1,0 +1,5 @@
+<h1>Now viewing <%= @file.file_name %> </h1>
+<hr>
+<p class="file-contents">
+<p style="white-space: pre-wrap;"><%= @file.data %></p>
+</p>
