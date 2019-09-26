@@ -19,6 +19,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
       vienna_version: 2,
     }
   end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """

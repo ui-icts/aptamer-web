@@ -1,4 +1,12 @@
 defmodule Aptamer.Jobs.Job do
+  @moduledoc """
+  In order to process a file with one of the python scripts you need
+  the file itself and the set of command line arguments you want to use.
+
+  A job represents that association and tracks the progress of excecuting
+  the script and holds the computed results
+  """
+
   use Ecto.Schema
   use Aptamer.BinaryIdColums
   import Ecto.Changeset

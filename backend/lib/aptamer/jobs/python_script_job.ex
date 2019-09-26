@@ -8,15 +8,27 @@ defmodule Aptamer.Jobs.PythonScriptJob do
             working_dir: nil,
             output: [],
             exit_code: nil,
+            results: nil,
+
+            # Used to broadcast status notifications, which step we are one
             listener: nil,
+
             current_user_id: nil,
-            job_id: nil,
+
+            # Unique identifier for the job ... we use it when
+            # we create the temp directory and (currently) to insert
+            # the result struct
+            job_id: 0,
+
             # The original name of the file
             input_file_name: nil,
+
             # The contents
             input_file_contents: nil,
+
             # The temp path where we've written it for processing
             input_file_path: nil,
+
             output_collector: nil,
             generated_file: nil
 
@@ -164,14 +176,14 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     remove_extraneous_files(state.working_dir)
 
-    {:ok, _} =
+    {:ok, results} =
       zip_outputs(
         state.working_dir,
         state.job_id,
         "#{state.input_file_name}.zip"
       )
 
-    {:ok, state}
+    {:ok, %{state | results: results}}
   end
 
   def step(:cleanup, state) do
@@ -207,7 +219,13 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       job_id: job_id
     }
 
-    Repo.insert(zip_struct)
+    # Temporary way to run one off jobs that
+    # never go to the database
+    unless job_id == 0 do
+      Repo.insert(zip_struct)
+    else
+      {:ok, zip_struct}
+    end
   end
 
   def remove_extraneous_files(output_directory) do
