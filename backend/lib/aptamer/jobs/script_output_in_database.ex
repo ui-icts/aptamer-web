@@ -13,21 +13,21 @@ defmodule Aptamer.Jobs.ScriptOutputInDatabase do
       Logger.debug("Creating structure file output")
 
       case create_structure_file_from_outputs(
-        state.working_dir,
-        "#{ScriptInput.file_name(state.input)}.struct.fa",
-        state.current_user_id
-      ) do
+             state.working_dir,
+             "#{ScriptInput.file_name(state.input)}.struct.fa",
+             state.current_user_id
+           ) do
         {:ok, file} -> %{state | generated_file: file}
         _ -> state
       end
     else
-        Logger.debug(
-          "Not creating a structure file. script_name: #{inspect(state.script_name)} exit status: #{
-            inspect(state.exit_code)
-          }"
-        )
+      Logger.debug(
+        "Not creating a structure file. script_name: #{inspect(state.script_name)} exit status: #{
+          inspect(state.exit_code)
+        }"
+      )
 
-        state
+      state
     end
   end
 

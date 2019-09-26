@@ -9,7 +9,7 @@ defmodule Aptamer.Auth.Registration do
     field(:password, :string)
   end
 
-  def blank(), do: changeset(__MODULE__.__struct__)
+  def blank(), do: changeset(__MODULE__.__struct__())
 
   @doc """
   Builds a changeset based on the `struct` and `params`.

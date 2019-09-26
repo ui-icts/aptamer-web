@@ -8,10 +8,14 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
     def new(input_file) do
       if is_file_path?(input_file) do
-        #{:file_path, input_file}
-        %{file_name: Path.basename(input_file), file_path: Path.expand(input_file), file_contents: nil}
+        # {:file_path, input_file}
+        %{
+          file_name: Path.basename(input_file),
+          file_path: Path.expand(input_file),
+          file_contents: nil
+        }
       else
-        #{:file_contents, input_file}
+        # {:file_contents, input_file}
         %{file_name: "temp_input", file_path: nil, file_contents: input_file}
       end
     end
@@ -22,23 +26,23 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     end
 
     def path_and_contents(state, temp_path) do
+      {path, contents} =
+        case {state.file_path, state.file_contents} do
+          {nil, some} ->
+            Logger.debug("Generating input file from file contents")
+            temp_file = Path.join(temp_path, state.file_name)
+            File.write(temp_file, some)
+            {temp_file, some}
 
-      {path, contents} = case {state.file_path, state.file_contents} do
-        {nil, some} ->
-          Logger.debug("Generating input file from file contents")
-          temp_file = Path.join(temp_path, state.file_name)
-          File.write(temp_file, some)
-          {temp_file, some}
+          {some, nil} ->
+            Logger.debug("Generating input file from file path #{some}")
 
-        {some, nil} ->
-          Logger.debug("Generating input file from file path #{some}")
+            {:ok, contents} = Elixir.File.read(some)
+            {some, contents}
 
-          {:ok, contents} = Elixir.File.read(some)
-          {some, contents}
-
-        {x, y} ->
-          {x, y}
-      end
+          {x, y} ->
+            {x, y}
+        end
 
       %{state | file_path: path, file_contents: contents}
     end
@@ -54,7 +58,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     end
   end
 
-
   alias Aptamer.Jobs.PythonScriptJob.ScriptInput
 
   defstruct script_name: nil,
@@ -65,17 +68,14 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
             # Used to broadcast status notifications, which step we are one
             listener: nil,
-
             current_user_id: nil,
 
             # Unique identifier for the job ... we use it when
             # we create the temp directory and (currently) to insert
             # the result struct
             job_id: 0,
-
             input: nil,
             output: nil,
-
             generated_file: nil
 
   defmodule ScriptOutput do
@@ -84,6 +84,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   end
 
   def create({script_name, args, input_file}), do: create(script_name, args, input_file)
+
   def create(script_name, args, input_file, output \\ nil) do
     %Aptamer.Jobs.PythonScriptJob{
       script_name: script_name,
@@ -132,7 +133,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     script_path = path(:script)
 
     common_args = [
-      Path.join(script_path,state.script_name),
+      Path.join(script_path, state.script_name),
       ScriptInput.absolute_path_on_disk(state.input)
     ]
 
@@ -179,7 +180,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
         "#{ScriptInput.file_name(state.input)}.zip"
       )
 
-    results = if state.output,  do: state.output.results(results), else: results
+    results = if state.output, do: state.output.results(results), else: results
     {:ok, %{state | results: results}}
   end
 
@@ -215,8 +216,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       archive: zip_data,
       job_id: job_id
     }
-
-    
   end
 
   def remove_extraneous_files(output_directory) do
@@ -226,5 +225,4 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       File.rm(dot_ps)
     end
   end
-
 end

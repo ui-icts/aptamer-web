@@ -2,7 +2,7 @@ defmodule AptamerWeb.Router do
   use AptamerWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html","json"]
+    plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_flash
     plug Phoenix.LiveView.Flash
@@ -25,7 +25,6 @@ defmodule AptamerWeb.Router do
     # protected routes here
     resources "/register", RegistrationController, only: [:create]
     post "/token", SessionController, :create, as: :login
-
   end
 
   scope "/", AptamerWeb do
@@ -34,7 +33,6 @@ defmodule AptamerWeb.Router do
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
     get "/users/me", SessionController, :show
-
   end
 
   scope "/", AptamerWeb do

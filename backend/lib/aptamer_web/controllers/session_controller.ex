@@ -16,7 +16,7 @@ defmodule AptamerWeb.SessionController do
       field(:password, :string)
     end
 
-    def blank(), do: changeset(__MODULE__.__struct__)
+    def blank(), do: changeset(__MODULE__.__struct__())
 
     def validate(params \\ %{}) do
       %LoginFormParams{}
@@ -40,7 +40,6 @@ defmodule AptamerWeb.SessionController do
   def create(conn, %{"login_form_params" => form}) do
     case LoginFormParams.validate(form) do
       {:ok, login_form} ->
-
         try do
           user =
             Aptamer.Auth.User
@@ -66,7 +65,7 @@ defmodule AptamerWeb.SessionController do
         rescue
           e in Ecto.NoResultsError ->
             dummy_checkpw()
-            Logger.warn("User " <> login_form.email<> " not found")
+            Logger.warn("User " <> login_form.email <> " not found")
 
             conn
             |> put_flash(:login_error, "Invalid username or password")
@@ -75,10 +74,10 @@ defmodule AptamerWeb.SessionController do
           e ->
             Logger.error("Error logging in user")
             Logger.error(inspect(e))
+
             conn
             |> put_flash(:login_error, "Invalid username or password")
             |> redirect(to: "/sessions/new")
-
         end
 
       {:error, cs} ->
@@ -92,18 +91,18 @@ defmodule AptamerWeb.SessionController do
     reg = Registration.new_user(%Registration{}, form)
 
     if reg.valid? do
-      {:ok, user} = 
+      {:ok, user} =
         reg
-        |> Ecto.Changeset.apply_changes
-        |> User.register
-        |> Repo.insert
+        |> Ecto.Changeset.apply_changes()
+        |> User.register()
+        |> Repo.insert()
 
       conn
       |> render(:new, login_cs: LoginFormParams.blnk(), register_cs: Registration.blank())
-
     else
       {:error, reg} = Ecto.Changeset.apply_action(reg, :insert)
-      conn 
+
+      conn
       |> render(:new, login_cs: LoginFormParams.blank(), register_cs: reg)
     end
   end

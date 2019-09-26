@@ -28,7 +28,6 @@ defmodule Aptamer.JobControl do
 
   def start_job(%Aptamer.Jobs.Job{} = job) do
     Task.start(fn ->
-
       job = Repo.preload(job, :file)
 
       {script_name, program_args, program_input} = File.build_script_args(job.file, job)
@@ -81,8 +80,12 @@ defmodule Aptamer.JobControl do
     # send added file if present
     case script_job do
       %{generated_file: file} when not is_nil(file) ->
+        Phoenix.PubSub.broadcast(
+          AptamerWeb.PubSub,
+          "user:#{script_job.current_user_id}:files",
+          {:generated_file, file}
+        )
 
-        Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "user:#{script_job.current_user_id}:files", {:generated_file, file})
       _ ->
         :ok
     end
@@ -114,7 +117,13 @@ defmodule Aptamer.JobControl do
 
   defp broadcast_status(job) do
     job = Repo.preload(job, :file)
-    Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "file:#{job.file.id}:job_status", {:status_change, job.id, job.status})
+
+    Phoenix.PubSub.broadcast(
+      AptamerWeb.PubSub,
+      "file:#{job.file.id}:job_status",
+      {:status_change, job.id, job.status}
+    )
+
     AptamerWeb.JobsChannel.broadcast_job_status(job)
   end
 

@@ -20,13 +20,13 @@ defmodule Aptamer.Auth do
   end
 
   def change_password(email_address, new_password) do
-
     user =
       User
       |> where(email: ^email_address)
       |> Repo.one!()
 
     cs = User.changeset(user, %{password: new_password})
+
     if cs.valid? do
       Repo.update(cs)
     else

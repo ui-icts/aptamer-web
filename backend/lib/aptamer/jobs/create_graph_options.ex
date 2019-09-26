@@ -23,13 +23,28 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
       spawn: true
     }
   end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
   def changeset(%CreateGraphOptions{} = struct, params \\ %{}) do
     struct
-    |> cast(params, [:edge_type, :seed, :max_edit_distance, :max_tree_distance, :batch_size, :spawn])
-    |> validate_required([:edge_type, :seed, :max_edit_distance, :max_tree_distance, :batch_size, :spawn])
+    |> cast(params, [
+      :edge_type,
+      :seed,
+      :max_edit_distance,
+      :max_tree_distance,
+      :batch_size,
+      :spawn
+    ])
+    |> validate_required([
+      :edge_type,
+      :seed,
+      :max_edit_distance,
+      :max_tree_distance,
+      :batch_size,
+      :spawn
+    ])
   end
 
   @doc ~S"""
@@ -72,13 +87,14 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
       end
 
     batch_args = ["-b", to_string(options.batch_size)]
-    
+
     spawn_args =
       if options.spawn do
         ["--spawn"]
       else
         []
       end
+
     edge_args ++ ed_args ++ td_args ++ seed_args ++ batch_args ++ spawn_args
   end
 end

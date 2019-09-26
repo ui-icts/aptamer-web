@@ -74,14 +74,13 @@ defmodule Aptamer.Jobs.File do
   end
 
   def build_script_args(file, job) do
-
     case file.file_type do
       "structure" ->
         {"create_graph.py", CreateGraphOptions.args(job.create_graph_options), file.data}
 
       "fasta" ->
-        {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options), file.data}
+        {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options),
+         file.data}
     end
-
   end
 end

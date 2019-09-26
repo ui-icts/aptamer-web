@@ -14,6 +14,6 @@ defmodule AptamerWeb.JobHelpers do
   end
 
   def job_number(index) do
-    "##{index+1}"
+    "##{index + 1}"
   end
 end

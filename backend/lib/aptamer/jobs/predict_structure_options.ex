@@ -16,7 +16,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
 
   def default() do
     %Aptamer.Jobs.PredictStructureOptions{
-      vienna_version: 2,
+      vienna_version: 2
     }
   end
 

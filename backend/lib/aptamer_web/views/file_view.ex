@@ -13,7 +13,6 @@ defmodule AptamerWeb.FileView do
   end
 
   def format_slider_value(edit_distance) do
-
     if edit_distance >= 11 do
       "None"
     else

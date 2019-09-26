@@ -13,5 +13,4 @@ defmodule AptamerWeb.SessionView do
   def render("session.json", %{session: session}) do
     %{id: session.id}
   end
-
 end

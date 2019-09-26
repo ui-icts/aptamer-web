@@ -15,9 +15,12 @@ defmodule AptamerWeb.FileController do
 
     files = Jobs.list_files(current_user)
 
-    json(conn,Enum.map(files, fn f ->
-      Map.from_struct(f) |> Map.take([:id,:file_name])
-    end))
+    json(
+      conn,
+      Enum.map(files, fn f ->
+        Map.from_struct(f) |> Map.take([:id, :file_name])
+      end)
+    )
   end
 
   def create(conn, params) do
@@ -54,7 +57,7 @@ defmodule AptamerWeb.FileController do
     file = Repo.one!(query)
 
     render(conn, "view.html", file: file)
-#    render(conn, "show.json-api", data: file)
+    #    render(conn, "show.json-api", data: file)
   end
 
   def update(conn, %{
@@ -86,7 +89,11 @@ defmodule AptamerWeb.FileController do
     send_resp(conn, :no_content, "")
   end
 
-  defp file_created(user,file) do
-    Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "user:" <> user.id <> ":files", {:file_uploaded, file})
+  defp file_created(user, file) do
+    Phoenix.PubSub.broadcast(
+      AptamerWeb.PubSub,
+      "user:" <> user.id <> ":files",
+      {:file_uploaded, file}
+    )
   end
 end

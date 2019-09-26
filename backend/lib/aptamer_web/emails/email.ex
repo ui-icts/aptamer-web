@@ -41,7 +41,6 @@ defmodule AptamerWeb.Email do
     # can't do this in the guard itself
 
     case job.status do
-
       finished ->
         download_url = Endpoint.url() <> "/results/" <> job.id
         success_message <> html_link("Download the results here!", download_url)

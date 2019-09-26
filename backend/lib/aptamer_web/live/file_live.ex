@@ -8,7 +8,6 @@ defmodule AptamerWeb.FileLive do
 
   @impl true
   def mount(%{file_id: file_id}, socket) do
-
     file = Aptamer.Jobs.view_file(file_id)
 
     if connected?(socket) do
@@ -18,7 +17,6 @@ defmodule AptamerWeb.FileLive do
     graph_options =
       Aptamer.Jobs.CreateGraphOptions.default()
       |> Aptamer.Jobs.CreateGraphOptions.changeset()
-
 
     socket =
       socket
@@ -60,7 +58,7 @@ defmodule AptamerWeb.FileLive do
 
   @impl true
   def handle_event("show_options", %{"form_options_choice" => choice}, socket) do
-    IO.puts "CHOICE: #{choice}"
+    IO.puts("CHOICE: #{choice}")
     socket = assign(socket, :options_form, choice)
     {:noreply, socket}
   end
@@ -69,7 +67,8 @@ defmodule AptamerWeb.FileLive do
   def handle_event("update_graph_options", %{"create_graph_options" => params}, socket) do
     options = Aptamer.Jobs.CreateGraphOptions.default()
     cs = Aptamer.Jobs.CreateGraphOptions.changeset(options, params)
-    socket = 
+
+    socket =
       socket
       |> assign(:create_graph_options, cs)
       |> assign(:error_message, false)
@@ -78,12 +77,15 @@ defmodule AptamerWeb.FileLive do
   end
 
   @impl true
-  def handle_event("run_create_graph", %{"create_graph_options" => options_parms} = params, socket) do
+  def handle_event(
+        "run_create_graph",
+        %{"create_graph_options" => options_parms} = params,
+        socket
+      ) do
     file = socket.assigns.file
+
     case Aptamer.Jobs.create_new_job(:create_graph, file, options_parms) do
-
       {:ok, file, job} ->
-
         if Application.get_env(:aptamer, :start_jobs) == true do
           Aptamer.JobControl.start_job(job)
         end
@@ -92,12 +94,10 @@ defmodule AptamerWeb.FileLive do
         {:noreply, socket}
 
       {:invalid, options_changeset} ->
-
         socket = assign(socket, :create_graph_options, options_changeset)
         {:noreply, socket}
 
       {:error, error_message, options_changeset} ->
-
         socket =
           socket
           |> assign(:create_graph_options, options_changeset)
@@ -116,10 +116,9 @@ defmodule AptamerWeb.FileLive do
   def handle_info({:status_change, job_id, new_status}, socket) do
     file = socket.assigns.file
     jobs = file.jobs
-    job_idx = Enum.find_index(jobs, &( &1.id == job_id ))
+    job_idx = Enum.find_index(jobs, &(&1.id == job_id))
     updated_jobs = List.update_at(jobs, job_idx, fn struct -> %{struct | status: new_status} end)
     socket = assign(socket, :file, %{file | jobs: updated_jobs})
     {:noreply, socket}
   end
-
 end

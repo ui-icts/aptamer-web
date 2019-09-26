@@ -6,6 +6,5 @@ defmodule Aptamer.Repo.Migrations.AddBatchSizeAndSpawnColumns do
       add(:spawn, :boolean, default: true, null: false)
       add(:batch_size, :integer, default: 10_000, null: false)
     end
-
   end
 end
