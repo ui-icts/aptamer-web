@@ -1,9 +1,9 @@
-<div class="ui tiny active modal">
-  <div class="header"><i class="warning sign icon"></i>Error</div>
-  <div class="content"><p>{{routeObject.status.errorMessage}}</p></div>
-  <div class="actions">
-    <div class="ui red ok button" role="button" {{action "errorViewed" routeObject}}>
-      Ok
-    </div>
+<div class="ui negative message">
+  <i class="close icon" phx-click="dismiss_generic_error"></i>
+  <div class="header">
+    Oops
   </div>
+  <p>
+  <%= @error_message %>
+  </p>
 </div>

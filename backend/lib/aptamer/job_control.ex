@@ -28,18 +28,14 @@ defmodule Aptamer.JobControl do
 
   def start_job(%Aptamer.Jobs.Job{} = job) do
     Task.start(fn ->
-      {script_name, program_args} =
-        case job.file.file_type do
-          "structure" ->
-            {"create_graph.py", CreateGraphOptions.args(job.create_graph_options)}
 
-          "fasta" ->
-            {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options)}
-        end
+      job = Repo.preload(job, :file)
+
+      {script_name, program_args, program_input} = File.build_script_args(job.file, job)
 
       listener = spawn(Aptamer.JobControl, :on_broadcast, [job])
 
-      script_job = Aptamer.Jobs.PythonScriptJob.create(script_name, program_args, job.file.data)
+      script_job = Aptamer.Jobs.PythonScriptJob.create(script_name, program_args, program_input)
 
       script_job = %{
         script_job
@@ -120,6 +116,8 @@ defmodule Aptamer.JobControl do
   end
 
   defp broadcast_status(job) do
+    job = Repo.preload(job, :file)
+    Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "file:#{job.file.id}:job_status", {:status_change, job.id, job.status})
     AptamerWeb.JobsChannel.broadcast_job_status(job)
   end
 

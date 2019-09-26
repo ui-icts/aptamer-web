@@ -20,6 +20,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
             output_collector: nil,
             generated_file: nil
 
+  def create({script_name, args, input_file}), do: create(script_name, args, input_file)
   def create(script_name, args, input_file) do
     full_path = Path.expand(input_file)
 

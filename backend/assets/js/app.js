@@ -45,6 +45,9 @@ Hooks.SemanticUiCheckbox = {
   }
 }
 
+//this is the 'client' of the modal
+//it needs to pass data to it so that when it is displayed it can
+//show the right stuffs
 Hooks.ShowModal = {
   mounted() {
     let modalId = $(this.el).data('modal-id');
@@ -61,10 +64,12 @@ Hooks.ShowModal = {
   }
 }
 
+// Used on the modal itself. Need to update it using
+// the DOM because if phoenix does it it gets put back in the dom
+// and in order to display int he right spot it needs to not do that
 Hooks.SemanticModalDialog = {
   mounted() {
 
-    console.log("What gives buddy");
     let $domElement = $(this.el);
     let pushEvent = this.pushEvent.bind(this); 
 

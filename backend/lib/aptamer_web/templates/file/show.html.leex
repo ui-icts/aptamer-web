@@ -15,12 +15,9 @@
     <i class="trash icon"></i>
   </button>
 
-  <%= if @confirm_delete do %> <!-- Confirming delete -->
-  <% end %>
 </div>
 
 <i class="large middle aligned file text icon"></i>
-
 
 <div class="content">
   <%= link @file.file_name, to: Routes.file_path(@socket, :show, @file.id) %>
@@ -34,6 +31,6 @@
   <%= render "show_more.html", assigns %>
 <% end %>
 
-<%= if false do %>
-  <%= render "generic_error.html" %>
+<%= if @error_message do %>
+  <%= render "generic_error.html", error_message: @error_message  %>
 <% end %>
