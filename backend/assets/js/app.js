@@ -12,7 +12,9 @@ import "./vendor/semantic-ui";
 //
 import "phoenix_html"
 
-import LiveSocket from "phoenix_live_view";
+import {Socket} from "phoenix";
+import {LiveSocket} from "phoenix_live_view";
+
 import $ from 'jquery';
 
 import Dropzone from "dropzone";
@@ -95,7 +97,7 @@ Hooks.SemanticModalDialog = {
 
 
 }
-let liveSocket = new LiveSocket("/live", {hooks: Hooks});
+let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks});
 liveSocket.connect();
 
 // Import local files

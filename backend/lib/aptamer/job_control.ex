@@ -54,9 +54,7 @@ defmodule Aptamer.JobControl do
   def on_broadcast(job) do
     receive do
       {:broadcast, {:begin, step_name}} ->
-        cs = Aptamer.Jobs.Job.changeset(job, %{status: to_string(step_name)})
-        {:ok, job} = Repo.update(cs)
-        broadcast_status(job)
+        task_step_start(step_name, job)
         on_broadcast(job)
 
       {:broadcast, {:finish, :cleanup}} ->
@@ -66,6 +64,12 @@ defmodule Aptamer.JobControl do
       _ ->
         on_broadcast(job)
     end
+  end
+
+  def task_step_start(step_name, job) do
+    cs = Aptamer.Jobs.Job.changeset(job, %{status: to_string(step_name)})
+    {:ok, job} = Repo.update(cs)
+    broadcast_status(job)
   end
 
   def task_finished({:ok, {:ok, script_job}}, job_id) do
@@ -118,12 +122,7 @@ defmodule Aptamer.JobControl do
   defp broadcast_status(job) do
     job = Repo.preload(job, :file)
 
-    Phoenix.PubSub.broadcast(
-      AptamerWeb.PubSub,
-      "file:#{job.file.id}:job_status",
-      {:status_change, job.id, job.status}
-    )
-
+    Aptamer.Jobs.JobStatus.broadcast(job)
     AptamerWeb.JobsChannel.broadcast_job_status(job)
   end
 

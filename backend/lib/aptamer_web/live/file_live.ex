@@ -1,6 +1,7 @@
 defmodule AptamerWeb.FileLive do
   use Phoenix.LiveView
   alias Phoenix.View, as: PV
+  alias Aptamer.Jobs.JobStatus
 
   def render(assigns) do
     PV.render(AptamerWeb.FileView, "show.html", assigns)
@@ -11,7 +12,7 @@ defmodule AptamerWeb.FileLive do
     file = Aptamer.Jobs.view_file(file_id)
 
     if connected?(socket) do
-      Phoenix.PubSub.subscribe(AptamerWeb.PubSub, "file:#{file.id}:job_status")
+      Phoenix.PubSub.subscribe(AptamerWeb.PubSub, JobStatus.topic(file))
     end
 
     graph_options =
@@ -114,11 +115,13 @@ defmodule AptamerWeb.FileLive do
 
   @impl true
   def handle_info({:status_change, job_id, new_status}, socket) do
+
     file = socket.assigns.file
     jobs = file.jobs
     job_idx = Enum.find_index(jobs, &(&1.id == job_id))
     updated_jobs = List.update_at(jobs, job_idx, fn struct -> %{struct | status: new_status} end)
     socket = assign(socket, :file, %{file | jobs: updated_jobs})
     {:noreply, socket}
+
   end
 end

@@ -4,14 +4,21 @@ defmodule Aptamer.Application do
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
-    import Supervisor.Spec
+
+    topologies = [
+      dynamic: [
+        strategy: Cluster.Strategy.Gossip
+      ]
+    ]
 
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
       Aptamer.Repo,
       # Start the endpoint when the application starts
-      AptamerWeb.Endpoint
+      AptamerWeb.Endpoint,
+
+      {Cluster.Supervisor, [topologies, [name: Aptamer.ClusterSupervisor]]},
       # Start your own worker by calling: Aptamer.Worker.start_link(arg1, arg2, arg3)
       # worker(Aptamer.Worker, [arg1, arg2, arg3]),
     ]

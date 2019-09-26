@@ -73,4 +73,20 @@ defmodule Aptamer.Jobs do
       {:invalid, options_changes}
     end
   end
+
+
+  def next_ready() do
+    query = from j in Job, where: j.status == "ready"
+
+    query
+    |> first(:inserted_at)
+    |> Repo.one
+  end
+
+  def load_associations(job) do
+    job
+    |> Repo.preload(:create_graph_options)
+    |> Repo.preload(:predict_structure_options)
+    |> Repo.preload(:file)
+  end
 end
