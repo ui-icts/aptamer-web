@@ -61,7 +61,8 @@ defmodule Aptamer.Mixfile do
       {:wormhole, git: "https://github.com/renderedtext/wormhole"},
       {:bamboo, "~> 0.8"},
       {:bamboo_smtp, "~> 1.4.0"},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"}
+      {:phoenix_live_view, "~> 0.3.1"},
+      {:libcluster, "~> 3.1"}
     ]
   end
 
