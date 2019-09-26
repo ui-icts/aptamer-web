@@ -39,6 +39,13 @@ defmodule AptamerWeb.HomeLive do
     {:noreply, socket}
   end
 
+  def handle_info({:generated_file, file}, socket) do
+    user_files = socket.assigns.user_files
+
+    socket = assign(socket, :user_files, [file | user_files])
+    {:noreply, socket}
+  end
+
   def handle_event("delete_file", %{"file_id" => file_id}, socket) do
     file = Aptamer.Repo.get!(Aptamer.Jobs.File, file_id)
 

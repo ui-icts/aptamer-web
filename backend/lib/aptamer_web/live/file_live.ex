@@ -121,4 +121,5 @@ defmodule AptamerWeb.FileLive do
     socket = assign(socket, :file, %{file | jobs: updated_jobs})
     {:noreply, socket}
   end
+
 end

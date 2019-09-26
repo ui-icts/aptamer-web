@@ -39,11 +39,8 @@ defmodule AptamerWeb.Email do
 
     home_url = html_link("View Job", Endpoint.url())
     # can't do this in the guard itself
-    generated_file = job.output
 
     case job.status do
-      finished when is_nil(generated_file) ->
-        success_message <> home_url
 
       finished ->
         download_url = Endpoint.url() <> "/results/" <> job.id

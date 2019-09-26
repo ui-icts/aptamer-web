@@ -40,10 +40,6 @@ defmodule Aptamer.JobControl do
       script_job = %{
         script_job
         | current_user_id: job.file.owner_id,
-          output_collector: %Aptamer.JobControl.RunningJob{
-            job_id: job.id,
-            output: ["Initializing job..."]
-          },
           listener: listener,
           job_id: job.id,
           input_file_name: job.file.file_name
@@ -75,7 +71,8 @@ defmodule Aptamer.JobControl do
 
   def task_finished({:ok, {:ok, script_job}}, job_id) do
     # Update job to mark as finished
-    job = Repo.get!(Aptamer.Jobs.Job, job_id)
+    job = Repo.get!(Aptamer.Jobs.Job, job_id) |> Repo.preload(:file)
+
     cs = Aptamer.Jobs.Job.changeset(job, %{status: "finished", output: script_job.output})
     {:ok, job} = Repo.update(cs)
     AptamerWeb.Email.send_job_complete(job)
@@ -84,8 +81,8 @@ defmodule Aptamer.JobControl do
     # send added file if present
     case script_job do
       %{generated_file: file} when not is_nil(file) ->
-        AptamerWeb.JobsChannel.broadcast_file_added(file)
 
+        Phoenix.PubSub.broadcast(AptamerWeb.PubSub, "user:#{script_job.current_user_id}:files", {:generated_file, file})
       _ ->
         :ok
     end

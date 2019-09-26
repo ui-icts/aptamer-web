@@ -3,10 +3,63 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
   alias Aptamer.Repo
 
+  defmodule ScriptInput do
+    require Logger
+
+    def new(input_file) do
+      if is_file_path?(input_file) do
+        #{:file_path, input_file}
+        %{file_name: Path.basename(input_file), file_path: Path.expand(input_file), file_contents: nil}
+      else
+        #{:file_contents, input_file}
+        %{file_name: "temp_input", file_path: nil, file_contents: input_file}
+      end
+    end
+
+    def is_file_path?(thing) do
+      full_path = Path.expand(thing)
+      Elixir.File.exists?(full_path)
+    end
+
+    def path_and_contents(state, temp_path) do
+
+      {path, contents} = case {state.file_path, state.file_contents} do
+        {nil, some} ->
+          Logger.debug("Generating input file from file contents")
+          temp_file = Path.join(temp_path, state.file_name)
+          File.write(temp_file, some)
+          {temp_file, some}
+
+        {some, nil} ->
+          Logger.debug("Generating input file from file path #{some}")
+
+          {:ok, contents} = Elixir.File.read(some)
+          {some, contents}
+
+        {x, y} ->
+          {x, y}
+      end
+
+      %{state | file_path: path, file_contents: contents}
+    end
+
+    def absolute_path_on_disk(state) do
+      ## Assumption that path and contents have already been called
+      # so that we know file_path is set!
+      state.file_path
+    end
+
+    def file_name(state) do
+      state.file_name
+    end
+  end
+
+
+  alias Aptamer.Jobs.PythonScriptJob.ScriptInput
+
   defstruct script_name: nil,
             args: [],
             working_dir: nil,
-            output: [],
             exit_code: nil,
             results: nil,
 
@@ -20,34 +73,23 @@ defmodule Aptamer.Jobs.PythonScriptJob do
             # the result struct
             job_id: 0,
 
-            # The original name of the file
-            input_file_name: nil,
+            input: nil,
+            output: nil,
 
-            # The contents
-            input_file_contents: nil,
-
-            # The temp path where we've written it for processing
-            input_file_path: nil,
-
-            output_collector: nil,
             generated_file: nil
 
+  defmodule ScriptOutput do
+    @callback files(%Aptamer.Jobs.PythonScriptJob{}) :: %Aptamer.Jobs.PythonScriptJob{}
+    @callback result(%Aptamer.Jobs.Result{}) :: %Aptamer.Jobs.Result{}
+  end
+
   def create({script_name, args, input_file}), do: create(script_name, args, input_file)
-  def create(script_name, args, input_file) do
-    full_path = Path.expand(input_file)
-
-    {file_name, file_path, file_contents} =
-      cond do
-        Elixir.File.exists?(full_path) -> {Path.basename(input_file), full_path, nil}
-        true -> {"temp_input", nil, input_file}
-      end
-
+  def create(script_name, args, input_file, output \\ nil) do
     %Aptamer.Jobs.PythonScriptJob{
       script_name: script_name,
       args: args,
-      input_file_name: file_name,
-      input_file_path: file_path,
-      input_file_contents: file_contents
+      input: ScriptInput.new(input_file),
+      output: output
     }
   end
 
@@ -80,25 +122,9 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   def step(:prepare_files, state) do
     {:ok, temp_path} = Temp.mkdir(state.job_id)
 
-    {path, contents} =
-      case {state.input_file_path, state.input_file_contents} do
-        {nil, some} ->
-          Logger.debug("Generating input file from file contents")
-          temp_file = Path.join(temp_path, state.input_file_name)
-          File.write(temp_file, some)
-          {temp_file, some}
+    input = ScriptInput.path_and_contents(state.input, temp_path)
 
-        {some, nil} ->
-          Logger.debug("Generating input file from file path #{some}")
-
-          {:ok, contents} = Elixir.File.read(some)
-          {some, contents}
-
-        {x, y} ->
-          {x, y}
-      end
-
-    {:ok, %{state | working_dir: temp_path, input_file_path: path, input_file_contents: contents}}
+    {:ok, %{state | working_dir: temp_path, input: input}}
   end
 
   def step(:run_script, state) do
@@ -106,45 +132,36 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     script_path = path(:script)
 
     common_args = [
-      "#{script_path}/#{state.script_name}",
-      state.input_file_path
+      Path.join(script_path,state.script_name),
+      ScriptInput.absolute_path_on_disk(state.input)
     ]
 
     args = common_args ++ state.args
 
-    collector = state.output_collector || IO.stream(:stdio, :line)
-
-    {collector, exit_status} =
+    {lines, exit_status} =
       System.cmd(
         python_path,
         args,
         cd: state.working_dir,
         stderr_to_stdout: true,
         parallelism: true,
-        into: collector
+        into: []
       )
 
-    output =
-      case collector do
-        %Aptamer.JobControl.RunningJob{output: x} -> x
-        %IO.Stream{} -> []
-        [_h | _t] = lines -> lines
-        _ -> []
-      end
-      |> Enum.join("\n")
+    program_output = Enum.join(lines, "\n")
 
     results = """
     Program exited with code: #{exit_status}
 
     Output
     ---------------------------------------------------------
-    #{output}
+    #{program_output}
     """
 
-    results_path = Path.join(state.working_dir, "results.log")
+    results_path = Path.join(state.working_dir, "program_output.txt")
     File.write(results_path, results)
 
-    state = %{state | output: output, exit_code: exit_status}
+    state = %{state | exit_code: exit_status}
     {:ok, state}
   end
 
@@ -152,37 +169,17 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     # if we ran predict_structures create
     # a structure file from the output
 
-    state =
-      if state.script_name == "predict_structures.py" && state.exit_code == 0 do
-        Logger.debug("Creating structure file output")
-
-        case create_structure_file_from_outputs(
-               state.working_dir,
-               "#{state.input_file_name}.struct.fa",
-               state.current_user_id
-             ) do
-          {:ok, file} -> %{state | generated_file: file}
-          _ -> state
-        end
-      else
-        Logger.debug(
-          "Not creating a structure file. script_name: #{inspect(state.script_name)} exit status: #{
-            inspect(state.exit_code)
-          }"
-        )
-
-        state
-      end
-
+    state = if state.output, do: state.output.files(state), else: state
     remove_extraneous_files(state.working_dir)
 
-    {:ok, results} =
+    results =
       zip_outputs(
         state.working_dir,
         state.job_id,
-        "#{state.input_file_name}.zip"
+        "#{ScriptInput.file_name(state.input)}.zip"
       )
 
+    results = if state.output,  do: state.output.results(results), else: results
     {:ok, %{state | results: results}}
   end
 
@@ -219,13 +216,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       job_id: job_id
     }
 
-    # Temporary way to run one off jobs that
-    # never go to the database
-    unless job_id == 0 do
-      Repo.insert(zip_struct)
-    else
-      {:ok, zip_struct}
-    end
+    
   end
 
   def remove_extraneous_files(output_directory) do
@@ -236,22 +227,4 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     end
   end
 
-  def create_structure_file_from_outputs(output_directory, new_file_name, file_owner_id) do
-    structure_file = Path.join(output_directory, new_file_name)
-
-    case Elixir.File.read(structure_file) do
-      {:ok, file_data} ->
-        file_cs =
-          Aptamer.Jobs.File.new_structure_file_changeset(
-            new_file_name,
-            file_data,
-            file_owner_id
-          )
-
-        Repo.insert(file_cs)
-
-      {:error, e} ->
-        Logger.error("Unable to read generated structure file. #{inspect(e)}")
-    end
-  end
 end

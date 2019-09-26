@@ -8,13 +8,11 @@ defmodule TestScript do
     script = PythonScriptJob.create(
       "predict_structures.py",
       PredictStructureOptions.args(options),
-      input_file
+      input_file,
+      Aptamer.Jobs.SaveScriptOutputsOnDisk
     )
-    script = %{script | output_collector: []}
 
     {:ok, output} = PythonScriptJob.run(script)
-    zip_file = output.results.archive
-    File.write!("test_script.zip", zip_file, [:binary, :write])
     IO.puts "A ha!"
     IO.inspect(output, label: "script")
   end
