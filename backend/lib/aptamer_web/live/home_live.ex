@@ -3,6 +3,7 @@ defmodule AptamerWeb.HomeLive do
   alias Phoenix.View, as: PV
 
   alias Aptamer.{Auth, Jobs}
+  alias Aptamer.Jobs.UserFiles
 
   def render(assigns) do
     PV.render(AptamerWeb.HomeView, "files.html", assigns)
@@ -12,8 +13,8 @@ defmodule AptamerWeb.HomeLive do
   def mount(%{current_user_id: current_user_id}, socket) do
     current_user = Auth.get_user(current_user_id)
 
-    if connected?(socket) do
-      Phoenix.PubSub.subscribe(AptamerWeb.PubSub, "user:" <> current_user.id <> ":files")
+    if connected?(socket) && current_user do
+      Phoenix.PubSub.subscribe(AptamerWeb.PubSub, UserFiles.topic(current_user))
     end
 
     if current_user do

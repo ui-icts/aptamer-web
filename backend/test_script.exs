@@ -9,11 +9,11 @@ defmodule TestScript do
       PythonScriptJob.create(
         "predict_structures.py",
         PredictStructureOptions.args(options),
-        input_file,
-        Aptamer.Jobs.SaveScriptOutputsOnDisk
+        input_file
       )
 
-    {:ok, output} = PythonScriptJob.run(script)
+    require IEx; IEx.pry
+    output = PythonScriptJob.run(script)
     IO.puts("A ha!")
     IO.inspect(output, label: "script")
   end

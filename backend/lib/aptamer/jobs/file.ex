@@ -29,6 +29,16 @@ defmodule Aptamer.Jobs.File do
     |> validate_required([:file_name, :uploaded_on, :file_type, :owner_id])
   end
 
+  def new_structure_file!(file_path) do
+    file_data = Elixir.File.read!(file_path)
+    %File{
+      file_name: Path.basename(file_path),
+      data: file_data,
+      file_type: "structure",
+      uploaded_on: DateTime.utc_now()
+    }
+  end
+
   def new_structure_file_changeset(file_name, contents, owner_id) do
     changeset(%File{}, %{
       file_name: file_name,
@@ -71,6 +81,10 @@ defmodule Aptamer.Jobs.File do
     Enum.map(structList, fn struct -> Map.get(struct, id_name) end)
     |> Enum.filter(fn id -> id != nil end)
     |> Enum.uniq()
+  end
+
+  def build_script_args(job) do
+    build_script_args(job.file, job)
   end
 
   def build_script_args(file, job) do

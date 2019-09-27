@@ -83,6 +83,18 @@ defmodule Aptamer.Jobs do
     |> Repo.one
   end
 
+  def ready_batch(amount \\ 100) do
+    query = 
+      from j in Job, 
+      where: j.status == "ready",
+      order_by: :inserted_at,
+      limit: ^amount
+    
+
+    query
+    |> Repo.all()
+  end
+
   def load_associations(job) do
     job
     |> Repo.preload(:create_graph_options)
