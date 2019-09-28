@@ -34,6 +34,9 @@ defmodule Aptamer.Jobs do
   end
 
   def create_new_job(:create_graph, file, options_params) do
+    # 2nd arg wins here, even if id, file_id, or status
+    # are in the params they wouldn't be picked...that is on
+    # purpose. that way a file couldn't be spoofed.
     params =
       Map.merge(%{"create_graph_options" => options_params}, %{
         "id" => Ecto.UUID.generate(),
@@ -45,6 +48,8 @@ defmodule Aptamer.Jobs do
       %Job{}
       |> cast(params, [:id, :file_id, :status])
       |> cast_assoc(:create_graph_options)
+      |> cast_assoc(:predict_structure_options)
+      |> Job.validate_only_one_options()
 
     # |> cast_assoc(:predict_structure_options)
 

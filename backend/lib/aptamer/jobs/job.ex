@@ -48,4 +48,27 @@ defmodule Aptamer.Jobs.Job do
       job.predict_structure_options_id != nil -> "predict structures for file " <> file_name
     end
   end
+
+  def validate_only_one_options(changeset) do
+    option_changes = [
+      get_change(changeset, :create_graph_options, :missing),
+      get_change(changeset, :predict_structure_options, :missing)
+    ]
+
+    case option_changes do
+      [some, :missing] ->
+        changeset
+
+      [:missing, some] ->
+        changeset
+
+      [some, some] ->
+        add_error(changeset, :create_graph_options, "Job can only have one set of options")
+
+      [:missing, :missing] ->
+        changeset
+        |> add_error(:create_graph_options, "Job should have at least 1 set of options")
+        |> add_error(:predict_structure_options, "Job should have at least 1 set of options")
+    end
+  end
 end
