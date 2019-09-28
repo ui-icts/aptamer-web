@@ -10,5 +10,4 @@ defmodule AptamerWeb.ChangesetView do
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
   end
-
 end

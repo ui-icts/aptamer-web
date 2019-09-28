@@ -29,7 +29,6 @@ defmodule AptamerWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
-  plug JaSerializer.Deserializer
   plug Plug.MethodOverride
   plug Plug.Head
 

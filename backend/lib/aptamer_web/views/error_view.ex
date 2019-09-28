@@ -1,6 +1,5 @@
 defmodule AptamerWeb.ErrorView do
   use AptamerWeb, :view
-  use JaSerializer.PhoenixView
 
   def render("404.html", _assigns) do
     "Page not found"

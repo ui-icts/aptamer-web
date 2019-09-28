@@ -61,9 +61,6 @@ config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
-config :ja_serializer,
-  pluralize_types: true
-
 config :tzdata, :autoupdate, :disabled
 
 config :aptamer, Aptamer.Guardian,
