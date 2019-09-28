@@ -2,8 +2,6 @@ defmodule AptamerWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "jobs:*", AptamerWeb.JobsChannel
-  channel "file:*", AptamerWeb.FileChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

@@ -2,21 +2,6 @@ defmodule AptamerWeb.ErrorView do
   use AptamerWeb, :view
   use JaSerializer.PhoenixView
 
-  def render("401.json", _assigns) do
-    %{title: "Unauthorized", code: 401}
-    |> JaSerializer.ErrorSerializer.format()
-  end
-
-  def render("403.json", _assigns) do
-    %{title: "forbidden", code: 403}
-    |> JaSerializer.ErrorSerializer.format()
-  end
-
-  def render("500.json", _assigns) do
-    %{title: "Internal Server Error", code: 500}
-    |> JaSerializer.ErrorSerializer.format()
-  end
-
   def render("404.html", _assigns) do
     "Page not found"
   end
