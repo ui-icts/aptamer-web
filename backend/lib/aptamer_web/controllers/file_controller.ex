@@ -4,24 +4,9 @@ defmodule AptamerWeb.FileController do
   alias Aptamer.Repo
   alias Aptamer.Jobs.File
   alias Aptamer.Jobs
-  alias JaSerializer.Params
   import Ecto.Query, only: [from: 2]
 
-  plug JaSerializer.ContentTypeNegotiation when action in [:update]
   plug :scrub_params, "data" when action in [:update]
-
-  def index(conn, params) do
-    current_user = Guardian.Plug.current_resource(conn)
-
-    files = Jobs.list_files(current_user)
-
-    json(
-      conn,
-      Enum.map(files, fn f ->
-        Map.from_struct(f) |> Map.take([:id, :file_name])
-      end)
-    )
-  end
 
   def create(conn, params) do
     current_user = Guardian.Plug.current_resource(conn)
@@ -43,40 +28,28 @@ defmodule AptamerWeb.FileController do
     file = Repo.preload(file, :jobs)
 
     file_created(current_user, file)
-    send_resp(conn, 200, "created")
+    send_resp(conn, 200, "created: #{file.id}")
   end
 
   def show(conn, %{"id" => id}) do
-    query =
-      from(file in File,
-        where: file.id == ^id,
-        left_join: jobs in assoc(file, :jobs),
-        preload: [jobs: jobs]
-      )
+    current_user = Guardian.Plug.current_resource(conn)
 
-    file = Repo.one!(query)
+    if current_user do
+      query =
+        from(file in File,
+          where: file.id == ^id,
+          left_join: jobs in assoc(file, :jobs),
+          preload: [jobs: jobs]
+        )
 
-    render(conn, "view.html", file: file)
-    #    render(conn, "show.json-api", data: file)
-  end
+      file = Repo.one!(query)
 
-  def update(conn, %{
-        "id" => id,
-        "data" => data = %{"type" => "files", "attributes" => _file_params}
-      }) do
-    file = Repo.get!(File, id)
-    changeset = File.changeset(file, Params.to_attributes(data))
-
-    case Repo.update(changeset) do
-      {:ok, file} ->
-        file = Repo.preload(file, :jobs)
-        render(conn, "show.json-api", data: file)
-
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(:errors, data: changeset)
+      render(conn, "view.html", file: file)
+    else
+      redirect(conn, to: "/sessions/new")
     end
+
+    #    render(conn, "show.json-api", data: file)
   end
 
   def delete(conn, %{"id" => id}) do
@@ -90,10 +63,6 @@ defmodule AptamerWeb.FileController do
   end
 
   defp file_created(user, file) do
-    Phoenix.PubSub.broadcast(
-      AptamerWeb.PubSub,
-      "user:" <> user.id <> ":files",
-      {:file_uploaded, file}
-    )
+    Aptamer.Jobs.UserFiles.broadcast_file_uploaded(user, file)
   end
 end

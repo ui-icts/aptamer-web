@@ -16,4 +16,12 @@ defmodule Aptamer.Jobs.UserFiles do
       {:generated_file, file}
     )
   end
+
+  def broadcast_file_uploaded(user, file) do
+    Phoenix.PubSub.broadcast(
+      AptamerWeb.PubSub,
+      topic(user),
+      {:file_uploaded, file}
+    )
+  end
 end

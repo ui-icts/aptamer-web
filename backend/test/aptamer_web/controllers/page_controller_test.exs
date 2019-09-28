@@ -3,6 +3,6 @@ defmodule AptamerWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Aptamer"
+    assert redirected_to(conn) =~ "/sessions/new"
   end
 end

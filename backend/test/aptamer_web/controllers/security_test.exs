@@ -4,25 +4,23 @@ defmodule AptamerWeb.SecurityTest do
   import Aptamer.Factory
 
   setup %{conn: conn} do
-    conn =
-      conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
+    conn = conn
 
     user = insert(:user)
-    _files = insert_list(3, :file, owner: user)
-    {:ok, conn: conn}
+    files = insert_list(3, :file, owner: user)
+
+    {:ok, conn: conn, file_id: files |> List.first() |> Map.get(:id)}
   end
 
-  test "can't request resources when not logged in", %{conn: conn} do
+  test "can't request resources when not logged in", %{conn: conn, file_id: file_id} do
     paths = [
-      file_path(conn, :index),
-      job_path(conn, :index)
+      file_path(conn, :show, file_id),
+      "/"
     ]
 
     Enum.each(paths, fn p ->
       p_conn = get(conn, p)
-      assert json_response(p_conn, 401)
+      assert(redirected_to(p_conn, 302) =~ "/sessions/new", "Incorrect response for #{p}")
     end)
   end
 end
