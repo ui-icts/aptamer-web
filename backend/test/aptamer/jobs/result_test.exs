@@ -1,5 +1,5 @@
 defmodule Aptamer.Jobs.ResultTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   alias Aptamer.Jobs.Result
 

@@ -1,5 +1,5 @@
 defmodule AptamerWeb.SessionControllerTest do
-  use AptamerWeb.ConnCase
+  use AptamerWeb.ConnCase, async: true
 
   import Aptamer.Factory
 

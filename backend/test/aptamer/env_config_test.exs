@@ -1,5 +1,5 @@
 defmodule EnvConfigTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   import Aptamer.EnvConfig
 

@@ -1,5 +1,5 @@
 defmodule Aptamer.Jobs.PredictStructureOptionsTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   alias Aptamer.Jobs.PredictStructureOptions
 

@@ -1,5 +1,5 @@
 defmodule Aptamer.Jobs.FileTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   import Aptamer.Factory
   alias Aptamer.Jobs.File

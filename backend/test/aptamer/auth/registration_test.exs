@@ -1,5 +1,5 @@
 defmodule Aptamer.Auth.RegistrationTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   alias Aptamer.Auth.Registration
 

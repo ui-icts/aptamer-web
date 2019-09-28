@@ -1,5 +1,5 @@
 defmodule AptamerWeb.RegistrationControllerTest do
-  use AptamerWeb.ConnCase
+  use AptamerWeb.ConnCase, async: true
 
   @valid_attrs %{email: "bob@example.com", name: "Bob", password: "welcome"}
   @invalid_attrs %{}

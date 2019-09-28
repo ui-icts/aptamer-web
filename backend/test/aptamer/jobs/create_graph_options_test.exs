@@ -1,5 +1,5 @@
 defmodule Aptamer.Jobs.CreateGraphOptionsTest do
-  use Aptamer.DataCase
+  use Aptamer.DataCase, async: true
 
   alias Aptamer.Jobs.CreateGraphOptions
   doctest Aptamer.Jobs.CreateGraphOptions

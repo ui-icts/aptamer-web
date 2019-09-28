@@ -1,5 +1,5 @@
 defmodule AptamerWeb.FileControllerTest do
-  use AptamerWeb.ConnCase
+  use AptamerWeb.ConnCase, async: true
   import Aptamer.Factory
   alias Aptamer.Jobs.File
 
