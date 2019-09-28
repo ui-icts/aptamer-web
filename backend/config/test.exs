@@ -9,6 +9,14 @@ config :aptamer, AptamerWeb.Endpoint,
   http: [port: 4001],
   server: false
 
+config :libcluster,
+  topologies: [
+    dynamic: [
+      strategy: Cluster.Strategy.Epmd,
+      hosts: []
+    ]
+  ]
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 
