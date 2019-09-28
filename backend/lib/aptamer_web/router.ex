@@ -29,7 +29,6 @@ defmodule AptamerWeb.Router do
 
   scope "/", AptamerWeb do
     pipe_through :api_auth
-    resources "/jobs", JobController
     resources "/create-graph-options", CreateGraphOptionsController
     resources "/predict-structure-options", PredictStructureOptionsController
     get "/users/me", SessionController, :show
