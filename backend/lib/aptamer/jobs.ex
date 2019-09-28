@@ -20,7 +20,7 @@ defmodule Aptamer.Jobs do
         preload: [jobs: jobs]
       )
 
-    files = Repo.all(query)
+    Repo.all(query)
   end
 
   def view_file(file_id) do

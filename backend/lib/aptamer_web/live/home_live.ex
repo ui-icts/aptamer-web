@@ -5,6 +5,7 @@ defmodule AptamerWeb.HomeLive do
   alias Aptamer.{Auth, Jobs}
   alias Aptamer.Jobs.UserFiles
 
+  @impl true
   def render(assigns) do
     PV.render(AptamerWeb.HomeView, "files.html", assigns)
   end
@@ -30,6 +31,7 @@ defmodule AptamerWeb.HomeLive do
     end
   end
 
+  @impl true
   def handle_info({:file_uploaded, file}, socket) do
     user_files = socket.assigns.user_files
 
@@ -37,6 +39,7 @@ defmodule AptamerWeb.HomeLive do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info({:generated_file, file}, socket) do
     user_files = socket.assigns.user_files
 
@@ -44,6 +47,7 @@ defmodule AptamerWeb.HomeLive do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("delete_file", %{"file_id" => file_id}, socket) do
     file = Aptamer.Repo.get!(Aptamer.Jobs.File, file_id)
 

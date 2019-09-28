@@ -1,6 +1,5 @@
 defmodule Aptamer.Jobs.JobStatus do
   alias Aptamer.Jobs.{File, Job}
-  alias Aptamer.Repo
 
   def topic(%Job{} = job) do
     topic(job.file_id)

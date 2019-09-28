@@ -3,7 +3,6 @@ defmodule AptamerWeb.FileController do
 
   alias Aptamer.Repo
   alias Aptamer.Jobs.File
-  alias Aptamer.Jobs
   import Ecto.Query, only: [from: 2]
 
   plug :scrub_params, "data" when action in [:update]

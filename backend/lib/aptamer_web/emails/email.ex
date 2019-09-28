@@ -23,7 +23,7 @@ defmodule AptamerWeb.Email do
   def aptamer_job_email(job) do
     {:ok, user} = job_author(job)
 
-    new_email
+    new_email()
     |> to(user.email)
     |> from({"Aptamer Notifier", "ICTS-aptamer-mailer@uiowa.edu"})
     |> subject("Job complete")
@@ -41,11 +41,11 @@ defmodule AptamerWeb.Email do
     # can't do this in the guard itself
 
     case job.status do
-      finished ->
+      "finished" ->
         download_url = Endpoint.url() <> "/results/" <> job.id
         success_message <> html_link("Download the results here!", download_url)
 
-      error ->
+      "error" ->
         "Your job " <>
           Job.description(job) <> " has errored out and <strong>failed</strong>. " <> home_url
 

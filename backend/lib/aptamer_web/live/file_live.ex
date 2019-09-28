@@ -3,6 +3,7 @@ defmodule AptamerWeb.FileLive do
   alias Phoenix.View, as: PV
   alias Aptamer.Jobs.JobStatus
 
+  @impl true
   def render(assigns) do
     PV.render(AptamerWeb.FileView, "show.html", assigns)
   end
@@ -42,7 +43,7 @@ defmodule AptamerWeb.FileLive do
   end
 
   @impl true
-  def handle_event("toggle_show_more", file_id, socket) do
+  def handle_event("toggle_show_more", _file_id, socket) do
     show_more = !socket.assigns.show_more
 
     socket = assign(socket, :show_more, show_more)
@@ -50,7 +51,7 @@ defmodule AptamerWeb.FileLive do
   end
 
   @impl true
-  def handle_event("toggle_show_help", file_id, socket) do
+  def handle_event("toggle_show_help", _file_id, socket) do
     show_help = !socket.assigns.show_help
 
     socket = assign(socket, :show_help, show_help)
@@ -80,7 +81,7 @@ defmodule AptamerWeb.FileLive do
   @impl true
   def handle_event(
         "run_create_graph",
-        %{"create_graph_options" => options_parms} = params,
+        %{"create_graph_options" => options_parms},
         socket
       ) do
     file = socket.assigns.file
@@ -88,7 +89,9 @@ defmodule AptamerWeb.FileLive do
     case Aptamer.Jobs.create_new_job(:create_graph, file, options_parms) do
       {:ok, file, job} ->
         if Application.get_env(:aptamer, :start_jobs) == true do
-          Aptamer.JobControl.start_job(job)
+          Task.start(fn ->
+            Aptamer.Jobs.Processor.execute(job)
+          end)
         end
 
         socket = assign(socket, :file, file)

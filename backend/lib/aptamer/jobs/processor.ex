@@ -1,6 +1,6 @@
 defmodule Aptamer.Jobs.Processor do
-  alias Aptamer.{Repo, JobControl}
-  alias Aptamer.Jobs.{File, Job, Result, JobStatus, PythonScriptJob}
+  alias Aptamer.Repo
+  alias Aptamer.Jobs.{UserFiles, File, Job, Result, JobStatus, PythonScriptJob}
 
   def execute_ready_jobs() do
     Aptamer.Jobs.ready_batch() |> execute_jobs()
@@ -58,7 +58,7 @@ defmodule Aptamer.Jobs.Processor do
 
   def save_results({job, script}) do
     if script.archive do
-      {:ok, result} =
+      {:ok, _result} =
         %Result{job_id: job.id, archive: script.archive}
         |> Repo.insert()
     end

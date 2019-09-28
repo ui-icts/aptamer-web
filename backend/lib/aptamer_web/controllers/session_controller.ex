@@ -3,9 +3,9 @@ defmodule AptamerWeb.SessionController do
 
   import Ecto.Query, only: [where: 2]
   import Comeonin.Bcrypt
-  import Logger
+  require Logger
 
-  alias Aptamer.Auth.Registration
+  alias Aptamer.Auth.{Registration, User}
 
   defmodule LoginFormParams do
     use Ecto.Schema
@@ -50,7 +50,6 @@ defmodule AptamerWeb.SessionController do
             checkpw(login_form.password, user.password) ->
               Logger.info("User " <> user.email <> " logged in")
               conn = Aptamer.Guardian.Plug.sign_in(conn, user)
-              jwt = Aptamer.Guardian.Plug.current_token(conn)
 
               conn
               |> redirect(to: "/")
@@ -63,7 +62,7 @@ defmodule AptamerWeb.SessionController do
               |> redirect(to: "/sessions/new")
           end
         rescue
-          e in Ecto.NoResultsError ->
+          Ecto.NoResultsError ->
             dummy_checkpw()
             Logger.warn("User " <> login_form.email <> " not found")
 
@@ -91,14 +90,14 @@ defmodule AptamerWeb.SessionController do
     reg = Registration.new_user(%Registration{}, form)
 
     if reg.valid? do
-      {:ok, user} =
+      {:ok, _user} =
         reg
         |> Ecto.Changeset.apply_changes()
         |> User.register()
         |> Repo.insert()
 
       conn
-      |> render(:new, login_cs: LoginFormParams.blnk(), register_cs: Registration.blank())
+      |> render(:new, login_cs: LoginFormParams.blank(), register_cs: Registration.blank())
     else
       {:error, reg} = Ecto.Changeset.apply_action(reg, :insert)
 
@@ -133,7 +132,7 @@ defmodule AptamerWeb.SessionController do
           |> render("401.json")
       end
     rescue
-      e in Ecto.NoResultsError ->
+      Ecto.NoResultsError ->
         dummy_checkpw()
         Logger.warn("User " <> username <> " not found")
 
@@ -142,7 +141,7 @@ defmodule AptamerWeb.SessionController do
         |> put_view(AptamerWeb.ErrorView)
         |> render("401.json")
 
-      e ->
+      _ ->
         Logger.error("Error logging in user")
 
         conn
@@ -152,11 +151,11 @@ defmodule AptamerWeb.SessionController do
     end
   end
 
-  def create(conn, %{"grant_type" => _}) do
+  def create(_conn, %{"grant_type" => _}) do
     throw("Unsupported grant_type")
   end
 
-  def show(conn, params) do
+  def show(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
 
     conn

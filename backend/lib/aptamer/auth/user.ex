@@ -9,7 +9,7 @@ defmodule Aptamer.Auth.User do
     field(:name, :string)
     field(:email, :string)
     field(:password, Comeonin.Ecto.Password)
-    has_many(:files, Aptamer.Jobs.File, foreign_key: "owner_id")
+    has_many(:files, Aptamer.Jobs.File, foreign_key: :owner_id)
 
     timestamps()
   end

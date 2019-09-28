@@ -21,7 +21,7 @@ defmodule Aptamer.EnvConfig do
     smtp_opts
   end
 
-  def apply_config(any, nil, endpoint_opts), do: endpoint_opts
+  def apply_config(_any, nil, endpoint_opts), do: endpoint_opts
 
   def apply_config(:port, value, endpoint_opts) when is_binary(value) do
     port = String.to_integer(value)

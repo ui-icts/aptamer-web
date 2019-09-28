@@ -1,9 +1,6 @@
 defmodule AptamerWeb.HomeController do
   use AptamerWeb, :controller
 
-  alias Aptamer.Repo
-  alias Aptamer.Jobs
-
   def index(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
 

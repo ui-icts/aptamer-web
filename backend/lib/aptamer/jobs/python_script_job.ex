@@ -1,7 +1,6 @@
 defmodule Aptamer.Jobs.PythonScriptJob do
   require Logger
 
-  alias Aptamer.Repo
   alias Aptamer.Jobs.ScriptInput
   alias Aptamer.Jobs.PythonScriptJob
 

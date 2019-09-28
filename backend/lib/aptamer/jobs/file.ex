@@ -14,7 +14,7 @@ defmodule Aptamer.Jobs.File do
     field(:file_type, :string)
     field(:data, :binary)
 
-    belongs_to(:owner, Aptamer.Auth.User)
+    belongs_to(:owner, Aptamer.Auth.User, foreign_key: :owner_id)
     has_many(:jobs, Aptamer.Jobs.Job)
 
     timestamps()

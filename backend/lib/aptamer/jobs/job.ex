@@ -11,7 +11,6 @@ defmodule Aptamer.Jobs.Job do
   use Aptamer.BinaryIdColums
   import Ecto.Changeset
   alias Aptamer.Repo
-  alias Aptamer.Jobs.{File, Job}
 
   @primary_key {:id, :binary_id, autogenerate: false}
 
@@ -56,19 +55,19 @@ defmodule Aptamer.Jobs.Job do
     ]
 
     case option_changes do
-      [some, :missing] ->
-        changeset
-
-      [:missing, some] ->
-        changeset
-
-      [some, some] ->
-        add_error(changeset, :create_graph_options, "Job can only have one set of options")
-
       [:missing, :missing] ->
         changeset
         |> add_error(:create_graph_options, "Job should have at least 1 set of options")
         |> add_error(:predict_structure_options, "Job should have at least 1 set of options")
+
+      [_some, :missing] ->
+        changeset
+
+      [:missing, _some] ->
+        changeset
+
+      [_some1, _some2] ->
+        add_error(changeset, :create_graph_options, "Job can only have one set of options")
     end
   end
 end

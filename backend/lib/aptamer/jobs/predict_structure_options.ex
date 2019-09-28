@@ -2,7 +2,6 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
   import Ecto.Changeset
-  alias Aptamer.Jobs.PredictStructureOptions
 
   schema "predict_structure_options" do
     field(:run_mfold, :boolean, default: false)
@@ -35,15 +34,15 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
 
   ## Examples
 
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
     ["-v", "2", "--prefix", "PP", "--suffix", "SS"]
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-T 37 -p"})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-T 37 -p"})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options",~s( -T 37 -p)]
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS"]
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
     ["-v", "2"]
-    iex> PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: nil, pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: nil, pass_options: ""})
     ["-v", "2", "--prefix", "PP"]
   """
   def args(options) do

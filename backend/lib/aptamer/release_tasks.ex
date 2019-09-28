@@ -15,7 +15,7 @@ defmodule Aptamer.ReleaseTasks do
     defstruct run_seeds: false
   end
 
-  def bootstrap(args \\ []) do
+  def bootstrap(_args \\ []) do
     IO.puts("Loading Aptamer..")
 
     case Application.load(:aptamer) do
@@ -28,7 +28,7 @@ defmodule Aptamer.ReleaseTasks do
     with {:ok, context} <- create_db(context),
          {:ok, context} <- migrate(context),
          {:ok, context} <- seed(context),
-         {:ok, context} <- cleanup(context) do
+         {:ok, _context} <- cleanup(context) do
       IO.puts("Database ready to go")
     else
       {:error, reason} -> IO.puts(reason)
@@ -127,7 +127,6 @@ defmodule Aptamer.ReleaseTasks do
   end
 
   defp migrations_path(app), do: Path.join([priv_dir(app), "repo", "migrations"])
-  defp seed_path(app), do: Path.join([priv_dir(app), "repo", "seeds.exs"])
 
   defp get_repo_config(repo) do
     case {System.get_env("DB_SUPERUSER"), System.get_env("DB_SUPERPASS")} do
