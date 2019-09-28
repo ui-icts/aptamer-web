@@ -74,22 +74,21 @@ defmodule Aptamer.Jobs do
     end
   end
 
-
   def next_ready() do
-    query = from j in Job, where: j.status == "ready"
+    query = from(j in Job, where: j.status == "ready")
 
     query
     |> first(:inserted_at)
-    |> Repo.one
+    |> Repo.one()
   end
 
   def ready_batch(amount \\ 100) do
-    query = 
-      from j in Job, 
-      where: j.status == "ready",
-      order_by: :inserted_at,
-      limit: ^amount
-    
+    query =
+      from(j in Job,
+        where: j.status == "ready",
+        order_by: :inserted_at,
+        limit: ^amount
+      )
 
     query
     |> Repo.all()

@@ -12,7 +12,8 @@ defmodule TestScript do
         input_file
       )
 
-    require IEx; IEx.pry
+    require IEx
+    IEx.pry()
     output = PythonScriptJob.run(script)
     IO.puts("A ha!")
     IO.inspect(output, label: "script")

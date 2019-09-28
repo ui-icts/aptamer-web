@@ -6,7 +6,8 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   alias Aptamer.Jobs.PythonScriptJob
 
   alias Elixir.File, as: FS
-  defstruct script_name: nil, #Name of the script being run
+  # Name of the script being run
+  defstruct script_name: nil,
             # Arguments to be given to the script
             args: [],
             # Represents the file input, can be a path to file or raw contents
@@ -25,7 +26,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
             # Stores the .zip archive of the jobs outputs
             archive: nil
-
 
   def create({script_name, args, input_file}), do: create(script_name, args, input_file)
 
@@ -67,11 +67,13 @@ defmodule Aptamer.Jobs.PythonScriptJob do
         cd: state.working_dir,
         stderr_to_stdout: true,
         parallelism: true,
-        into: [] # -- Use this to see the output in your terminal IO.stream(:stdio,:line)
+        # -- Use this to see the output in your terminal IO.stream(:stdio,:line)
+        into: []
       )
 
     IO.puts("CMD finished")
     program_output = Enum.join(lines, "\n")
+
     results = """
     Program exited with code: #{exit_status}
 
@@ -101,21 +103,22 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
   def print_command_line(state) do
     {python_path, args} = build_args(state)
+
     cli = """
     pushd #{state.working_dir} && \\
     #{python_path} #{Enum.join(args, " ")} ; \\
     popd
     """
+
     IO.puts(cli)
     :ok
   end
 
   def save_generated_files(state) do
-
     structure_file = structure_file_path(state)
 
     case {state.script_name, state.exit_code} do
-      {"predict_structures.py", 0}  ->
+      {"predict_structures.py", 0} ->
         if FS.exists?(structure_file) do
           # TODO: Maybe worth just storing a file name and contents in
           # a tuple instead of the File struct ? That would completely
@@ -124,9 +127,10 @@ defmodule Aptamer.Jobs.PythonScriptJob do
         else
           state
         end
-      _ -> state
-    end
 
+      _ ->
+        state
+    end
   end
 
   def zip_outputs(state) do
@@ -136,7 +140,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     remove_extraneous_files(state.working_dir)
 
     archive =
-      zip_directory_contents( state.working_dir, "#{ScriptInput.file_name(state.input)}.zip")
+      zip_directory_contents(state.working_dir, "#{ScriptInput.file_name(state.input)}.zip")
 
     %{state | archive: archive}
   end

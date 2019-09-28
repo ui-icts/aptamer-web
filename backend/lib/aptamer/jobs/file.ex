@@ -31,6 +31,7 @@ defmodule Aptamer.Jobs.File do
 
   def new_structure_file!(file_path) do
     file_data = Elixir.File.read!(file_path)
+
     %File{
       file_name: Path.basename(file_path),
       data: file_data,

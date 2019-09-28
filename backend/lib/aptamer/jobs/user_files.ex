@@ -1,5 +1,4 @@
 defmodule Aptamer.Jobs.UserFiles do
-
   alias Aptamer.Auth.User
 
   def topic(%User{} = user) do

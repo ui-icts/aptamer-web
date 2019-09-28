@@ -115,13 +115,11 @@ defmodule AptamerWeb.FileLive do
 
   @impl true
   def handle_info({:status_change, job_id, new_status}, socket) do
-
     file = socket.assigns.file
     jobs = file.jobs
     job_idx = Enum.find_index(jobs, &(&1.id == job_id))
     updated_jobs = List.update_at(jobs, job_idx, fn struct -> %{struct | status: new_status} end)
     socket = assign(socket, :file, %{file | jobs: updated_jobs})
     {:noreply, socket}
-
   end
 end

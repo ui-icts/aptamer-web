@@ -3,14 +3,14 @@ defmodule Aptamer.Jobs.ScriptInput do
 
   def new(input_file) do
     if is_file_path?(input_file) do
-        # {:file_path, input_file}
+      # {:file_path, input_file}
       %{
         file_name: Path.basename(input_file),
         file_path: Path.expand(input_file),
         file_contents: nil
       }
     else
-        # {:file_contents, input_file}
+      # {:file_contents, input_file}
       %{file_name: "temp_input", file_path: nil, file_contents: input_file}
     end
   end
@@ -43,8 +43,8 @@ defmodule Aptamer.Jobs.ScriptInput do
   end
 
   def absolute_path_on_disk(state) do
-      ## Assumption that path and contents have already been called
-      # so that we know file_path is set!
+    ## Assumption that path and contents have already been called
+    # so that we know file_path is set!
     state.file_path
   end
 

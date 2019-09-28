@@ -1,5 +1,5 @@
 defmodule Aptamer.Jobs.JobStatus do
-  alias Aptamer.Jobs.{File,Job}
+  alias Aptamer.Jobs.{File, Job}
   alias Aptamer.Repo
 
   def topic(%Job{} = job) do
@@ -21,5 +21,4 @@ defmodule Aptamer.Jobs.JobStatus do
       {:status_change, job.id, job.status}
     )
   end
-
 end

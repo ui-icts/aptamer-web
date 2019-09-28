@@ -1,7 +1,6 @@
 defmodule Aptamer.Jobs.Processor do
-
-  alias Aptamer.{Repo,JobControl}
-  alias Aptamer.Jobs.{File,Job,Result,JobStatus,PythonScriptJob}
+  alias Aptamer.{Repo, JobControl}
+  alias Aptamer.Jobs.{File, Job, Result, JobStatus, PythonScriptJob}
 
   def execute_ready_jobs() do
     Aptamer.Jobs.ready_batch() |> execute_jobs()
@@ -15,24 +14,22 @@ defmodule Aptamer.Jobs.Processor do
   defp execute_jobs([]) do
     :ok
   end
+
   def execute_next_job() do
     job = Aptamer.Jobs.next_ready()
 
     if job do
       execute(job)
     end
-
   end
 
   def execute(job) do
-
     job = Aptamer.Jobs.load_associations(job)
 
     script_job =
       job
       |> File.build_script_args()
       |> PythonScriptJob.create()
-
 
     {job, script_job}
     |> set_job_status(:starting)
@@ -60,7 +57,6 @@ defmodule Aptamer.Jobs.Processor do
   end
 
   def save_results({job, script}) do
-
     if script.archive do
       {:ok, result} =
         %Result{job_id: job.id, archive: script.archive}
@@ -73,7 +69,6 @@ defmodule Aptamer.Jobs.Processor do
       UserFiles.broadcast_file_generated(file)
     end
 
-    {job,script}
+    {job, script}
   end
-
 end
