@@ -21,7 +21,14 @@ defmodule AptamerWeb.EmailTest do
       |> insert
 
     ps_opts = build(:predict_structure_options) |> insert
-    job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
+
+    job =
+      insert(:job,
+        file: file,
+        predict_structure_options: ps_opts,
+        create_graph_options: nil,
+        status: "finished"
+      )
 
     assert %Bamboo.Email{
              assigns: %{},
