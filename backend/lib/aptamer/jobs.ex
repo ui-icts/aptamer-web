@@ -33,12 +33,13 @@ defmodule Aptamer.Jobs do
     Repo.get(query, file_id)
   end
 
-  def create_new_job(:create_graph, file, options_params) do
+  def create_new_job(file, options_params) do
     # 2nd arg wins here, even if id, file_id, or status
     # are in the params they wouldn't be picked...that is on
     # purpose. that way a file couldn't be spoofed.
+
     params =
-      Map.merge(%{"create_graph_options" => options_params}, %{
+      Map.merge(options_params, %{
         "id" => Ecto.UUID.generate(),
         "file_id" => file.id,
         "status" => "ready"

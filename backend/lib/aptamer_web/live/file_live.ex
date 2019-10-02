@@ -80,13 +80,13 @@ defmodule AptamerWeb.FileLive do
 
   @impl true
   def handle_event(
-        "run_create_graph",
-        %{"create_graph_options" => options_parms},
+        "create_job",
+        options_parms,
         socket
       ) do
     file = socket.assigns.file
 
-    case Aptamer.Jobs.create_new_job(:create_graph, file, options_parms) do
+    case Aptamer.Jobs.create_new_job(file, options_parms) do
       {:ok, file, job} ->
         if Application.get_env(:aptamer, :start_jobs) == true do
           Task.start(fn ->
