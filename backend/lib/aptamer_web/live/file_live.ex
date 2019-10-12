@@ -20,6 +20,10 @@ defmodule AptamerWeb.FileLive do
       Aptamer.Jobs.CreateGraphOptions.default()
       |> Aptamer.Jobs.CreateGraphOptions.changeset()
 
+    predict_options = 
+      Aptamer.Jobs.PredictStructureOptions.default()
+      |> Aptamer.Jobs.PredictStructureOptions.changeset()
+
     socket =
       socket
       |> assign(:file, file)
@@ -29,7 +33,7 @@ defmodule AptamerWeb.FileLive do
       |> assign(:error_message, false)
       |> assign(:confirm_delete, false)
       |> assign(:options_form, options_by_file_type(file.file_type))
-      |> assign(:predict_structure_options, Aptamer.Jobs.PredictStructureOptions.default())
+      |> assign(:predict_structure_options, predict_options)
       |> assign(:create_graph_options, graph_options)
 
     {:ok, socket}
@@ -59,8 +63,7 @@ defmodule AptamerWeb.FileLive do
   end
 
   @impl true
-  def handle_event("show_options", %{"form_options_choice" => choice}, socket) do
-    IO.puts("CHOICE: #{choice}")
+  def handle_event("show_options", %{"form_options" => %{"choice" => choice}}, socket) do
     socket = assign(socket, :options_form, choice)
     {:noreply, socket}
   end
@@ -73,6 +76,19 @@ defmodule AptamerWeb.FileLive do
     socket =
       socket
       |> assign(:create_graph_options, cs)
+      |> assign(:error_message, false)
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("update_predict_options", %{"predict_structure_options" => params}, socket) do
+    options = Aptamer.Jobs.PredictStructureOptions.default()
+    cs = Aptamer.Jobs.PredictStructureOptions.changeset(options, params)
+
+    socket =
+      socket
+      |> assign(:predict_structure_options, cs)
       |> assign(:error_message, false)
 
     {:noreply, socket}

@@ -1,20 +1,9 @@
-<%= form_for @options, "#", [class: "ui small form", phx_change: "update_graph_options", phx_submit: "run_create_graph"], fn f -> %>
+<%= form_for @options, "#", [class: "ui small form", phx_change: "update_graph_options", phx_submit: "create_job"], fn f -> %>
   <div class="inline fields">
 
     <label>Edge Type</label>
     <div class="field">
-      <div class="ui dropdown selection" phx-hook="SemanticUiDropdown">
-        <%= hidden_input f, :edge_type %>
-        <div class="default text">Edge Type</div>
-        <i class="dropdown icon"></i>
-        <div class="menu">
-          <%= for edge_type <- ["edit","tree","both"] do %>
-          <div class="item" data-value="<%= edge_type %>">
-            <%= edge_type %>
-          </div>
-          <% end %>
-        </div>
-      </div>
+      <%= semanticui_dropdown(f, :edge_type, "Edge Type",["edit","tree","both"] ) %>
     </div>
 
     <div class="field">
@@ -56,6 +45,7 @@
     </div>
 
   </div>
+
   <%= if @show_help do %>
     <div class="ui list">
 

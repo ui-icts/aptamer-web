@@ -8,7 +8,7 @@ defmodule Aptamer.Jobs.PredictStructureOptionsTest do
   @valid_attrs %{
     pass_options: "some content",
     prefix: "some content",
-    run_mfold: true,
+    tool_name: "mfold",
     suffix: "some content",
     vienna_version: 42
   }
@@ -28,7 +28,7 @@ defmodule Aptamer.Jobs.PredictStructureOptionsTest do
     example = %PredictStructureOptions{
       prefix: "",
       suffix: "",
-      run_mfold: false,
+      tool_name: "vienna",
       vienna_version: 2,
       pass_options: "-T 37"
     }

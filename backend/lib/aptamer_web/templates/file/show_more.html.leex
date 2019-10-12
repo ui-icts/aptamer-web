@@ -4,26 +4,23 @@
       <label>Command</label>
       <div class="field">
 
-        <div class="ui dropdown selection" phx-hook="SemanticUiDropdown">
-          <input id="form_options_choice" type="hidden" name="form_options_choice" value="<%= @options_form %>"/>
-          <div class="default text">Please select...</div>
-          <i class="dropdown icon"></i>
-          <div class="menu">
-            <div class="item" data-value="predict_structures">
-              Predict Structures
-            </div>
-            <div class="item" data-value="create_graph">
-              Create Graph
-            </div>
-          </div>
-        </div>
+        <%= semanticui_dropdown({:form_options, @options_form}, :choice, "Please select...", [predict_structures: "Predict Structures", create_graph: "Create Graph"]) %>
       </div>
     </div>
   </form>
   <%= if @options_form == "predict_structures" do %>
-    <%= render "predict_structure.html", options: @predict_structure_options %>
+    <%= render "predict_structure.html", 
+          file_name: @file.file_name,
+          options: @predict_structure_options,
+          show_help: @show_help,
+          show_command_preview: @show_command_preview %>
+
   <% else %>
-    <%= render "create_graph.html", file_name: @file.file_name, options: @create_graph_options, show_help: @show_help, show_command_preview: @show_command_preview %>
+    <%= render "create_graph.html",
+          file_name: @file.file_name,
+          options: @create_graph_options,
+          show_help: @show_help,
+          show_command_preview: @show_command_preview %>
   <% end %>
   
 </div>

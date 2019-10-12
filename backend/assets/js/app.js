@@ -22,16 +22,19 @@ import Dropzone from "dropzone";
 let Hooks = {};
 Hooks.SemanticUiDropdown = {
   mounted() {
+    console.log("DROPDOWN MOUNTED", this.el.id);
     $(this.el).dropdown({
       action: 'activate'
     });
   },
 
   destroyed() {
+    console.log("DROPDOWN DESTROYED", this.el.id);
   },
 
   updated() {
     let fieldVal = $('input:hidden:first', this.el).val()
+    console.log("DROPDOWN UPDATED", this.el.id, fieldVal);
     $(this.el).dropdown('set selected', fieldVal);
   }
 }

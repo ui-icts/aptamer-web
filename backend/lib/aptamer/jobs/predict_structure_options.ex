@@ -4,7 +4,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
   import Ecto.Changeset
 
   schema "predict_structure_options" do
-    field(:run_mfold, :boolean, default: false)
+    field(:tool_name, :string, default: "vienna")
     field(:vienna_version, :integer)
     field(:prefix, :string)
     field(:suffix, :string)
@@ -24,8 +24,8 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:run_mfold, :vienna_version, :prefix, :suffix, :pass_options])
-    |> validate_required([:run_mfold, :vienna_version])
+    |> cast(params, [:tool_name, :vienna_version, :prefix, :suffix, :pass_options])
+    |> validate_required([:tool_name, :vienna_version])
   end
 
   @doc ~S"""
@@ -34,15 +34,15 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
 
   ## Examples
 
-    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{tool_name: "vienna", vienna_version: 2, prefix: "PP", suffix: "SS", pass_options: ""})
     ["-v", "2", "--prefix", "PP", "--suffix", "SS"]
-    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-T 37 -p"})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{tool_name: "mfold", vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: "-T 37 -p"})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS","--pass_options",~s( -T 37 -p)]
-    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: true, vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{tool_name: "mfold", vienna_version: 1, prefix: "PP", suffix: "SS", pass_options: ""})
     ["--run_mfold", "--prefix", "PP", "--suffix", "SS"]
-    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{tool_name: "vienna", vienna_version: 2, prefix: "", suffix: "", pass_options: ""})
     ["-v", "2"]
-    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{run_mfold: false, vienna_version: 2, prefix: "PP", suffix: nil, pass_options: ""})
+    iex> Aptamer.Jobs.PredictStructureOptions.args(%PredictStructureOptions{tool_name: "vienna", vienna_version: 2, prefix: "PP", suffix: nil, pass_options: ""})
     ["-v", "2", "--prefix", "PP"]
   """
   def args(options) do
@@ -58,7 +58,7 @@ defmodule Aptamer.Jobs.PredictStructureOptions do
     common_args = prefix_args ++ suffix_args
 
     tool_args =
-      if options.run_mfold do
+      if options.tool_name == "mfold" do
         ["--run_mfold"]
       else
         ["-v", to_string(options.vienna_version)]

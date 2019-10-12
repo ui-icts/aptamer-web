@@ -63,7 +63,7 @@ defmodule Aptamer.Factory do
 
   def predict_structure_options_factory do
     %Aptamer.Jobs.PredictStructureOptions{
-      run_mfold: false,
+      tool_name: "vienna",
       vienna_version: 2,
       prefix: "PP",
       suffix: "SS",
