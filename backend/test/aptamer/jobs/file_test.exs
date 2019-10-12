@@ -87,4 +87,19 @@ defmodule Aptamer.Jobs.FileTest do
     assert cs.valid?
     assert {:ok, _} = Repo.insert(cs)
   end
+
+  describe "#build_script_args" do
+    test "fails if no options" do
+      job = build(:job)
+      assert {:error, _} = File.build_script_args(job)
+    end
+
+    test "selects script by options" do
+      job = build(:job)
+      assert {"predict_structures.py", _, _} = File.build_script_args(%{job | predict_structure_options: build(:predict_structure_options)})
+      assert {"create_graph.py", _, _} = File.build_script_args(%{job | create_graph_options: build(:create_graph_options)})
+    end
+  end
+
+
 end

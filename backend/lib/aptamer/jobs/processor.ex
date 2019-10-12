@@ -64,7 +64,7 @@ defmodule Aptamer.Jobs.Processor do
     end
 
     if script.generated_file != nil do
-      file = %{script.generated_file | file_owner_id: job.file.owner_id}
+      file = %{script.generated_file | owner_id: job.file.owner_id}
       {:ok, file} = Repo.insert(file)
       UserFiles.broadcast_file_generated(file)
     end

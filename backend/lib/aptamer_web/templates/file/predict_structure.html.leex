@@ -1,12 +1,15 @@
 <%= form_for @options, "#", [class: "ui small form",phx_change: "update_predict_options",  phx_submit: "create_job"], fn f -> %>
 
+
   <div class="inline fields">
     <label>Prediction Tool</label>
     <div class="field">
       <%= semanticui_dropdown(f, :tool_name, "Tool", [vienna: "ViennaRNA",mfold: "mFold"]) %>
     </div>
 
+    <!-- vienna version always 2 for now -->
     <%= version_label(@options) %>
+    <%= hidden_input f, :vienna_version, value: 2 %>
     <a role="button" phx-click="toggle_show_help">Help</a>
   </div>
 

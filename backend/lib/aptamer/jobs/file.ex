@@ -89,13 +89,13 @@ defmodule Aptamer.Jobs.File do
   end
 
   def build_script_args(file, job) do
-    case file.file_type do
-      "structure" ->
+    cond do
+      job.predict_structure_options -> 
+        {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options), file.data}
+      job.create_graph_options ->
         {"create_graph.py", CreateGraphOptions.args(job.create_graph_options), file.data}
-
-      "fasta" ->
-        {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options),
-         file.data}
+      true ->
+        {:error, "No options associated with job"}
     end
   end
 end

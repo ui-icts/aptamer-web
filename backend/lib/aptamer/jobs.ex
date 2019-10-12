@@ -45,7 +45,7 @@ defmodule Aptamer.Jobs do
         "status" => "ready"
       })
 
-    cs =
+    {which_options, cs} =
       %Job{}
       |> cast(params, [:id, :file_id, :status])
       |> cast_assoc(:create_graph_options)
@@ -62,21 +62,20 @@ defmodule Aptamer.Jobs do
             {:ok, file, job}
 
           {:error, cs} ->
-            {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, :create_graph_options)
-            IO.inspect(cs)
-            {:error, "Unable to start job", options_changes}
+            {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, which_options)
+            {:error, "Unable to start job", which_options, options_changes}
         end
       rescue
         error in [Postgrex.Error] ->
           Logger.error("Unable to save job")
           Logger.error(Exception.format(:error, error, __STACKTRACE__))
 
-          {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, :create_graph_options)
-          {:error, "Error creating job", options_changes}
+          {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, which_options)
+          {:error, "Error creating job", which_options, options_changes}
       end
     else
-      {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, :create_graph_options)
-      {:invalid, options_changes}
+      {:ok, options_changes} = Ecto.Changeset.fetch_change(cs, which_options)
+      {:invalid, which_options, options_changes}
     end
   end
 

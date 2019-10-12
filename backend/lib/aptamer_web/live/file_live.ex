@@ -100,6 +100,7 @@ defmodule AptamerWeb.FileLive do
         options_parms,
         socket
       ) do
+
     file = socket.assigns.file
 
     case Aptamer.Jobs.create_new_job(file, options_parms) do
@@ -113,14 +114,19 @@ defmodule AptamerWeb.FileLive do
         socket = assign(socket, :file, file)
         {:noreply, socket}
 
-      {:invalid, options_changeset} ->
-        socket = assign(socket, :create_graph_options, options_changeset)
-        {:noreply, socket}
-
-      {:error, error_message, options_changeset} ->
+      {:invalid, which_options, options_changeset} ->
+        IO.inspect(options_changeset)
         socket =
           socket
-          |> assign(:create_graph_options, options_changeset)
+          |> assign(which_options, options_changeset)
+          |> assign(:error_message, "Invalid options for script")
+
+        {:noreply, socket}
+
+      {:error, error_message, which_options, options_changeset} ->
+        socket =
+          socket
+          |> assign(which_options, options_changeset)
           |> assign(:error_message, error_message)
 
         {:noreply, socket}

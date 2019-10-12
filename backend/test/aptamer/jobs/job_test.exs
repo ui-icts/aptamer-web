@@ -35,4 +35,25 @@ defmodule Aptamer.Jobs.JobTest do
 
     assert "create graph for file 1 quarter portion" == Job.description(job)
   end
+
+  test "validating single set of options" do
+    file = build(:file) |> as_structure |> insert
+    job = build(:job)
+    ps_opts = build(:predict_structure_options)
+    cg_opts = build(:create_graph_options)
+
+    cs = Job.changeset(job, %{file_id: file.id})
+    assert cs.valid?
+    
+    no_options = cs
+    both_options = cs |> Ecto.Changeset.put_assoc(:create_graph_options, cg_opts) |> Ecto.Changeset.put_assoc(:predict_structure_options, ps_opts)
+    only_predict = cs |> Ecto.Changeset.put_assoc(:predict_structure_options, ps_opts)
+    only_create = cs |> Ecto.Changeset.put_assoc(:create_graph_options, cg_opts)
+
+    assert {:error, %Ecto.Changeset{valid?: false}} = Job.validate_only_one_options(no_options)
+    assert {:error, %Ecto.Changeset{valid?: false}} = Job.validate_only_one_options(both_options)
+    assert {:predict_structure_options, %Ecto.Changeset{valid?: true}} = Job.validate_only_one_options(only_predict)
+    assert {:create_graph_options, %Ecto.Changeset{valid?: true}} = Job.validate_only_one_options(only_create)
+  end
+
 end
