@@ -57,10 +57,9 @@ defmodule Aptamer.Jobs.Job do
     case option_changes do
       [:missing, :missing] ->
         {:error,
-          changeset
-          |> add_error(:create_graph_options, "Job should have at least 1 set of options")
-          |> add_error(:predict_structure_options, "Job should have at least 1 set of options")
-        }
+         changeset
+         |> add_error(:create_graph_options, "Job should have at least 1 set of options")
+         |> add_error(:predict_structure_options, "Job should have at least 1 set of options")}
 
       [_some, :missing] ->
         {:create_graph_options, changeset}
@@ -69,9 +68,8 @@ defmodule Aptamer.Jobs.Job do
         {:predict_structure_options, changeset}
 
       [_some1, _some2] ->
-        {:error, 
-          add_error(changeset, :create_graph_options, "Job can only have one set of options")
-        }
+        {:error,
+         add_error(changeset, :create_graph_options, "Job can only have one set of options")}
     end
   end
 end

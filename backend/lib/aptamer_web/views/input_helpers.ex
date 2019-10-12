@@ -17,27 +17,33 @@ defmodule AptamerWeb.InputHelpers do
   end
 
   def semanticui_dropdown(f, field, label_text, options) do
-    [dropdown_id, hinput] = case f do
-      {name,value} ->
-        [input_id(name, field) <> "_dropdown", hidden_input(name, field, value: value)]
-      any ->
-        [input_id(f, field) <> "_dropdown", hidden_input(f, field)]
-    end
+    [dropdown_id, hinput] =
+      case f do
+        {name, value} ->
+          [input_id(name, field) <> "_dropdown", hidden_input(name, field, value: value)]
 
-    default_text = content_tag(:div, label_text, [class: "default text"])
-    icon = content_tag(:i, "", [class: "dropdown icon"])
+        any ->
+          [input_id(f, field) <> "_dropdown", hidden_input(f, field)]
+      end
+
+    default_text = content_tag(:div, label_text, class: "default text")
+    icon = content_tag(:i, "", class: "dropdown icon")
     menu = semantic_dropdown_menu(options)
 
-    content_tag :div, [id: dropdown_id, class: "ui dropdown selection", phx_hook: "SemanticUiDropdown"] do
+    content_tag :div,
+      id: dropdown_id,
+      class: "ui dropdown selection",
+      phx_hook: "SemanticUiDropdown" do
       [hinput, default_text, icon, menu]
     end
   end
 
   defp semantic_dropdown_menu(options) do
-    content_tag :div, [class: "menu"] do
+    content_tag :div, class: "menu" do
       Enum.map(options, fn
-        {key,value} ->
+        {key, value} ->
           content_tag(:div, value, class: "item", data_value: key)
+
         opt ->
           content_tag(:div, opt, class: "item", data_value: opt)
       end)

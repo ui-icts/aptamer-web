@@ -44,16 +44,24 @@ defmodule Aptamer.Jobs.JobTest do
 
     cs = Job.changeset(job, %{file_id: file.id})
     assert cs.valid?
-    
+
     no_options = cs
-    both_options = cs |> Ecto.Changeset.put_assoc(:create_graph_options, cg_opts) |> Ecto.Changeset.put_assoc(:predict_structure_options, ps_opts)
+
+    both_options =
+      cs
+      |> Ecto.Changeset.put_assoc(:create_graph_options, cg_opts)
+      |> Ecto.Changeset.put_assoc(:predict_structure_options, ps_opts)
+
     only_predict = cs |> Ecto.Changeset.put_assoc(:predict_structure_options, ps_opts)
     only_create = cs |> Ecto.Changeset.put_assoc(:create_graph_options, cg_opts)
 
     assert {:error, %Ecto.Changeset{valid?: false}} = Job.validate_only_one_options(no_options)
     assert {:error, %Ecto.Changeset{valid?: false}} = Job.validate_only_one_options(both_options)
-    assert {:predict_structure_options, %Ecto.Changeset{valid?: true}} = Job.validate_only_one_options(only_predict)
-    assert {:create_graph_options, %Ecto.Changeset{valid?: true}} = Job.validate_only_one_options(only_create)
-  end
 
+    assert {:predict_structure_options, %Ecto.Changeset{valid?: true}} =
+             Job.validate_only_one_options(only_predict)
+
+    assert {:create_graph_options, %Ecto.Changeset{valid?: true}} =
+             Job.validate_only_one_options(only_create)
+  end
 end

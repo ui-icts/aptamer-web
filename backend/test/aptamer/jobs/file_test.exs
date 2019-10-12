@@ -96,10 +96,15 @@ defmodule Aptamer.Jobs.FileTest do
 
     test "selects script by options" do
       job = build(:job)
-      assert {"predict_structures.py", _, _} = File.build_script_args(%{job | predict_structure_options: build(:predict_structure_options)})
-      assert {"create_graph.py", _, _} = File.build_script_args(%{job | create_graph_options: build(:create_graph_options)})
+
+      assert {"predict_structures.py", _, _} =
+               File.build_script_args(%{
+                 job
+                 | predict_structure_options: build(:predict_structure_options)
+               })
+
+      assert {"create_graph.py", _, _} =
+               File.build_script_args(%{job | create_graph_options: build(:create_graph_options)})
     end
   end
-
-
 end

@@ -20,7 +20,7 @@ defmodule AptamerWeb.FileLive do
       Aptamer.Jobs.CreateGraphOptions.default()
       |> Aptamer.Jobs.CreateGraphOptions.changeset()
 
-    predict_options = 
+    predict_options =
       Aptamer.Jobs.PredictStructureOptions.default()
       |> Aptamer.Jobs.PredictStructureOptions.changeset()
 
@@ -100,7 +100,6 @@ defmodule AptamerWeb.FileLive do
         options_parms,
         socket
       ) do
-
     file = socket.assigns.file
 
     case Aptamer.Jobs.create_new_job(file, options_parms) do
@@ -116,6 +115,7 @@ defmodule AptamerWeb.FileLive do
 
       {:invalid, which_options, options_changeset} ->
         IO.inspect(options_changeset)
+
         socket =
           socket
           |> assign(which_options, options_changeset)

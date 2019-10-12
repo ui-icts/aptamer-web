@@ -29,8 +29,9 @@ defmodule AptamerWeb.FileView do
         label do
           "Version: 2"
         end
-      _ -> ""
+
+      _ ->
+        ""
     end
   end
-
 end

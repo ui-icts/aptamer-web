@@ -3,8 +3,8 @@ defmodule Aptamer.Repo.Migrations.ChangeRunMfoldToToolName do
 
   def change do
     alter table(:predict_structure_options) do
-      add :tool_name, :string
-      remove :run_mfold
+      add(:tool_name, :string)
+      remove(:run_mfold)
     end
   end
 end
