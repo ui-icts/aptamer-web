@@ -1,6 +1,7 @@
 defmodule Aptamer.Jobs.PredictStructureOptions do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
   import Ecto.Changeset
 
   schema "predict_structure_options" do

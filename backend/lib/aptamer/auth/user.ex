@@ -1,6 +1,7 @@
 defmodule Aptamer.Auth.User do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
   import Ecto.Changeset
 
   alias Aptamer.Auth.{Registration, User}

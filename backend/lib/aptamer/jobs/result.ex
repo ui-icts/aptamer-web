@@ -1,6 +1,7 @@
 defmodule Aptamer.Jobs.Result do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
   import Ecto.Changeset
 
   schema "results" do

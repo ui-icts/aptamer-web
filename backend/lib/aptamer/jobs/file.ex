@@ -1,6 +1,8 @@
 defmodule Aptamer.Jobs.File do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
+
   import Ecto.Changeset
   import Ecto.Query
   alias Ecto.Multi
@@ -9,7 +11,7 @@ defmodule Aptamer.Jobs.File do
 
   schema "files" do
     field(:file_name, :string)
-    field(:uploaded_on, :naive_datetime)
+    field(:uploaded_on, :utc_datetime)
     # structure or fasta
     field(:file_type, :string)
     field(:data, :binary)
@@ -36,7 +38,7 @@ defmodule Aptamer.Jobs.File do
       file_name: Path.basename(file_path),
       data: file_data,
       file_type: "structure",
-      uploaded_on: DateTime.utc_now()
+      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second)
     }
   end
 
@@ -46,7 +48,7 @@ defmodule Aptamer.Jobs.File do
       data: contents,
       owner_id: owner_id,
       file_type: "structure",
-      uploaded_on: DateTime.utc_now()
+      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second)
     })
   end
 

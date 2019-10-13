@@ -9,6 +9,7 @@ defmodule Aptamer.Jobs.Job do
 
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
   import Ecto.Changeset
   alias Aptamer.Repo
 

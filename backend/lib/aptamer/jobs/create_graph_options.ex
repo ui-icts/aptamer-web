@@ -1,6 +1,7 @@
 defmodule Aptamer.Jobs.CreateGraphOptions do
   use Ecto.Schema
   use Aptamer.BinaryIdColums
+  use Aptamer.UtcMicroTimestamps
   import Ecto.Changeset
   alias Aptamer.Jobs.CreateGraphOptions
 
