@@ -19,12 +19,13 @@ defmodule AptamerWeb.PageController do
 
         %{"job_id" => job_id} ->
           query =
-            from(result in Aptamer.Jobs.Result,
-              where: result.job_id == ^job_id
-            )
+            from result in Aptamer.Jobs.Result,
+          where: result.job_id == ^job_id,
+          preload: [job: :file]
 
           result = Repo.one!(query)
-          {"results.zip", result.archive}
+          file_name = "#{result.job.file.file_name}-results-#{String.slice(result.job.id, 0..8)}.zip"
+          {file_name, result.archive}
       end
 
     {:ok, temp_path} = Temp.mkdir("downloads")

@@ -1,19 +1,18 @@
 defmodule TestScript do
-  alias Aptamer.Jobs.{PredictStructureOptions, CreateGraphOptions, PythonScriptJob}
+  alias Aptamer.Jobs.{PredictStructureOptions, CreateGraphOptions, PythonScriptJob, ScriptInput}
 
   def go do
     options = PredictStructureOptions.default()
-    input_file = File.read!("/Users/cortman/icts/aptamer/scripts/samples/Trunc_Test.fa")
 
     script =
       PythonScriptJob.create(
         "predict_structures.py",
         PredictStructureOptions.args(options),
-        input_file
+        ScriptInput.from_disk_file("/Users/cortman/icts/aptamer/scripts/samples/Trunc_Test.fa")
       )
 
-    require IEx
-    IEx.pry()
+    # require IEx
+    # IEx.pry()
     output = PythonScriptJob.run(script)
     IO.puts("A ha!")
     IO.inspect(output, label: "script")

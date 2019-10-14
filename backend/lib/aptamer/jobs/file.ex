@@ -7,7 +7,9 @@ defmodule Aptamer.Jobs.File do
   import Ecto.Query
   alias Ecto.Multi
   alias Aptamer.Repo
-  alias Aptamer.Jobs.{File, CreateGraphOptions, PredictStructureOptions}
+  alias Aptamer.Jobs.{File, CreateGraphOptions, PredictStructureOptions, ScriptInput}
+
+  @derive {Inspect, except: [:data]}
 
   schema "files" do
     field(:file_name, :string)
@@ -94,10 +96,13 @@ defmodule Aptamer.Jobs.File do
     cond do
       job.predict_structure_options ->
         {"predict_structures.py", PredictStructureOptions.args(job.predict_structure_options),
-         file.data}
+          ScriptInput.from_database_file(file)
+        }
 
       job.create_graph_options ->
-        {"create_graph.py", CreateGraphOptions.args(job.create_graph_options), file.data}
+        {"create_graph.py", CreateGraphOptions.args(job.create_graph_options),
+          ScriptInput.from_database_file(file)
+        }
 
       true ->
         {:error, "No options associated with job"}

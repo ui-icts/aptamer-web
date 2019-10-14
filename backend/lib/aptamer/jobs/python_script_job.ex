@@ -32,7 +32,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     %PythonScriptJob{
       script_name: script_name,
       args: args,
-      input: ScriptInput.new(input_file)
+      input: input_file
     }
   end
 
@@ -52,7 +52,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
 
   def prepare_files(state) do
     {:ok, temp_path} = Temp.mkdir()
-    input = ScriptInput.path_and_contents(state.input, temp_path)
+    input = ScriptInput.copy_to_temp_path(state.input, temp_path)
     %{state | working_dir: temp_path, input: input}
   end
 
@@ -90,10 +90,11 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   defp build_args(state) do
     python_path = path(:python)
     script_path = path(:script)
+    input_file_name = ScriptInput.file_name(state.input)
 
     common_args = [
       Path.join(script_path, state.script_name),
-      ScriptInput.absolute_path_on_disk(state.input)
+      Path.join(state.working_dir, input_file_name)
     ]
 
     args = common_args ++ state.args
