@@ -33,7 +33,7 @@ defmodule Aptamer.Jobs.File do
     |> validate_required([:file_name, :uploaded_on, :file_type, :owner_id])
   end
 
-  def new_structure_file!(file_path) do
+  def new(file_path) do
     file_data = Elixir.File.read!(file_path)
 
     %File{
@@ -43,17 +43,6 @@ defmodule Aptamer.Jobs.File do
       uploaded_on: DateTime.truncate(DateTime.utc_now(), :second),
       sequence_count: count_sequences(file_data)
     }
-  end
-
-  def new_structure_file_changeset(file_name, contents, owner_id) do
-    changeset(%File{}, %{
-      file_name: file_name,
-      data: contents,
-      owner_id: owner_id,
-      file_type: guess_file_type(contents),
-      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second),
-      sequence_count: count_sequences(contents)
-    })
   end
 
   def delete(file) do

@@ -127,7 +127,7 @@ defmodule Aptamer.Jobs.PythonScriptJob do
           # TODO: Maybe worth just storing a file name and contents in
           # a tuple instead of the File struct ? That would completely
           # decouple running the script from our storage impl
-          %{state | generated_file: Aptamer.Jobs.File.new_structure_file!(structure_file)}
+          %{state | generated_file: Aptamer.Jobs.File.new(structure_file)}
         else
           state
         end

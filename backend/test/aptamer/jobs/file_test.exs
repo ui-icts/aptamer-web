@@ -81,13 +81,6 @@ defmodule Aptamer.Jobs.FileTest do
     assert [-2, 0, 83] = File.unique_id_list(jobs1, :predict_structure_options_id)
   end
 
-  test "creates new structure file" do
-    owner = insert(:user)
-    cs = File.new_structure_file_changeset("test_file", "XXXX", owner.id)
-    assert cs.valid?
-    assert {:ok, _} = Repo.insert(cs)
-  end
-
   describe "#build_script_args" do
     test "fails if no options" do
       job = build(:job)
