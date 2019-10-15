@@ -24,7 +24,7 @@ defmodule AptamerWeb.PageController do
           preload: [job: :file]
 
           result = Repo.one!(query)
-          file_name = "#{result.job.file.file_name}-results-#{String.slice(result.job.id, 0..8)}.zip"
+          file_name = "#{result.job.file.file_name}-results-#{String.slice(result.job.id, 0..7)}.zip"
           {file_name, result.archive}
       end
 

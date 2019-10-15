@@ -74,6 +74,10 @@ defmodule Aptamer.Jobs.PythonScriptJob do
     program_output = Enum.join(lines, "\n")
 
     results = """
+    Command:
+
+    #{python_path} #{Enum.join(args, " ")}
+
     Program exited with code: #{exit_status}
 
     Output
