@@ -107,4 +107,41 @@ defmodule Aptamer.Jobs.FileTest do
                File.build_script_args(%{job | create_graph_options: build(:create_graph_options)})
     end
   end
+
+  describe "#guess_file_type" do
+    test "is fasta if 3rd line starts with >" do
+      file_contents = """
+      >2	SIZE=2
+      AAACATGCATCATCAGGTAAGTACGGTCCC
+      >3	SIZE=2
+      AAAGCATCAGTGCAAGTCGTTGGCCCC
+      >4	SIZE=5
+      AAAGCCACAGATATCTCCCCTGTTGCTCCC
+      >5	SIZE=23
+      AAAGGTCCTCGTATTGCACGTACTGCGCCC
+      >6	SIZE=2
+      AAAGTCTGGGCTATGACTCTTTACCCCCCCC
+      """
+
+      assert "fasta" == File.guess_file_type(file_contents)
+    end
+
+    test "is structure when 3rd line is dot graph" do
+
+      file_contents = """
+      >2
+      AAACATGCATCATCAGGTAAGTACGGTCCC
+      ..............................
+      >3
+      AAAGCATCAGTGCAAGTCGTTGGCCCC
+      ...(((....)))..............
+      >4
+      AAAGCCACAGATATCTCCCCTGTTGCTCCC
+      ..(((.((((.........)))).)))...
+      >5
+      """
+
+      assert "structure" == File.guess_file_type(file_contents)
+    end
+  end
 end

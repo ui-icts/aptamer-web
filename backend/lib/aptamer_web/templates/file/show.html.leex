@@ -21,6 +21,7 @@
 
 <div class="content">
   <%= link @file.file_name, to: Routes.file_path(@socket, :show, @file.id) %>
+  <div class="description">Sequences: <%= Number.Delimit.number_to_delimited(@file.sequence_count) %>
   <div class="description">Uploaded <%= Timex.from_now(@file.uploaded_on) %></div>
   <div class="extra">
     <%= render "jobs.html", jobs: @file.jobs %>

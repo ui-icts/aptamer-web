@@ -17,7 +17,7 @@ defmodule Aptamer.Jobs.File do
     # structure or fasta
     field(:file_type, :string)
     field(:data, :binary)
-
+    field(:sequence_count, :integer, default: 0)
     belongs_to(:owner, Aptamer.Auth.User, foreign_key: :owner_id)
     has_many(:jobs, Aptamer.Jobs.Job)
 
@@ -29,7 +29,7 @@ defmodule Aptamer.Jobs.File do
   """
   def changeset(%File{} = struct, params \\ %{}) do
     struct
-    |> cast(params, [:file_name, :uploaded_on, :file_type, :data, :owner_id])
+    |> cast(params, [:file_name, :uploaded_on, :file_type, :data, :owner_id, :sequence_count])
     |> validate_required([:file_name, :uploaded_on, :file_type, :owner_id])
   end
 
@@ -39,8 +39,9 @@ defmodule Aptamer.Jobs.File do
     %File{
       file_name: Path.basename(file_path),
       data: file_data,
-      file_type: "structure",
-      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second)
+      file_type: guess_file_type(file_data),
+      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second),
+      sequence_count: count_sequences(file_data)
     }
   end
 
@@ -49,8 +50,9 @@ defmodule Aptamer.Jobs.File do
       file_name: file_name,
       data: contents,
       owner_id: owner_id,
-      file_type: "structure",
-      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second)
+      file_type: guess_file_type(contents),
+      uploaded_on: DateTime.truncate(DateTime.utc_now(), :second),
+      sequence_count: count_sequences(contents)
     })
   end
 
@@ -107,5 +109,27 @@ defmodule Aptamer.Jobs.File do
       true ->
         {:error, "No options associated with job"}
     end
+  end
+
+  def guess_file_type(contents) when is_binary(contents) do
+    [one,two,three] = String.split(contents, "\n") |> Enum.take(3)
+    IO.puts(three)
+    case three do
+      ">" <> rest -> "fasta"
+      "." <> rest -> "structure"
+      "(" <> rest -> "structure"
+      ")" <> rest -> "structure"
+      _ -> "unknown"
+    end
+  end
+
+  def count_sequences(contents) when is_binary(contents) do
+    lines = String.split(contents, "\n")
+    contents
+    |> String.split("\n")
+    |> Enum.reject(fn line ->
+      String.starts_with?(line, ~W/> ; . ( )/) || (String.trim(line) == "")
+    end)
+    |> Enum.count
   end
 end

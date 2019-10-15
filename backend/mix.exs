@@ -60,7 +60,8 @@ defmodule Aptamer.Mixfile do
       {:bamboo, "~> 0.8"},
       {:bamboo_smtp, "~> 1.4.0"},
       {:phoenix_live_view, "~> 0.3.1"},
-      {:libcluster, "~> 3.1"}
+      {:libcluster, "~> 3.1"},
+      {:number, "~> 1.0.0"}
     ]
   end
 

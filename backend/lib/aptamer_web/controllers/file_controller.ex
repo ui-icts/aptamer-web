@@ -14,9 +14,10 @@ defmodule AptamerWeb.FileController do
     file_params = %{
       "file_name" => params["file"].filename,
       "uploaded_on" => DateTime.utc_now(),
-      "file_type" => "structure",
+      "file_type" => File.guess_file_type(file_data),
       "data" => file_data,
-      "owner_id" => current_user.id
+      "owner_id" => current_user.id,
+			"sequence_count" => File.count_sequences(file_data)
     }
 
     {:ok, file} =
