@@ -1,0 +1,47 @@
+image: docker:19.03.1
+
+variables:
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+services:
+  - docker:19.03.1-dind
+
+compile:
+  stage: build
+  image: elixir:1.10
+  tags:
+    - docker-build
+  script:
+    - mix deps.get
+    - mix deps.compile
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - deps
+      - _build
+
+unit_tests:
+  stage: test
+  image: elixir:1.10
+  tags:
+    - docker-build
+  script:
+    - mix test
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - deps
+      - _build
+
+create_image:
+  stage: deploy
+  tags:
+    - docker-build
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_RELEASE_IMAGE .
+    - docker push $CONTAINER_RELEASE_IMAGE
