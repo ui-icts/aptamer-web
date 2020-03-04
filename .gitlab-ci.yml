@@ -34,6 +34,7 @@ unit_tests:
     - cd backend
     - mix local.hex --force
     - mix local.rebar --force
+    - mix deps.get
     - mix test
   cache:
     key: "$CI_COMMIT_REF_NAME"
