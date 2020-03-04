@@ -13,6 +13,7 @@ compile:
   tags:
     - docker-build
   script:
+    - cd backend
     - mix deps.get
     - mix deps.compile
   cache:
@@ -28,6 +29,7 @@ unit_tests:
   tags:
     - docker-build
   script:
+    - cd backend
     - mix test
   cache:
     key: "$CI_COMMIT_REF_NAME"
