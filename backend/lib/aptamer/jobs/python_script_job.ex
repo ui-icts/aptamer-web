@@ -92,12 +92,19 @@ defmodule Aptamer.Jobs.PythonScriptJob do
   end
 
   defp build_args(state) do
-    python_path = path(:python)
-    script_path = path(:script)
+    python_path = System.find_executable("python")
     input_file_name = ScriptInput.file_name(state.input)
 
+    python_module = case state.script_name do
+      "predict_structures.py" -> "aptamer.predict_structures"
+      "create_graph.py" -> "aptamer.create_graph"
+      _ ->
+        raise "Unknown script name #{state.script_name}"
+    end
+
     common_args = [
-      Path.join(script_path, state.script_name),
+      "-m",
+      python_module,
       Path.join(state.working_dir, input_file_name)
     ]
 
@@ -159,17 +166,6 @@ defmodule Aptamer.Jobs.PythonScriptJob do
       state.working_dir,
       [ScriptInput.file_name(state.input), ".struct.fa"]
     )
-  end
-
-  defp path(type) do
-    case type do
-      :python ->
-        System.get_env("APTAMER_PYTHON") ||
-          "#{System.user_home()}/.virtualenvs/aptamer-runtime-3/bin/python"
-
-      :script ->
-        System.get_env("APTAMER_SCRIPT") || "#{System.user_home()}/icts/aptamer/scripts/aptamer"
-    end
   end
 
   defp zip_directory_contents(output_directory, zip_file_name) do
