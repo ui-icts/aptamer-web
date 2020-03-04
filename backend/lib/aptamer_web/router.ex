@@ -18,6 +18,7 @@ defmodule AptamerWeb.Router do
     get "/results/:job_id", PageController, :download_file
     get "/download/:file_id", PageController, :download_file
     resources "/sessions", SessionController
+    get "/health", HealthController, :index
     get "/", HomeController, :index
     # Public routes here
   end

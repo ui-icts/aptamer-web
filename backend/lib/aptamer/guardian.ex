@@ -19,8 +19,13 @@ defmodule Aptamer.Guardian do
     # found in the `"sub"` key. In `above subject_for_token/2` we returned
     # the resource id so here we'll rely on that to look it up.
     id = claims["sub"]
-    resource = Repo.get(User, id)
-    {:ok, resource}
+    try do
+      resource = Repo.get(User, id)
+      {:ok, resource}
+    rescue
+      e in DBConnection.ConnectionError ->
+      {:error, :database_down}
+    end
   end
 
   defmodule AuthErrorHandler do
