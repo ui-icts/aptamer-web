@@ -1,14 +1,13 @@
 image: docker:19.03.1
 
-variables:
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
-
 services:
   - docker:19.03.1-dind
   - name: postgres:10
     alias: pgdb
+    
 variables:
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
   POSTGRES_DB: aptamer_test
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
