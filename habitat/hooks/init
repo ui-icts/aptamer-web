@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -o nounset
-set -e
-
-. {{pkg.svc_config_path}}/dotenv
-
-{{pkg.path}}/bin/aptamer eval "Aptamer.ReleaseTasks.bootstrap()"
-

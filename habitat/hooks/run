@@ -1,6 +1,0 @@
-#!/bin/sh
-
-. {{pkg.svc_config_path}}/dotenv
-
-exec 2>&1
-exec aptamer start

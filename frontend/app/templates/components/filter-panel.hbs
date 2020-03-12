@@ -1,7 +1,0 @@
-<div class="ui secondary menu">
-  {{#each menuItems as |mi|}}
-    <a role="button" class="item {{if mi.selected "active"}}" {{action (mut currentFilter) mi.value}}> {{mi.text}} </a>
-  {{/each}}
-</div>
-
-{{yield currentFilter}}
