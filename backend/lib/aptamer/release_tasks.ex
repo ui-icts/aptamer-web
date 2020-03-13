@@ -15,6 +15,11 @@ defmodule Aptamer.ReleaseTasks do
     defstruct run_seeds: false
   end
 
+  def process_jobs(_args \\ []) do
+    Application.ensure_all_started(:aptamer)
+    Aptamer.Jobs.Processor.execute_ready_jobs()
+  end
+
   def bootstrap(_args \\ []) do
     IO.puts("Loading Aptamer..")
 

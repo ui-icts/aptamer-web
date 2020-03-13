@@ -2,6 +2,7 @@ defmodule AptamerWeb.FileLive do
   use Phoenix.LiveView
   alias Phoenix.View, as: PV
   alias Aptamer.Jobs.JobStatus
+  require Logger
 
   @impl true
   def render(assigns) do
@@ -104,11 +105,12 @@ defmodule AptamerWeb.FileLive do
 
     case Aptamer.Jobs.create_new_job(file, options_parms) do
       {:ok, file, job} ->
-        if Application.get_env(:aptamer, :start_jobs) == true do
-          Task.start(fn ->
-            Aptamer.Jobs.Processor.execute(job)
-          end)
-        end
+        Logger.info "Bypassing start job waiting for schedule"
+        # if Application.get_env(:aptamer, :start_jobs) == true do
+        #   Task.start(fn ->
+        #     Aptamer.Jobs.Processor.execute(job)
+        #   end)
+        # end
 
         socket = assign(socket, :file, file)
         {:noreply, socket}
