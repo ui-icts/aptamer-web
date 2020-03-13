@@ -8,7 +8,7 @@ use Mix.Config
 # General application configuration
 config :aptamer,
   ecto_repos: [Aptamer.Repo],
-  start_jobs: true
+  start_jobs: System.get_env("START_JOBS","true") == "true"
 
 # Configures the endpoint
 config :aptamer, AptamerWeb.Endpoint,
