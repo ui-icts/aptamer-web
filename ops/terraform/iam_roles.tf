@@ -56,7 +56,29 @@ resource "aws_iam_role_policy_attachment" "attach-default-to-task-role" {
   policy_arn = data.aws_iam_policy.default_for_ecs_task_role.arn
 }
 
-
+resource "aws_iam_role_policy" "allow_cloudwatch" {
+  name = "AllowECStoCloudWatch"
+  role = aws_iam_role.ecsInstanceRole.id
+  policy = <<-EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:*:*"
+            ]
+        }
+    ]
+}
+EOF
+}
 resource "aws_iam_role_policy" "allow_secrets" {
   name = "allow_secrets_for_ecs"
   role = aws_iam_role.ecsTaskExecutionRole.id
@@ -71,7 +93,7 @@ resource "aws_iam_role_policy" "allow_secrets" {
         "secretsmanager:GetSecretValue"
       ],
       "Resource": [
-        "arn:aws:secretsmanager:us-east-1:137583355304:secret:aptamerweb/gitlab/registry"
+        "${data.aws_secretsmanager_secret.gitlab-registry.arn}"
       ]
     }
   ]
