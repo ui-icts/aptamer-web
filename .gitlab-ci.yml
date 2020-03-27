@@ -2,7 +2,7 @@ image: docker:19.03.1
 
 stages:
   - test
-  - containers
+  - build
 
 services:
   - docker:19.03.1-dind
@@ -10,8 +10,8 @@ services:
     alias: pgdb
 
 variables:
-  WEB_IMAGE: $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG
-  BOOTSTRAP_IMAGE: $CI_REGISTRY_IMAGE/bootstrap:$CI_COMMIT_REF_SLUG
+  WEB_IMAGE: $CI_REGISTRY_IMAGE/web:latest
+  BOOTSTRAP_IMAGE: $CI_REGISTRY_IMAGE/bootstrap:latest
   POSTGRES_DB: aptamer_test
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
@@ -35,8 +35,8 @@ unit_test:
       - deps
       - _build
 
-make_image:
-  stage: containers
+docker_build:
+  stage: build
   tags:
     - docker-build
   before_script:
