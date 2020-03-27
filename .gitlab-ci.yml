@@ -44,6 +44,6 @@ docker_build:
   script:
     - docker build --pull --cache-from $WEB_IMAGE -t $WEB_IMAGE .
     - docker tag $WEB_IMAGE aptamer-web:latest
-    - docker build --pull --cache-from $WEB_IMAGE -t $BOOTSTRAP_IMAGE .
+    - docker build --pull --cache-from $WEB_IMAGE -f Dockerfile.bootstrap -t $BOOTSTRAP_IMAGE .
     - docker push $WEB_IMAGE
     - docker push $BOOTSTRAP_IMAGE
