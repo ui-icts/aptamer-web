@@ -17,10 +17,6 @@ resource "aws_key_pair" "terraform" {
   public_key = file("~/.ssh/terraform.pub")
 }
 
-data "aws_route53_zone" "dns_zone" {
-  name          = "icts-aptamer.aws.cloud.uiowa.edu"
-}
-
 variable "region_subnet_map" {
   type = map(list(string))
   default = {

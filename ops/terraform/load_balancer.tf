@@ -5,6 +5,13 @@ resource "aws_security_group" "load_balancer" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
+    cidr_blocks = ["208.126.207.39/32"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 443
+    to_port     = 443
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -47,6 +54,23 @@ resource "aws_lb_listener" "lb_listener" {
     port = "80"
     protocol = "HTTP"
 
+    default_action {
+        target_group_arn = aws_lb_target_group.web.arn
+        type = "forward"
+    }
+}
+
+data "aws_acm_certificate" "main" {
+  domain = "icts-aptamer.aws.cloud.uiowa.edu"
+  statuses = ["ISSUED"]
+}
+
+resource "aws_lb_listener" "lb_listener_secure" {
+    load_balancer_arn = aws_lb.app.arn
+
+    port = "443"
+    protocol = "HTTPS"
+    certificate_arn   = data.aws_acm_certificate.main.arn
     default_action {
         target_group_arn = aws_lb_target_group.web.arn
         type = "forward"

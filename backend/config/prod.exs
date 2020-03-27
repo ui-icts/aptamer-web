@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :aptamer, AptamerWeb.Endpoint,
   http: [port: 4000],
-  url: [host: "localhost", port: 4000],
+  url: [host: System.get_env("WEB_HOST") || "localhost", port: 80],
   server: true,
   root: ".",
   secret_key_base: "01BgHAmJr7VcdaWMw1XqbLJNAl9tqzEEvHxYRjjvc8TticZ5p6yOd/HgrzBVb8T2",

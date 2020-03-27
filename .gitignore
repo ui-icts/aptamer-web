@@ -2,3 +2,5 @@ results
 .vagrant
 .DS_Store
 /node_modules/*
+ops/terraform/certs
+ops/certs

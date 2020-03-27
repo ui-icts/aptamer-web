@@ -23,8 +23,8 @@ resource "aws_db_instance" "app" {
   engine_version            = "10.6"
   instance_class            = "db.t2.micro"
   name                      = "aptamer"
-  username                  = "aptamer"
-  password                  = "aptamerpass2018"
+  username                  = "ENTER_USERNAME"
+  password                  = "ENTER_PASSWORD"
   vpc_security_group_ids    = [aws_security_group.database.id]
   db_subnet_group_name      = data.aws_ssm_parameter.its-db-subnet-group.value
   final_snapshot_identifier = "aptamer-database-snapshot"
