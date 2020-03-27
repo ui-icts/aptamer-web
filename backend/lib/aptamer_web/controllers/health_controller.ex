@@ -2,8 +2,7 @@ defmodule AptamerWeb.HealthController do
   use AptamerWeb, :controller
 
   def index(conn, _params) do
-    with {:ok, _ } <- test_database_connection(),
-         {:ok, _} <- test_python_modules() do
+    with {:ok, _ } <- test_database_connection() do
       send_resp(conn, 200, "healthy")
     else
       {:error, _ } ->
