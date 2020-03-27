@@ -1,36 +1,21 @@
 image: docker:19.03.1
 
+stages:
+  - test
+  - containers
+
 services:
   - docker:19.03.1-dind
   - name: postgres:10
     alias: pgdb
-    
+
 variables:
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  WEB_IMAGE: $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG
+  BOOTSTRAP_IMAGE: $CI_REGISTRY_IMAGE/bootstrap:$CI_COMMIT_REF_SLUG
   POSTGRES_DB: aptamer_test
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_HOST_AUTH_METHOD: trust
-
-
-compile:
-  stage: build
-  image: elixir:1.10
-  tags:
-    - docker-build
-  script:
-    - cd backend
-    - mix local.hex --force
-    - mix local.rebar --force
-    - mix deps.get
-    - mix deps.compile
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - deps
-      - _build
 
 unit_tests:
   stage: test
@@ -45,17 +30,20 @@ unit_tests:
     - DATABASE_HOST=pgdb mix test
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: pull
+    policy: push
     paths:
       - deps
       - _build
 
-create_image:
-  stage: deploy
+create_web_image:
+  stage: containers
   tags:
     - docker-build
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_RELEASE_IMAGE .
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker build --pull --cache-from $WEB_IMAGE -t $WEB_IMAGE .
+    - docker tag $WEB_IMAGE aptamer-web:latest
+    - docker build --pull --cache-from $WEB_IMAGE -t $BOOTSTRAP_IMAGE .
+    - docker push $WEB_IMAGE
+    - docker push $BOOTSTRAP_IMAGE

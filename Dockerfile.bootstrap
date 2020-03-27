@@ -1,0 +1,4 @@
+FROM aptamer-web:latest
+
+ENTRYPOINT ["/app/bin/aptamer"]
+CMD ["eval","Aptamer.ReleaseTasks.bootstrap()"]

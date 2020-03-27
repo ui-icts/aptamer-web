@@ -2,3 +2,5 @@ frontend
 backend/_build
 backend/deps
 backend/assets/node_modules
+ops/ansible/.vagrant
+ops/terraform
