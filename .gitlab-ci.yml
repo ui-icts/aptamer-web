@@ -1,8 +1,8 @@
 image: docker:19.03.1
 
 stages:
-  - build
   - test
+  - build
 
 services:
   - docker:19.03.1-dind
@@ -48,7 +48,7 @@ build_images:
     - docker build --pull --cache-from $WEB_IMAGE -t $WEB_IMAGE .
     - docker tag $WEB_IMAGE aptamer-web:latest
     - docker build -f Dockerfile.bootstrap -t $BOOTSTRAP_IMAGE .
-    - docker build --pull -f Dockerfile.batch -t $BATCH_IMAGE
+    - docker build --pull -f Dockerfile.batch -t $BATCH_IMAGE .
     - docker push $WEB_IMAGE
     - docker push $BOOTSTRAP_IMAGE
     - docker push $BATCH_IMAGE
