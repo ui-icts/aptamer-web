@@ -2,6 +2,7 @@ image: docker:19.03.1
 
 stages:
   - build
+  - test
 
 services:
   - docker:19.03.1-dind
