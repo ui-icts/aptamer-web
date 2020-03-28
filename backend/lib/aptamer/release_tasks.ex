@@ -17,6 +17,7 @@ defmodule Aptamer.ReleaseTasks do
 
   def process_jobs(_args \\ []) do
     Application.ensure_all_started(:aptamer)
+    IO.puts "Starting job processor"
     Aptamer.Jobs.Processor.execute_ready_jobs()
   end
 
