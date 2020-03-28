@@ -12,6 +12,7 @@ services:
 variables:
   WEB_IMAGE: $CI_REGISTRY_IMAGE/web:latest
   BOOTSTRAP_IMAGE: $CI_REGISTRY_IMAGE/bootstrap:latest
+  BATCH_IMAGE: $DOCKERHUB_USER/aptamer-batch:latest
   POSTGRES_DB: aptamer_test
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
@@ -35,7 +36,7 @@ unit_test:
       - deps
       - _build
 
-docker_build:
+build:web:
   stage: build
   tags:
     - docker-build
@@ -47,3 +48,16 @@ docker_build:
     - docker build -f Dockerfile.bootstrap -t $BOOTSTRAP_IMAGE .
     - docker push $WEB_IMAGE
     - docker push $BOOTSTRAP_IMAGE
+
+build:batch:
+  stage: build
+  dependencies:
+    - build:web
+  tags:
+    - docker-build
+  before_script:
+    - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USER --password-stdin
+  script:
+    - docker tag $WEB_IMAGE aptamer-web:latest
+    - docker build --pull -f Dockerfile.batch -t $BATCH_IMAGE
+    - docker push $BATCH_IMAGE

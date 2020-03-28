@@ -1,0 +1,9 @@
+FROM registry.git.uiowa.edu:5005/ccom/research/aptamer-scripts:latest as scripts
+
+WORKDIR /app
+COPY --from=aptamer-web:latest /app .
+
+ENV MIX_ENV=prod \
+    SHELL=/bin/bash
+
+CMD ["/app/bin/aptamer", "eval", "Aptamer.ReleaseTasks.process_jobs()"]

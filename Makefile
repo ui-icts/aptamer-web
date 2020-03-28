@@ -6,6 +6,9 @@ web_image:
 bootstrap_image:
 	docker build -f Dockerfile.db -t aptamer-db:latest .
 
+batch_image:
+	docker build -f Dockerfile.batch -t aptamer-batch:latest .
+
 web:
 	docker run -it --rm --env-file macdev.env -P aptamer-web:latest 
 
