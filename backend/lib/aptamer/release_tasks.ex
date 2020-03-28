@@ -19,6 +19,7 @@ defmodule Aptamer.ReleaseTasks do
     Application.ensure_all_started(:aptamer)
     IO.puts "Starting job processor"
     Aptamer.Jobs.Processor.execute_ready_jobs()
+    IO.puts "Job processor finished"
   end
 
   def bootstrap(_args \\ []) do

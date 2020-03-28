@@ -5,5 +5,5 @@ COPY --from=aptamer-web:latest /app .
 
 ENV MIX_ENV=prod \
     SHELL=/bin/bash
-
-CMD ["/app/bin/aptamer", "eval", "Aptamer.ReleaseTasks.process_jobs()"]
+ENTRYPOINT ["/app/bin/aptamer"]
+CMD ["eval", "Aptamer.ReleaseTasks.process_jobs"]
