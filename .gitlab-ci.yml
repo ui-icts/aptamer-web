@@ -52,7 +52,7 @@ build_web:
 build_batch:
   stage: build
   dependencies:
-    - build:web
+    - build_web
   tags:
     - docker-build
   before_script:
