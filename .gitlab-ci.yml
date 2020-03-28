@@ -36,28 +36,18 @@ unit_test:
       - deps
       - _build
 
-build_web:
+build_images:
   stage: build
   tags:
     - docker-build
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USER --password-stdin
   script:
     - docker build --pull --cache-from $WEB_IMAGE -t $WEB_IMAGE .
     - docker tag $WEB_IMAGE aptamer-web:latest
     - docker build -f Dockerfile.bootstrap -t $BOOTSTRAP_IMAGE .
+    - docker build --pull -f Dockerfile.batch -t $BATCH_IMAGE
     - docker push $WEB_IMAGE
     - docker push $BOOTSTRAP_IMAGE
-
-build_batch:
-  stage: build
-  dependencies:
-    - build_web
-  tags:
-    - docker-build
-  before_script:
-    - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USER --password-stdin
-  script:
-    - docker tag $WEB_IMAGE aptamer-web:latest
-    - docker build --pull -f Dockerfile.batch -t $BATCH_IMAGE
     - docker push $BATCH_IMAGE
