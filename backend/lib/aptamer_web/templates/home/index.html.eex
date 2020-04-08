@@ -1,29 +1,9 @@
-
-
 <div class="ui basic segment">
 
  <p>
  <%= form_tag "/files", [multipart: true, csrf_token: true, class: "dropzone"] do %>
 
  <% end %>
-  <!--
-{{drop-zone 
-  error=(action "errorFile")
-  success=(action "successFile")
-  complete=(action "completeFile")
-  addedfile=(action "addedFile")
-  uploadprogress=(action "progressFile")
-  headers=dropzoneHeaders
-  url=url
-}}
-
-{{#each uploadJobs as |job|}}
-  {{#ui-progress percent=job.percentComplete class="teal indicating"}}
-    <div class="bar"></div>
-    <div class="label">{{job.fileName}}</div>
-  {{/ui-progress}}
-{{/each}}
-  -->
 </p>
 
 <br>
