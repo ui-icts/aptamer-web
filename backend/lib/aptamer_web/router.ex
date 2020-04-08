@@ -15,7 +15,7 @@ defmodule AptamerWeb.Router do
     # Use the default browser stack
     pipe_through :browser
     resources "/files", FileController
-    get "/results/:job_id", PageController, :download_file
+    get "/results/:job_id", PageController, :download_results
     get "/download/:file_id", PageController, :download_file
     resources "/sessions", SessionController
     get "/health", HealthController, :index

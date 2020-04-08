@@ -6,7 +6,7 @@
   <% else %>
     <p>
       <%= job_description(job,index) %>
-      <%= link "Download Results", to: "/results/#{job.id}" %>
+      <%= link "Download Results", to: Routes.page_path(@socket, :download_results, job.id) %>
     </p>
   <% end %>
 <% end %>

@@ -10,27 +10,11 @@ defmodule AptamerWeb.PageController do
     |> render("index.html")
   end
 
-  def download_file(conn, params) do
-    {file_name, file_content} =
-      case params do
-        %{"file_id" => file_id} ->
-          file = Repo.get!(AptamerFile, file_id)
-          {file.file_name, file.data}
-
-        %{"job_id" => job_id} ->
-          query =
-            from result in Aptamer.Jobs.Result,
-          where: result.job_id == ^job_id,
-          preload: [job: :file]
-
-          result = Repo.one!(query)
-          file_name = "#{result.job.file.file_name}-results-#{String.slice(result.job.id, 0..7)}.zip"
-          {file_name, result.archive}
-      end
+  def send_file_contents(conn, file_name, file_content) do
 
     {:ok, temp_path} = Temp.mkdir("downloads")
     input_file = Path.join(temp_path, file_name)
-    File.write(input_file, file_content)
+    :ok = File.write(input_file, file_content)
 
     conn =
       conn
@@ -39,4 +23,25 @@ defmodule AptamerWeb.PageController do
 
     conn
   end
+
+  def download_results(conn, %{"job_id" => job_id}) do
+    query =
+      from result in Aptamer.Jobs.Result,
+      where: result.job_id == ^job_id,
+      preload: [job: :file]
+
+    result = Repo.one!(query)
+    file_name = "#{result.job.file.file_name}-results-#{String.slice(result.job.id, 0..7)}.zip"
+
+    file_content = result.archive
+    send_file_contents(conn, file_name, file_content)
+
+  end
+
+  def download_file(conn, %{"file_id" => file_id}) do
+    file = Repo.get!(AptamerFile, file_id)
+    {file_name, file_content} = {file.file_name, file.data}
+    send_file_contents(conn, file_name, file_content)
+  end
+
 end

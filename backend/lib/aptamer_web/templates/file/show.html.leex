@@ -3,7 +3,7 @@
     <i class="options icon"></i>
     Configure
   </button>
-  <a class="small ui button" href="{{downloadHost}}/download/{{routeObject.id}}">
+  <a class="small ui button" href="<%= Routes.page_path(@socket, :download_file, @file.id) %>">
     <i class="download icon"></i>
     Download
   </a>
@@ -24,7 +24,7 @@
   <div class="description">Sequences: <%= Number.Delimit.number_to_delimited(@file.sequence_count) %>
   <div class="description">Uploaded <%= Timex.from_now(@file.uploaded_on) %></div>
   <div class="extra">
-    <%= render "jobs.html", jobs: @file.jobs %>
+    <%= render "jobs.html", jobs: @file.jobs, socket: @socket %>
   </div>
 </div>
 
