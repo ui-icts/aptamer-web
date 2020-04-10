@@ -7,14 +7,20 @@ defmodule AptamerWeb.FileView do
 
   def format_slider_value(%Ecto.Changeset{} = cs, field) do
     {_, fv} = Ecto.Changeset.fetch_field(cs, field)
-    format_slider_value(fv)
+    format_slider_value(field, fv)
   end
 
-  def format_slider_value(edit_distance) do
-    if edit_distance <= 0 do
+  def format_slider_value(field, value) do
+
+    min_value = case field do
+      :max_edit_distance -> 1
+      :max_tree_distance -> 0
+    end
+
+    if value < min_value do
       "None"
     else
-      to_string(edit_distance)
+      to_string(value)
     end
   end
 

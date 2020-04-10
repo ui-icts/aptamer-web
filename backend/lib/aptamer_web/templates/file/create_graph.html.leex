@@ -24,7 +24,7 @@
     <div class="field">
       <label>Max tree distance <%= format_slider_value(@options, :max_tree_distance) %></label>
       <br>
-      <%= text_input f, :max_tree_distance, type: "range", min: 0, max: 11 %>
+      <%= text_input f, :max_tree_distance, type: "range", min: -1, max: 11 %>
     </div>
 
     <a role="button" phx-click="toggle_show_help">Help</a>

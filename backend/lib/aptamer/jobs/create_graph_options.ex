@@ -8,7 +8,9 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
   schema "create_graph_options" do
     field(:edge_type, :string)
     field(:seed, :boolean, default: false)
+    # edit_distance can be 1 - 11
     field(:max_edit_distance, :integer)
+    # tree_distance 0 - 11
     field(:max_tree_distance, :integer)
     field(:batch_size, :integer, default: 10_000)
     field(:spawn, :boolean, default: true)
@@ -61,7 +63,7 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: -1, max_tree_distance: 3})
     ["-t", "both", "-d", "3", "--seed", "-b", "10000", "--spawn"]
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 2, max_tree_distance: 0})
-    ["-t", "both", "-e", "2", "--seed", "-b", "10000", "--spawn"]
+    ["-t", "both", "-e", "2", "-d", "0", "--seed", "-b", "10000", "--spawn"]
     iex> CreateGraphOptions.args(%CreateGraphOptions{edge_type: "both", seed: true, max_edit_distance: 2, max_tree_distance: -1})
     ["-t", "both", "-e", "2", "--seed", "-b", "10000", "--spawn"]
   """
@@ -76,7 +78,7 @@ defmodule Aptamer.Jobs.CreateGraphOptions do
 
     td_args =
       case options.max_tree_distance do
-        x when x <= 0 -> []
+        x when x < 0 -> []
         _ -> ["-d", to_string(options.max_tree_distance)]
       end
 
