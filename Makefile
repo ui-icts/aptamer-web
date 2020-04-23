@@ -15,6 +15,9 @@ web:
 bootstrap_container:
 	docker run --rm --env-file macdev.env aptamer-db:latest
 
+batch_run:
+	docker run --env-file macdev.env aptamer-batch:latest
+
 terminal:
 	docker run -it --rm --env-file macdev.env -P aptamer-web:latest /bin/bash
 
