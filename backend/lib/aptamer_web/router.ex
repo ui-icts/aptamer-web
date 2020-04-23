@@ -17,6 +17,8 @@ defmodule AptamerWeb.Router do
     resources "/files", FileController
     get "/results/:job_id", PageController, :download_results
     get "/download/:file_id", PageController, :download_file
+    get "/login", SessionController, :new
+    get "/logout", SessionController, :logout
     resources "/sessions", SessionController
     get "/health", HealthController, :index
     get "/", HomeController, :index

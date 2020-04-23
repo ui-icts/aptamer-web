@@ -156,10 +156,17 @@ defmodule AptamerWeb.SessionController do
   end
 
   def show(conn, _params) do
-    current_user = Guardian.Plug.current_resource(conn)
+    current_user = Aptamer.Guardian.Plug.current_resource(conn)
 
     conn
     |> put_view(AptamerWeb.UserView)
     |> render("show.json-api", %{data: current_user})
+  end
+
+  
+  def logout(conn, _) do
+    conn
+    |> Aptamer.Guardian.Plug.sign_out()
+    |> redirect(to: "/sessions/new")
   end
 end
