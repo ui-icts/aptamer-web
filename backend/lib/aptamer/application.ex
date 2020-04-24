@@ -9,6 +9,7 @@ defmodule Aptamer.Application do
     children = [
       # Start the Ecto repository
       Aptamer.Repo,
+      {Phoenix.PubSub, name: AptamerWeb.PubSub},
       # Start the endpoint when the application starts
       AptamerWeb.Endpoint,
       {Cluster.Supervisor, [topologies, [name: Aptamer.ClusterSupervisor]]}

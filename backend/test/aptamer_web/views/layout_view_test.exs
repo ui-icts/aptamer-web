@@ -3,7 +3,12 @@ defmodule AptamerWeb.LayoutViewTest do
   import Aptamer.Factory
   alias AptamerWeb.LayoutView
 
-  test "no guardian token means not authenticated" do
+  test "no guardian token means not authenticated", %{conn: conn} do
+    conn =
+      conn
+      |> assign(:user_files, [])
+      |> get("/")
+
     assert LayoutView.is_authenticated?(conn) == false
   end
 
@@ -15,6 +20,7 @@ defmodule AptamerWeb.LayoutViewTest do
     conn =
       conn
       |> guardian_login(user)
+      |> assign(:user_files, [])
       |> get("/")
 
     assert LayoutView.is_authenticated?(conn) == true

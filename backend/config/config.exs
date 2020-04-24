@@ -15,7 +15,7 @@ config :aptamer, AptamerWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "IccgQqMtrQrDjvRIlwgs/3ni1qizFseXblYBn2sMEePo0SR7WQadi0+xYWZS7isa",
   render_errors: [view: AptamerWeb.ErrorView, accepts: ~w(html json json-api)],
-  pubsub: [name: AptamerWeb.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: AptamerWeb.PubSub,
   live_view: [
     signing_salt: "2BRy7aMjEGtnDst/MqeL0GsQFzStIqQ1"
   ]

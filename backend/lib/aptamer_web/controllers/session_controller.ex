@@ -47,7 +47,7 @@ defmodule AptamerWeb.SessionController do
             |> Repo.one!()
 
           cond do
-            checkpw(login_form.password, user.password) ->
+            Bcrypt.verify_pass(login_form.password, user.password) ->
               Logger.info("User " <> user.email <> " logged in")
               conn = Aptamer.Guardian.Plug.sign_in(conn, user)
 
@@ -114,7 +114,7 @@ defmodule AptamerWeb.SessionController do
         |> Repo.one!()
 
       cond do
-        checkpw(password, user.password) ->
+        Bcrypt.verify_pass(password, user.password) ->
           Logger.info("User " <> username <> " logged in")
           conn = Aptamer.Guardian.Plug.sign_in(conn, user)
           jwt = Aptamer.Guardian.Plug.current_token(conn)

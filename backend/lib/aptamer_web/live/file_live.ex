@@ -10,7 +10,7 @@ defmodule AptamerWeb.FileLive do
   end
 
   @impl true
-  def mount(%{file_id: file_id}, socket) do
+  def mount(_params, %{"file_id" => file_id}, socket) do
     file = Aptamer.Jobs.view_file(file_id)
 
     if connected?(socket) do

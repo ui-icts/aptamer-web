@@ -1,12 +1,12 @@
 <div class="ui basic segment">
 
- <p>
- <%= form_tag "/files", [multipart: true, csrf_token: true, class: "dropzone"] do %>
+  <p>
+  <%= form_tag "/files", [multipart: true, csrf_token: true, class: "dropzone"] do %>
 
- <% end %>
-</p>
+  <% end %>
+  </p>
 
 <br>
 
-  <%= live_render(@conn, AptamerWeb.HomeLive, session: %{ current_user_id: @current_user_id }) %>
+<%= live_render(@conn, AptamerWeb.HomeLive, session: %{ "current_user_id" => @current_user_id }) %>
 </div>

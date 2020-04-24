@@ -102,6 +102,7 @@ Hooks.SemanticModalDialog = {
 }
 let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks});
 liveSocket.connect();
+window.liveSocket = liveSocket;
 
 // Import local files
 //

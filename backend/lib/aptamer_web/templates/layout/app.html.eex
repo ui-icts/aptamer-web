@@ -8,6 +8,7 @@
     <meta name="author" content="">
 
     <title>Aptamer</title>
+    <%= csrf_meta_tag() %>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -31,7 +32,7 @@
     </div>
     <div class="ui container" style="padding-top:55px">
 
-      <%= render @view_module, @view_template, assigns %>
+      <%= @inner_content %>
 
 
     </div>

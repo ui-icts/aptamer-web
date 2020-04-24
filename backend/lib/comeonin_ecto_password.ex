@@ -41,10 +41,10 @@ defmodule Comeonin.Ecto.Password do
   defp crypt, do: Application.get_env(:comeonin, Ecto.Password, Comeonin.Bcrypt)
 
   defp hash_password(plain_password) do
-    crypt().hashpwsalt(plain_password)
+    Bcrypt.hash_pwd_salt(plain_password)
   end
 
   def valid?(plain_password, hashed_password) do
-    crypt().checkpw(plain_password, hashed_password)
+    Bcrypt.verify_pass(plain_password, hashed_password)
   end
 end

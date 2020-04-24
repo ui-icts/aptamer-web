@@ -11,7 +11,7 @@ defmodule AptamerWeb.HomeLive do
   end
 
   @impl true
-  def mount(%{current_user_id: current_user_id}, socket) do
+  def mount(_params, %{"current_user_id" => current_user_id}, socket) do
     current_user = Auth.get_user(current_user_id)
 
     if connected?(socket) && current_user do

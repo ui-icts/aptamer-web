@@ -11,7 +11,7 @@
     <%= for file <- @user_files do %>
 
       <div class="item">
-        <%= live_render(@socket, AptamerWeb.FileLive, session: %{file_id: file.id}, id: file.id) %>
+        <%= live_render(@socket, AptamerWeb.FileLive, session: %{"file_id" => file.id}, id:  file.id) %>
 
 
 
