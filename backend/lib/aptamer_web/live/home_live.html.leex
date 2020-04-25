@@ -1,4 +1,3 @@
-
 <div class="ui secondary menu">
 
   <%= for mi <- menu_items() do %>
@@ -12,9 +11,6 @@
 
       <div class="item">
         <%= live_render(@socket, AptamerWeb.FileLive, session: %{"file_id" => file.id}, id:  file.id) %>
-
-
-
       </div>
     <% end %>
   <% else %>

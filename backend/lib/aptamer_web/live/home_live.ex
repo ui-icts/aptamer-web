@@ -1,14 +1,10 @@
 defmodule AptamerWeb.HomeLive do
-  use Phoenix.LiveView
-  alias Phoenix.View, as: PV
+  use AptamerWeb, :live_view
 
   alias Aptamer.{Auth, Jobs}
   alias Aptamer.Jobs.UserFiles
 
-  @impl true
-  def render(assigns) do
-    PV.render(AptamerWeb.HomeView, "files.html", assigns)
-  end
+  import AptamerWeb.HomeView
 
   @impl true
   def mount(_params, %{"current_user_id" => current_user_id}, socket) do

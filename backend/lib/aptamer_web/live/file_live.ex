@@ -1,14 +1,9 @@
 defmodule AptamerWeb.FileLive do
-  use Phoenix.LiveView
-  alias Phoenix.View, as: PV
+  use AptamerWeb, :live_view
   alias Aptamer.Jobs.JobStatus
   require Logger
 
-  @impl true
-  def render(assigns) do
-    PV.render(AptamerWeb.FileView, "show.html", assigns)
-  end
-
+  import AptamerWeb.FileView
   @impl true
   def mount(_params, %{"file_id" => file_id}, socket) do
     file = Aptamer.Jobs.view_file(file_id)

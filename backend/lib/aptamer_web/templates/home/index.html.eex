@@ -5,8 +5,6 @@
 
   <% end %>
   </p>
-
 <br>
-
 <%= live_render(@conn, AptamerWeb.HomeLive, session: %{ "current_user_id" => @current_user_id }) %>
 </div>

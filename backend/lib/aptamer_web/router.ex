@@ -5,6 +5,7 @@ defmodule AptamerWeb.Router do
     plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :put_root_layout, {AptamerWeb.LayoutView, :root}
     plug Aptamer.BrowserAuthPipeline
     plug :protect_from_forgery
     plug :put_secure_browser_headers

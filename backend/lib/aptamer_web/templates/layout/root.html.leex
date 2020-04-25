@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Aptamer</title>
+    <%= csrf_meta_tag() %>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+
+    <div class="ui large top fixed menu">
+      <div class="header item">
+        <i class="lab icon"></i>
+        Aptamer
+      </div>
+      <div class="right menu">
+        <%= if is_authenticated?(@conn) do %>
+          <a class="ui item" role="button" href="/logout">
+            <%= current_user_name(@conn) %> (Logout)
+          </a>
+
+        <% else %>
+          <%= link "Login", to: "/login", class: "ui item" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="ui container" style="padding-top:55px">
+
+      <%= @inner_content %>
+
+
+    </div>
+    <h2>
+    </h2>
+    <!-- /container -->
+  </body>
+</html>
