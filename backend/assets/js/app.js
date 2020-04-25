@@ -56,15 +56,18 @@ Hooks.SemanticUiCheckbox = {
 Hooks.ShowModal = {
   mounted() {
     let modalId = $(this.el).data('modal-id');
-    let fileId = $(this.el).data('file-id');
-    let fileName = $(this.el).data('file-name');
+    // let fileId = $(this.el).data('file-id');
+    // let fileName = $(this.el).data('file-name');
     let modalSelector = `#${modalId}.ui.modal`;
-    
+    let sourceData = $(this.el).data();
     $(this.el).on('click', function() {
-      $(modalSelector)
-        .data('file-id', fileId)
-        .data('file-name',fileName)
-        .modal('show');
+      let theModal = $(modalSelector);
+      $.each(sourceData, function(k,v) {
+        if (k.startsWith("job") || k.startsWith("file")) {
+          theModal.data(k,v);
+        }
+      });
+      theModal.modal('show');
     });
   }
 }
@@ -100,9 +103,43 @@ Hooks.SemanticModalDialog = {
 
 
 }
-let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks});
+
+Hooks.ConfirmJobDelete = {
+  mounted() {
+
+    let $domElement = $(this.el);
+    let pushEvent = this.pushEvent.bind(this); 
+
+    $(this.el).modal({
+      onShow: function() {
+        $('span.job-description', $domElement).text( $domElement.data('job-description') );
+        $('span.job-status', $domElement).text( $domElement.data('job-status') );
+      },
+
+      onApprove: function(btn) {
+        let jobId = $domElement.data('job-id');
+        pushEvent('delete_job', {job_id: jobId});
+      }
+    });
+  },
+
+  destroyed() {
+    console.log("MODAL DESTROY");
+  },
+
+  updated() {
+    console.log("MODAL UPDATE");
+  }
+
+
+}
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: {_csrf_token: csrfToken},
+  hooks: Hooks
+});
+
 liveSocket.connect();
-window.liveSocket = liveSocket;
 
 // Import local files
 //

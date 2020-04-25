@@ -57,7 +57,7 @@ defmodule AptamerWeb.FileController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.transaction(File.delete(file))
+    Repo.transaction(Aptamer.Jobs.delete_file(file))
 
     send_resp(conn, :no_content, "")
   end

@@ -1,12 +1,26 @@
+<div class="ui relaxed divided list">
 <%= for {job,index} <- Enum.with_index(@jobs) do %>
-  <%= if is_running?(job) do %>
-    <p>
-      <%= link "Job #{job_number(index)} #{job.status}", to: "#" %>
-    </p>
-  <% else %>
-    <p>
+  <div class="item">
+    <div class="content">
+
       <%= job_description(job,index) %>
-      <%= link "Download Results", to: Routes.page_path(@socket, :download_results, job.id) %>
-    </p>
-  <% end %>
+      <a title="Download" class="ui mini basic icon button" href="<%= Routes.page_path(@socket, :download_results, job.id) %>">
+        <i class="download icon"></i>
+      </a>
+      <button class="ui mini basic icon button"
+              title="Delete"
+              phx-hook="ShowModal"
+              data-modal-id="confirm_job_delete"
+              data-job-id="<%= job.id %>"
+              data-job-description="<%= job_description(job,index) %>"
+              data-job-status="<%= job_status(job) %>">
+              <i class="icon trash "></i>
+      </button>
+      <div class="description">
+        <%= job_status(job) %>
+      </div>
+
+    </div>
+  </div>
 <% end %>
+</div>

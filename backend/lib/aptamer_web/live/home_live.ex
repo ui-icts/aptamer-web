@@ -53,10 +53,23 @@ defmodule AptamerWeb.HomeLive do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Aptamer.Repo.transaction(Aptamer.Jobs.File.delete(file))
+    Aptamer.Repo.transaction(Aptamer.Jobs.delete_file(file))
 
     user_files = socket.assigns.user_files
     socket = assign(socket, :user_files, Enum.reject(user_files, fn f -> f.id == file_id end))
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete_job", %{"job_id" => job_id}, socket) do
+    job = Aptamer.Repo.get!(Aptamer.Jobs.Job, job_id)
+
+    # Here we use delete! (with a bang) because we expect
+    # it to always work (and if it does not, it will raise).
+    Aptamer.Repo.transaction(Aptamer.Jobs.delete_job(job))
+
+    user_files = socket.assigns.user_files
+    socket = assign(socket, :user_files, user_files)
     {:noreply, socket}
   end
 end

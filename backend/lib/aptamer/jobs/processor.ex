@@ -45,9 +45,7 @@ defmodule Aptamer.Jobs.Processor do
   end
 
   def set_job_status({job, script}, status) do
-    cs = Job.changeset(job, %{status: to_string(status)})
-    {:ok, job} = Repo.update(cs)
-    JobStatus.broadcast(job)
+    job = Aptamer.Jobs.change_status(job, status)
     {job, script}
   end
 

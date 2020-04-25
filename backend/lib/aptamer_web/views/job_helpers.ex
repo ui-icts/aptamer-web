@@ -10,10 +10,22 @@ defmodule AptamerWeb.JobHelpers do
   end
 
   def job_description(job, index) do
-    "Job #{job_number(index)} #{job.status}."
+    {script, args, _} =
+      job
+      |> Aptamer.Jobs.load_associations()
+      |> Aptamer.Jobs.File.build_script_args()
+
+    
+    args = Enum.join(args, " ")
+    "#{script} #{args}"
+    # "Job #{job_number(index)} #{job.status}."
   end
 
   def job_number(index) do
     "##{index + 1}"
+  end
+
+  def job_status(job) do
+    job.status
   end
 end

@@ -4,6 +4,7 @@ defmodule Aptamer.Jobs.FileTest do
   import Aptamer.Factory
   alias Aptamer.Jobs.File
 
+
   @valid_attrs %{
     file_name: "some content",
     file_type: "some content",
@@ -35,7 +36,7 @@ defmodule Aptamer.Jobs.FileTest do
       )
 
     file = Repo.get!(File, file.id)
-    multi = File.delete(file)
+    multi = Aptamer.Jobs.delete_file(file)
 
     {:ok, _} = Repo.transaction(multi)
 
@@ -47,7 +48,7 @@ defmodule Aptamer.Jobs.FileTest do
     ps_opts = build(:predict_structure_options) |> insert
     _job = insert(:job, file: file, predict_structure_options: ps_opts, create_graph_options: nil)
 
-    multi = File.delete(file)
+    multi = Aptamer.Jobs.delete_file(file)
 
     {:ok, _} = Repo.transaction(multi)
 
@@ -61,7 +62,7 @@ defmodule Aptamer.Jobs.FileTest do
     # sure we're covered
     file = build(:file) |> as_structure |> insert
 
-    multi = File.delete(file)
+    multi = Aptamer.Jobs.delete_file(file)
 
     {:ok, _} = Repo.transaction(multi)
 
@@ -77,8 +78,8 @@ defmodule Aptamer.Jobs.FileTest do
       %Aptamer.Jobs.Job{:create_graph_options_id => nil, :predict_structure_options_id => 0}
     ]
 
-    assert [4, 8, 0] = File.unique_id_list(jobs1, :create_graph_options_id)
-    assert [-2, 0, 83] = File.unique_id_list(jobs1, :predict_structure_options_id)
+    assert [4, 8, 0] = Aptamer.Jobs.unique_id_list(jobs1, :create_graph_options_id)
+    assert [-2, 0, 83] = Aptamer.Jobs.unique_id_list(jobs1, :predict_structure_options_id)
   end
 
   describe "#build_script_args" do

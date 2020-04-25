@@ -41,4 +41,24 @@
     </div>
   </div>
 </div>
+
+<div id="confirm_job_delete" class="ui tiny modal" phx-hook="ConfirmJobDelete">
+  <div class="header">Confirm Delete</div>
+
+  <div class="content">
+    <p>Delete job: <span class="job-description"></span>?"</p>
+    <p>Status: <span class="job-status"></span></p>
+  </div>
+
+  <div class="actions">
+    <div class="ui red basic cancel button" role="button">
+      <i class="remove icon"></i>
+      Cancel
+    </div>
+    <div class="ui green ok inverted button" role="button">
+      <i class="checkmark icon"></i>
+      Delete
+    </div>
+  </div>
+</div>
 </div>

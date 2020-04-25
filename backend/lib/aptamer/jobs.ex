@@ -5,9 +5,10 @@ defmodule Aptamer.Jobs do
 
   import Ecto.Query, warn: false
   import Ecto.Changeset
+  alias Ecto.Multi
   alias Aptamer.Repo
 
-  alias Aptamer.Jobs.{File, Job}
+  alias Aptamer.Jobs.{File, Job, CreateGraphOptions, PredictStructureOptions, JobStatus}
 
   require Logger
 
@@ -79,6 +80,12 @@ defmodule Aptamer.Jobs do
     end
   end
 
+  def change_status(job, new_status) do
+    cs = Job.changeset(job, %{status: to_string(new_status)})
+    {:ok, job} = Repo.update(cs)
+    JobStatus.broadcast(job)
+    job
+  end
   def next_ready() do
     query = from(j in Job, where: j.status == "ready")
 
@@ -104,5 +111,44 @@ defmodule Aptamer.Jobs do
     |> Repo.preload(:create_graph_options)
     |> Repo.preload(:predict_structure_options)
     |> Repo.preload(:file)
+  end
+
+  def delete_file(file) do
+    jobs = Repo.all(Ecto.assoc(file, :jobs))
+
+    Multi.new()
+    |> delete_jobs(jobs, file)
+    |> Multi.delete(:file, file)
+  end
+
+  def delete_job(job) do
+    job = load_associations(job)
+    delete_jobs(Multi.new(), [job], job.file)
+  end
+
+  def delete_jobs(multi, jobs, _) when jobs == [] do
+    multi
+  end
+
+  def delete_jobs(multi, jobs, file) do
+    create_graph_ids = unique_id_list(jobs, :create_graph_options_id)
+    predict_structure_ids = unique_id_list(jobs, :predict_structure_options_id)
+
+    create_graph_query = from(cgo in CreateGraphOptions, where: cgo.id in ^create_graph_ids)
+
+    predict_structure_query =
+      from(pso in PredictStructureOptions, where: pso.id in ^predict_structure_ids)
+
+    multi
+    |> Multi.delete_all(:results, Ecto.assoc(jobs, :results))
+    |> Multi.delete_all(:jobs, Ecto.assoc(file, :jobs))
+    |> Multi.delete_all(:create_graph_options, create_graph_query)
+    |> Multi.delete_all(:predict_structure_options, predict_structure_query)
+  end
+
+  def unique_id_list(structList, id_name) do
+    Enum.map(structList, fn struct -> Map.get(struct, id_name) end)
+    |> Enum.filter(fn id -> id != nil end)
+    |> Enum.uniq()
   end
 end
